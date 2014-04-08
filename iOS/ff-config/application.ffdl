@@ -1,0 +1,17 @@
+SET ETaggingEnabled true
+SET LogLevel                    INFO
+SET AllowAutoRegistration       true
+SET AllowNewCollections         false
+SET AllowNewObjectTypes         false
+SET AllowNewMembers             true
+SET PushIsInactive              true
+SET ApplePushKeystorePassword   YOUR_KEYSTORE_PASSWORD_GOES_HERE
+
+#
+# Edit this file to change application settings and to define resource collections, default permissions, data types, custom code
+#
+CREATE OBJECTTYPE Celebrity   (firstName string, lastName string, imageData BYTEARRAY image/jpeg)
+CREATE OBJECTTYPE WouldYa     (pickedGuid string, rejectedGuid string)
+CREATE COLLECTION /Celebrity OBJECTTYPE Celebrity
+CREATE COLLECTION /WouldYa OBJECTTYPE WouldYa
+

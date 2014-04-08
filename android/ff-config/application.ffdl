@@ -1,0 +1,16 @@
+SET ETaggingEnabled true
+SET LogLevel                    WARN
+SET AllowAutoRegistration       true
+SET AllowNewCollections         false
+SET AllowNewObjectTypes         false
+SET AllowNewMembers             true
+SET PushIsInactive              true
+SET ApplePushKeystorePassword   YOUR_KEYSTORE_PASSWORD_GOES_HERE
+SET CORS			https://acme.fatfractal.com##http://acme.fatfractal.com
+
+#
+# Edit this file to change application settings and to define resource collections, default permissions, data types, custom code
+#
+CREATE OBJECTTYPE Celebrity   (firstName string, lastName string, imageData BYTEARRAY)
+CREATE COLLECTION /Celebrity OBJECTTYPE Celebrity
+

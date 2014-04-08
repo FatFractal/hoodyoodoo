@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" 
+>
+  <!-- Screen Design for Add a Celebrity -->
+  <EditText
+      android:id="@+id/firstNameEditText"
+      android:hint="First Name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10" 
+      android:layout_marginLeft="25dip" 
+      android:layout_marginRight="25dip">
+      <requestFocus />
+  </EditText>
+
+  <EditText
+      android:id="@+id/lastNameEditText"
+      android:hint="Last Name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10" 
+      android:layout_marginLeft="25dip" 
+      android:layout_marginRight="25dip" 
+      android:layout_marginTop="5dip"
+  />
+
+  <ImageButton
+      android:id="@+id/addCelebImageButton"
+      android:layout_width="150dip"
+      android:layout_height="225dip"
+      android:text="Add Celebrity"
+      android:src="@drawable/addphoto" 
+      android:layout_marginTop="10dip"
+      android:onClick="selectImage"
+  />
+
+  <Button
+      android:id="@+id/addCelebButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Add Celebrity" 
+      android:layout_marginTop="10dip"
+      android:onClick="doneAction"
+  />
+</LinearLayout>
