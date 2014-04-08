@@ -27,6 +27,7 @@
 		0A71C43315015C1E00C6D9B7 /* mystery3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A71C43115015C1E00C6D9B7 /* mystery3.png */; };
 		0A962AB1150CDD7000BE8343 /* button_play_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A962AB0150CDD7000BE8343 /* button_play_gray.png */; };
 		0AA77B2015095A68006357F3 /* button_gender_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AA77B1F15095A68006357F3 /* button_gender_new.png */; };
+		0AB424A714FA894400A04063 /* StatsObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB424A614FA894400A04063 /* StatsObject.m */; };
 		0ACD4F1214E580A100988D51 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ACD4F1114E580A100988D51 /* UIKit.framework */; };
 		0ACD4F1414E580A100988D51 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ACD4F1314E580A100988D51 /* Foundation.framework */; };
 		0ACD4F1614E580A100988D51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ACD4F1514E580A100988D51 /* CoreGraphics.framework */; };
@@ -77,6 +78,8 @@
 		0A71C43115015C1E00C6D9B7 /* mystery3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mystery3.png; sourceTree = "<group>"; };
 		0A962AB0150CDD7000BE8343 /* button_play_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_play_gray.png; sourceTree = "<group>"; };
 		0AA77B1F15095A68006357F3 /* button_gender_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_gender_new.png; sourceTree = "<group>"; };
+		0AB424A514FA894400A04063 /* StatsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsObject.h; sourceTree = "<group>"; };
+		0AB424A614FA894400A04063 /* StatsObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsObject.m; sourceTree = "<group>"; };
 		0ACD4F0D14E580A100988D51 /* hoodyoodoo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hoodyoodoo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ACD4F1114E580A100988D51 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0ACD4F1314E580A100988D51 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -134,6 +137,8 @@
 			children = (
 				0ACD4F5914E58E3A00988D51 /* Celebrity.h */,
 				0ACD4F5A14E58E3A00988D51 /* Celebrity.m */,
+				0AB424A514FA894400A04063 /* StatsObject.h */,
+				0AB424A614FA894400A04063 /* StatsObject.m */,
 				0A2FB47214F738F300347F1C /* WouldYa.h */,
 				0A2FB47314F738F300347F1C /* WouldYa.m */,
 			);
@@ -382,6 +387,7 @@
 				0ACD4F2F14E580A100988D51 /* CelebrityViewController.m in Sources */,
 				0ACD4F5B14E58E3A00988D51 /* Celebrity.m in Sources */,
 				0A2FB47414F738F300347F1C /* WouldYa.m in Sources */,
+				0AB424A714FA894400A04063 /* StatsObject.m in Sources */,
 				0A5E5C2514FBC08B00B84614 /* TopCelebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

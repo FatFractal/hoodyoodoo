@@ -10,7 +10,7 @@
   <ImageView
       android:id="@+id/topCelebImageView"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_height="150dip"
       android:layout_gravity="center_horizontal"
       android:src="@drawable/mystery2" />
 
@@ -70,6 +70,94 @@
               android:textAppearance="?android:attr/textAppearanceMedium" />
       </TableRow>
 
+      <TableRow
+          android:id="@+id/totalRatingsTableRow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" >
+          <TextView
+              android:id="@+id/totalRatingsTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:gravity="right"
+              android:text="Total Ratings"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+          <TextView
+              android:id="@+id/totalRatingsValueTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dip"
+              android:gravity="left"
+              android:text="Ratings Count"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+      </TableRow>
+
+      <TableRow
+          android:id="@+id/totalUsersTableRow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" >
+          <TextView
+              android:id="@+id/totalUsersTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:gravity="right"
+              android:text="Total Users"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+          <TextView
+              android:id="@+id/totalUsersValueTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dip"
+              android:gravity="left"
+              android:text="Total Users Value"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+      </TableRow>
+
+      <TableRow
+          android:id="@+id/totalCelebritiesTableRow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" >
+          <TextView
+              android:id="@+id/totalCelebritiesTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:gravity="right"
+              android:text="Total Celebrities"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+          <TextView
+              android:id="@+id/totalCelebritiesValueTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dip"
+              android:gravity="left"
+              android:text="Total Celebrities Value"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+      </TableRow>
+      
+      <TableRow
+          android:id="@+id/yourRatingsTableRow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" >
+          <TextView
+              android:id="@+id/yourRatingsTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:gravity="right"
+              android:text="Your Ratings"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+          <TextView
+              android:id="@+id/yourRatingsValueTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dip"
+              android:gravity="left"
+              android:text="Your Ratings Value"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+      </TableRow>
+      
       </TableLayout>
   
 </LinearLayout>

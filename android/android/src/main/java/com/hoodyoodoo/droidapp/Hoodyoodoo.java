@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +15,7 @@ import com.fatfractal.ffef.FatFractal;
 import com.fatfractal.ffef.impl.FatFractalHttpImpl;
 import com.fatfractal.ffef.json.FFObjectMapper;
 import com.hoodyoodoo.droidapp.model.Celebrity;
+import com.hoodyoodoo.droidapp.model.StatsObject;
 import com.hoodyoodoo.droidapp.model.WouldYa;
 
 import java.net.URI;
@@ -55,6 +55,7 @@ public class Hoodyoodoo extends Application {
 				FatFractalHttpImpl.addTrustedHost("acme.fatfractal.com");
 				FFObjectMapper.registerClassNameForClazz(Celebrity.class.getName(), "Celebrity");
 				FFObjectMapper.registerClassNameForClazz(WouldYa.class.getName(), "WouldYa");
+				FFObjectMapper.registerClassNameForClazz(StatsObject.class.getName(), "StatsObject");
 			}
             catch (URISyntaxException e) {
 				e.printStackTrace();

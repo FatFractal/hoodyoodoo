@@ -13,6 +13,7 @@
 @implementation TopCelebViewController
 
 @synthesize selectedLabel, rejectedLabel, topCeleb, celebrityLabel, topCelebImageView;
+@synthesize statsObject, totalUsersLabel, totalRatingsLabel, totalCelebritiesLabel, yourRatingsLabel;
 
 - (void)didReceiveMemoryWarning
 {
@@ -22,7 +23,7 @@
 
 -(void) getTopCelebrity {
     NSError *error;
-    NSArray *celebs = [[FatFractal main] getArrayFromUrl:@"/TopCelebrity" error:&error];
+    NSArray *celebs = [[FatFractal main] getArrayFromUrl:@"/ff/resources/TopCelebrity" error:&error];
     if (error) {
         NSLog(@"StatsViewController getTopCelebrity failed: %@", [error localizedDescription]);
         celebrityLabel.text = @"No Top Celebrity found";             
@@ -38,6 +39,27 @@
     }
 }
 
+-(void) getStats {
+    if(![[FatFractal main] loggedIn]) {
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate] 
+         showLoginWithDelegate:self action:@selector(getStats) 
+         message:@"Please Login"];
+    }
+    else {
+        NSError *error;
+        statsObject= [[FatFractal main] getObjFromUrl:@"/ff/ext/Stats" error:&error];
+        if (error) {
+            NSLog(@"StatsViewController getStats failed: %@", [error localizedDescription]);
+            return;
+        } else {
+            NSLog(@"loadCelebrities statsObject: %@", [statsObject description]);
+            totalUsersLabel.text = [statsObject.totalUsers stringValue];
+            totalCelebritiesLabel.text = [statsObject.totalCelebrities stringValue];
+            totalRatingsLabel.text = [statsObject.totalRatings stringValue];
+            yourRatingsLabel.text = [statsObject.yourRatings stringValue];
+        }
+    }
+}
 
 #pragma mark - View lifecycle
 
@@ -45,9 +67,14 @@
 {
     [super viewDidLoad];
     topCeleb = [[Celebrity alloc]init];
+    statsObject = [[StatsObject alloc]init];
     celebrityLabel.text = nil;
     selectedLabel.text = nil;
     rejectedLabel.text = nil;
+    totalRatingsLabel.text = nil;
+    totalCelebritiesLabel.text = nil;
+    totalUsersLabel.text = nil;
+    yourRatingsLabel.text = nil;
     topCelebImageView.image = nil;
     [[topCelebImageView layer] setCornerRadius:16.0f];
     [[topCelebImageView layer] setMasksToBounds:YES];    
@@ -72,6 +99,7 @@
 {
     [super viewDidAppear:animated];
     [self getTopCelebrity];
+    [self getStats];
     
 }
 

@@ -6,6 +6,7 @@ SET AllowNewObjectTypes         false
 SET AllowNewMembers             true
 SET PushIsInactive              true
 SET ApplePushKeystorePassword   YOUR_KEYSTORE_PASSWORD_GOES_HERE
+SET CORS https://system.fatfractal.com
 
 #
 # Edit this file to change application settings and to define resource collections, default permissions, data types, custom code
@@ -13,7 +14,9 @@ SET ApplePushKeystorePassword   YOUR_KEYSTORE_PASSWORD_GOES_HERE
 CREATE OBJECTTYPE Celebrity   (firstName string, lastName string, imageData BYTEARRAY image/jpeg)
 CREATE OBJECTTYPE WouldYa     (pickedGuid string, rejectedGuid string)
 CREATE COLLECTION /Celebrity OBJECTTYPE Celebrity
+permit read:public write:public on /FFUser
 CREATE COLLECTION /WouldYa OBJECTTYPE WouldYa
 CREATE COLLECTION /TopCelebrity OBJECTTYPE Celebrity
 CREATE HANDLER WouldYaCreate POST ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);
+CREATE EXTENSION /Stats AS javascript:var f = require ('scripts/AggregateStats'); f.aggregateStats (FF_EXTENSION_REQUEST_DATA_JSON);
 

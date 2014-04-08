@@ -37,7 +37,7 @@ function RegisterRequest() {
  @see FatFractal().loggedInUser()
  */
 function FFUser() {
-    this.clazz = "FFUser";	
+    this.clazz = "FFUser";
 
     this.userName   = null;
     this.firstName  = null;
@@ -101,12 +101,12 @@ function FatFractal() {
     This local variable (Object) contains items that are cached in memory during the browser session.
      */
     var m_cache = {};
-    
+
     /*
     This local variable contains items are to store separate from JSON structure stores (blobs).
      */
     var m_pendingBlobs = {};
-    
+
     /*
     This local variable (Boolean) holds the setting of the Debug mode for the FatFractal library, defaults to false.
      */
@@ -135,7 +135,7 @@ function FatFractal() {
     var m_fileAPI = function() {
         return window.File && window.FileList && window.FileReader;
     };
-     
+
     /**
     This method will determine if the XMLHttpRequest is version 2 or not.
     @return {Boolean} returns true if the HTML5 XMLHttpRequest is supported on this browser.
@@ -146,7 +146,7 @@ function FatFractal() {
     };
 
     /**
-    This method will set the Debug mode for the FatFractal library to true, which generates 
+    This method will set the Debug mode for the FatFractal library to true, which generates
     console.log messages for most operations or false which will generate error messages only.
     @param {Boolean} tf will set the debug mode to true or false.
      */
@@ -397,7 +397,7 @@ function FatFractal() {
     This method will serialize an object to JSON.
      */
     this._toJSON = JSON.stringify;
-    
+
     /*
     This method will deserialize an object to JSON.
      */
@@ -482,7 +482,7 @@ function FatFractal() {
             xmlHTTP.setRequestHeader("X-Ff-Auth-User-Guid", m_loggedInUser.guid);
             xmlHTTP.setRequestHeader("X-Ff-Auth-Session-Id", m_sessionId);
         }
-        xmlHTTP.send(ajaxParams.data); 
+        xmlHTTP.send(ajaxParams.data);
         xmlHTTP.onreadystatechange = function() {
             if(xmlHTTP.readyState == 4) {
                 if(m_debug) console.log("xmlHTTP.status: " + xmlHTTP.status + ", xmlHTTP.readyState: " + xmlHTTP.readyState + ", xmlHTTP.responseText: " + xmlHTTP.responseText);
@@ -861,7 +861,7 @@ function FatFractal() {
         if(! successCallback) throw new Error("FatFractal.createObjAtUri: successCallback not supplied");
         if(! errorCallback) errorCallback = m_ff.defaultErrorCallback;
         if(! errorCallback) throw new Error("FatFractal.createObjAtUri: errorCallback not supplied");
-        
+
         function getObjectClass(obj) {
             if(obj && obj.constructor && obj.constructor.toString) {
                 var arr = obj.constructor.toString().match(/function\s*(\w+)/);
@@ -1019,7 +1019,7 @@ function FatFractal() {
      */
     this.postObjToExtension = function (obj, extensionUri, successCallback, errorCallback) {
         var url = m_validUrl(extensionUri, "extension");
-        this.createObjAtUri(obj, url, 
+        this.createObjAtUri(obj, url,
             function(response) {
                 var retVal = null;
                 if (response.length > 0)
@@ -1067,7 +1067,7 @@ function FatFractal() {
     */
     this.getArrayFromExtension = function(extensionUri, successCallback, errorCallback) {
         var url = m_validUrl(extensionUri, "extension");
-        this.getArrayFromUri(url, 
+        this.getArrayFromUri(url,
             function(response) {
                 successCallback(response, response.statusMessage);
             },
@@ -1107,6 +1107,28 @@ function FatFractal() {
         );
     };
 
+    var m_processResultObject = function(retrieved) {
+        //      Logic for retrieve
+        //      Add the object to the cache (or update it if it's already there)
+        //      Check each item in the ffRefs array
+        //      If it exists in cache (lookup by ffUrl), then set it as a FIELD on the retrieved object
+        //      If not, then load it
+        var cached = m_cache[retrieved.ffUrl];
+        if (cached == null) {
+            if(m_debug) console.log("FatFractal.getArrayFromUri: Adding " + retrieved.ffUrl + " to cache");
+            m_cache[retrieved.ffUrl] = retrieved;
+        }
+        else { // update existing in cache
+            if(m_debug) console.log("FatFractal.getArrayFromUri: Updating existing " + retrieved.ffUrl + " in cache");
+            for (key in cached) cached[key] = null;
+            for (var key in retrieved) cached[key] = retrieved[key];
+        }
+
+        retrieved = m_cache[retrieved.ffUrl];
+
+        m_loadAllReferences(retrieved);
+    };
+
     /**
     GET an Array of objects from a URI
     @param {String} collectionUri
@@ -1127,6 +1149,13 @@ function FatFractal() {
             dataType: 'json',
             data: null,
             success: function(response) {
+                // If we've got a 'references' field in the response, then process it
+                if (response.references) {
+                    for (var refIx = 0; refIx < response.references.length; refIx++) {
+                        m_processResultObject(response.references[refIx]);
+                    }
+                }
+
                 var tmpRetVal;
                 // We always want to return an array
                 if(! Array.isArray(response.result)) {
@@ -1135,38 +1164,19 @@ function FatFractal() {
                 else {
                     tmpRetVal = response.result;
                 }
-                
+
                 var realRetVal = [];
                 for (var i = 0; i < tmpRetVal.length; i++) {
-                    var retrieved = tmpRetVal[i];
-                    //      Logic for retrieve
-                    //      Add the object to the cache (or update it if it's already there)
-                    //      Check each item in the ffRefs array
-                    //      If it exists in cache (lookup by ffUrl), then set it as a FIELD on the retrieved object
-                    //      If not, then load it
-                    if(!retrieved.ffUrl) { // not an object under management by FatFractal - probably an extension result
-                        realRetVal.push(retrieved);
+                    if (!tmpRetVal[i].ffUrl) { // not an object under management by FatFractal - probably an extension result
+                        realRetVal.push(tmpRetVal[i]);
                     }
-                    else { // object under management by FatFractal - ensure we return pointers to the CACHE
-                        var cached = m_cache[retrieved.ffUrl];
-                        if (cached == null) {
-                            if(m_debug) console.log("FatFractal.getArrayFromUri: Adding " + retrieved.ffUrl + " to cache");
-                            m_cache[retrieved.ffUrl] = retrieved;
-                        }
-                        else { // update existing in cache
-                            if(m_debug) console.log("FatFractal.getArrayFromUri: Updating existing " + retrieved.ffUrl + " in cache");
-                            for (key in cached) cached[key] = null;
-                            for (var key in retrieved) cached[key] = retrieved[key];
-                        }
-
-                        retrieved = m_cache[retrieved.ffUrl];
-
-                        m_loadAllReferences(retrieved);
-
-                        realRetVal.push(m_cache[retrieved.ffUrl]);
+                    else { // object under management by FatFractal
+                        m_processResultObject(tmpRetVal[i]);
+                        realRetVal.push(m_cache[tmpRetVal[i].ffUrl]);
                     }
                 }
-                 successCallback(realRetVal, response.statusMessage);
+
+                successCallback(realRetVal, response.statusMessage);
             },
             error: function(xmlHTTP) {
                 if(console.error) console.error("FatFractal.getArrayFromUri " + xmlHTTP.status + ", " + xmlHTTP.responseText);
@@ -1243,13 +1253,13 @@ function FatFractal() {
                     if(m_debug) console.log("Warning: Attempting to load a blob: " + JSON.stringify(refItem));
                     var url = m_validUrl(referringObj.ffUrl);
                     if(m_baseUrl) url = m_baseUrl + url;
-                    var xhr = new XMLHttpRequest();  
-                    xhr.open("GET", url + "/" + refItem.name, true);  
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", url + "/" + refItem.name, true);
                     xhr.responseType = "arraybuffer";
                     xhr.onload = function (oEvent) {
                         var arrayBuffer = xhr.response; // Note: not xhr.responseText
                         if(m_debug) console.log("FatFractal.m_loadReference: arrayBuffer.byteLength " + arrayBuffer.byteLength);
-                        if(arrayBuffer) {  
+                        if(arrayBuffer) {
                             var byteArray = new Uint8Array(arrayBuffer);
                             referringObj[refItem.name] = byteArray;
                             m_cache[refItem.url] = byteArray;
@@ -1401,3 +1411,4 @@ function FatFractal() {
 
     return this;
 }
+

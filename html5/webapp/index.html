@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
+    <script type="text/javascript">
+        <!-- begin hide
+          function httpsRedirect() {
+              var httpURL = window.location.hostname + window.location.pathname;
+              var httpsURL = "https://" + httpURL;
+              window.location = httpsURL;
+          }
+          console.log(window.location.href);
+          if(!window.location.href.match('^https://') && !window.location.href.match('^http://localhost'))
+          httpsRedirect();
+      //end hide -->;
+    </script>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
@@ -133,6 +145,10 @@
                 </h1>
                 <h3 style="color: white; text-align: center; display: hidden;">Was selected &emsp;&emsp;<span id="selectedCountLabel">0</span></h3>
                 <h3 style="color: white; text-align: center; display: hidden;">Was rejected &emsp;&emsp;<span id="rejectedCountLabel">0</span></h3>
+                <h3 style="color: white; text-align: center; display: hidden;">Total Ratings &emsp;&emsp;<span id="ratingCountLabel">0</span></h3>
+                <h3 style="color: white; text-align: center; display: hidden;">Total Users &emsp;&emsp;<span id="userCountLabel">0</span></h3>
+                <h3 style="color: white; text-align: center; display: hidden;">Total Celebrities &emsp;&emsp;<span id="celebrityCountLabel">0</span></h3>
+                <h3 style="color: white; text-align: center; display: hidden;">Your Ratings &emsp;&emsp;<span id="yourRatingCountLabel">0</span></h3>
             </div> <!-- /content -->
             <div data-role="footer" data-position="fixed" class="nav-glyphish-example">
                 <div data-role="navbar" class="nav-glyphish-example">

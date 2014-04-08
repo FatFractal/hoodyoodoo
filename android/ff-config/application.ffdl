@@ -18,4 +18,6 @@ CREATE COLLECTION /TopCelebrity OBJECTTYPE Celebrity
 CREATE HANDLER WouldYaCreate  POST ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);
 CREATE HANDLER TopCelebCreate POST ON /TopCelebrity Create as javascript:var h = require ('scripts/TopCelebrityEventHandlers'); h.handleTopCelebrityCreate (FF_EVENT_DATA_JSON);
 CREATE HANDLER TopCelebUpdate POST ON /TopCelebrity Update as javascript:var h = require ('scripts/TopCelebrityEventHandlers'); h.handleTopCelebrityUpdate (FF_EVENT_DATA_JSON);
+CREATE EXTENSION /Stats AS javascript:var f = require ('scripts/AggregateStats'); f.aggregateStats (FF_EXTENSION_REQUEST_DATA_JSON);
+CREATE EXTENSION /TestPush AS javascript:var f = require ('scripts/AggregateStats'); f.sendPush (FF_EXTENSION_REQUEST_DATA_JSON);
 

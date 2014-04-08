@@ -42,6 +42,39 @@ function WouldYa(data) {
     return this;
 }
 
+function StatsObject(data) {
+    if(data) {
+        this.clazz = "StatsObject";
+        this.totalUsers = new Number(data.totalUsers);
+        this.totalCelebrities = new Number(data.totalCelebrities);
+        this.totalRatings = new Number(data.totalRatings);
+        this.yourRatings = new Number(data.yourRatings);
+    } else {
+        this.clazz = "StatsObject";
+        this.totalUsers = null;
+        this.totalCelebrities = null;
+        this.totalRatings = null;
+        this.yourRatings = null;
+    }
+    return this;
+}
+
+function ffRef(data) {
+    if (data) {
+        this.mime = data.mime;
+        this.name = data.name;
+        this.type = data.type;
+        this.url = data.url;
+    }
+    else {
+        this.mime = null;
+        this.name = null;
+        this.type = null;
+        this.url = null;
+    }
+    return this;
+}
+
 function FileUploader() {
    // constants
    var MAX_FILE_SIZE = 300000;
@@ -197,6 +230,14 @@ var HoodyoodooViewModel = (function() {
 
     var m_rejectedCountLabel = null;
 
+    var m_ratingCountLabel = null;
+
+    var m_userCountLabel = null;
+
+    var m_celebrityCountLabel = null;
+
+    var m_yourRatingCountLabel = null;
+
     var m_firstNameField = null;
 
     var m_lastNameField = null;
@@ -218,6 +259,10 @@ var HoodyoodooViewModel = (function() {
             m_topCelebrityLabel = document.getElementById("topCelebrityLabel");
             m_selectedCountLabel = document.getElementById("selectedCountLabel");
             m_rejectedCountLabel = document.getElementById("rejectedCountLabel");
+            m_ratingCountLabel = document.getElementById("ratingCountLabel");
+            m_userCountLabel = document.getElementById("userCountLabel");
+            m_celebrityCountLabel = document.getElementById("celebrityCountLabel");
+            m_yourRatingCountLabel = document.getElementById("yourRatingCountLabel");
             m_firstNameField = document.getElementById("firstNameField");
             m_lastNameField = document.getElementById("lastNameField");
             m_topCelebImage = document.getElementById("topCelebImage");
@@ -397,11 +442,37 @@ var HoodyoodooViewModel = (function() {
                         if(tc.selectedCount) m_selectedCountLabel.innerHTML = tc.selectedCount;
                         if(tc.rejectedCount) m_rejectedCountLabel.innerHTML = tc.rejectedCount;
                     } else if(G_DEBUG) console.log("getTopCelebrity() found no top celebrity");
+                    getStats();
                 }, function(statusCode, responseText){
                     self.showLoading(false);
                     console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+                    getStats();
                 }
             );
+
+            function getStats() {
+                if(G_DEBUG) console.log("getTopCelebrity() called");
+                if(!ff.loggedIn()) {
+                    if(G_DEBUG) console.log("getStats() not logged in");
+                    $("#topCelebLoginPopup").popup('open');
+                    //showLoginWithDelegate:self action:@selector(getStats) 
+                    //message:"Please Login"];
+                } else {
+                    self.showLoading(true);
+                    ff.getObjFromExtension("/ff/ext/Stats",
+                        function(statsObject) {
+                            self.showLoading(false);
+                            m_ratingCountLabel.innerHTML = statsObject.totalRatings;
+                            m_userCountLabel.innerHTML = statsObject.totalUsers;
+                            m_celebrityCountLabel.innerHTML = statsObject.totalCelebrities;
+                            m_yourRatingCountLabel.innerHTML = statsObject.yourRatings;
+                        }, function(statusCode, responseText){
+                            self.showLoading(false);
+                            console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+                        }
+                    );
+                }
+            }
         },
 
         addImage:function() {
