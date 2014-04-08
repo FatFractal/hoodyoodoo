@@ -4,8 +4,11 @@ SET AllowAutoRegistration       true
 SET AllowNewCollections         false
 SET AllowNewObjectTypes         false
 SET AllowNewMembers             true
-SET PushIsInactive              true
+SET PushIsInactive              false
 SET ApplePushKeystorePassword   coldb88r
+SET AndroidPushAuthToken		AIzaSyDs9bfdWuy0ZVE2k33zD3BlI4AC3BZCM58
+SET CORS                        http://localhost https://localhost http://system.fatfractal.com https://system.fatfractal.com
+
 #
 # Edit this file to change application settings and to define resource collections, default permissions, data types, custom code
 #
@@ -19,5 +22,5 @@ CREATE HANDLER WouldYaCreate  POST ON /WouldYa Create as javascript:var h = requ
 CREATE HANDLER TopCelebCreate POST ON /TopCelebrity Create as javascript:var h = require ('scripts/TopCelebrityEventHandlers'); h.handleTopCelebrityCreate (FF_EVENT_DATA_JSON);
 CREATE HANDLER TopCelebUpdate POST ON /TopCelebrity Update as javascript:var h = require ('scripts/TopCelebrityEventHandlers'); h.handleTopCelebrityUpdate (FF_EVENT_DATA_JSON);
 CREATE EXTENSION /Stats AS javascript:var f = require ('scripts/AggregateStats'); f.aggregateStats (FF_EXTENSION_REQUEST_DATA_JSON);
-CREATE EXTENSION /TestPush AS javascript:var f = require ('scripts/AggregateStats'); f.sendPush (FF_EXTENSION_REQUEST_DATA_JSON);
+CREATE EXTENSION /TestPush UNSECURED AS javascript:var f = require ('scripts/AggregateStats'); f.sendPush (FF_EXTENSION_REQUEST_DATA_JSON);
 

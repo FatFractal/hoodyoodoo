@@ -18,6 +18,19 @@ public class HoodyoodooActivity extends TabActivity {
     public static final String TAB_ADD_CELEB_TAG   = "AddCelebrity";
     public static final String TAB_TOP_CELEB_TAG   = "TopCeleb";
 
+    public static final String EXTRA_TAB_TAG       = "tab_tag";
+
+    @Override
+    protected void onStart() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String tabtag = extras.getString(EXTRA_TAB_TAG);
+            getTabHost().setCurrentTabByTag(tabtag);
+        }
+
+        super.onStart();
+    }
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {

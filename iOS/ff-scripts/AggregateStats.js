@@ -48,6 +48,24 @@ var ff = require('ffef/FatFractal');
         print("\t*** r is "     + r + "\n");
         return r;
     }
+    function sendPush(json) {
+        data = JSON.parse(json);
+        user = data.httpParameters['user'];
+        message = data.httpParameters['message'];
+        r = ff.response();
+        if (user != null && message != null) {
+            ff.sendPushNotifications ([user], message);
+//            ff.sendPushNotifications (users, message);
+            r.responseCode = "200";
+            r.statusMessage = "Queued message " + message + " to be pushed to user " + user;
+//            r.statusMessage = "Queued message " + message + " to be pushed (1) to user " + user + ", (2) to users " + users;
+        }
+        else {
+            r.responseCode = "400";
+            r.statusMessage = "You must supply a user and a message parameter. eg .../ff/ext/sendPush?user=gary&message=Hello, World" ;
+        }
+    }
 
 exports.aggregateStats = aggregateStats;
+exports.sendPush = sendPush;
 

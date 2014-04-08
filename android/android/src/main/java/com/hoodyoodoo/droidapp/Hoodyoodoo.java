@@ -7,13 +7,17 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import com.fatfractal.ffef.FFException;
 import com.fatfractal.ffef.FatFractal;
+import com.fatfractal.ffef.impl.FFLocalStorageSQLite;
+import com.fatfractal.ffef.impl.FFPrefsAndroid;
 import com.fatfractal.ffef.impl.FatFractalHttpImpl;
 import com.fatfractal.ffef.json.FFObjectMapper;
+import com.google.android.gcm.GCMRegistrar;
 import com.hoodyoodoo.droidapp.model.Celebrity;
 import com.hoodyoodoo.droidapp.model.StatsObject;
 import com.hoodyoodoo.droidapp.model.WouldYa;
@@ -25,20 +29,42 @@ import java.net.URISyntaxException;
  * The Hoodyoodoo class provides provides shared settings and methods for the application.
  */
 public class Hoodyoodoo extends Application {
-	public static FatFractal ff = null;
+    public static String GCM_SENDER_ID = "1041876629923";
+    public static FatFractal ff = null;
 
-	/**
+    /**
 	 * This method calls {@link #getFF()}to create the first instance of the FatFractal class when the application starts.
 	 * <p>
 	 * @see FatFractal
 	 */
 	@Override
 	public void onCreate() {
-		super.onCreate();
-		if (ff == null) {
+        super.onCreate();
+
+        if (ff == null) {
 			ff = Hoodyoodoo.getFF();
 		}
-	}
+
+        FFLocalStorageSQLite storage = new FFLocalStorageSQLite("hoodyoodoo", this);
+        ff.setLocalStorage(storage);
+        ff.setAlwaysUseCache(true);
+        ff.setDebug(true);
+
+        FFPrefsAndroid.setContext(this);
+        GCMRegistrar.checkDevice(this);
+        GCMRegistrar.checkManifest(this);
+        String registrationId = ff.getNotificationID();
+
+        if (registrationId == null || registrationId.equals("")) {
+            // no registration found, so register
+            String msg = "Registering for GCM";
+            Log.i(this.getClass().getName(), msg);
+            GCMRegistrar.register(this, GCM_SENDER_ID);
+        } else {
+            String msg = "Found registrationId : " + registrationId;
+            Log.i(this.getClass().getName(), msg);
+        }
+    }
 
 	/**
 	 * This method initializes and returns an instance of the FatFractal class.
@@ -79,7 +105,7 @@ public class Hoodyoodoo extends Application {
 	 * @see FFException
 	 */
 	public AlertDialog loginDialog(Context c, String message) {
-		LayoutInflater factory = LayoutInflater.from(c);            
+		LayoutInflater factory = LayoutInflater.from(c);
 		final View textEntryView = factory.inflate(R.layout.login, null);
 		final AlertDialog.Builder failAlert = new AlertDialog.Builder(c);
 		failAlert.setTitle("Login/ Register Failed"); 

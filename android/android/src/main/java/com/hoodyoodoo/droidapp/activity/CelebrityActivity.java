@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -66,7 +67,7 @@ public class CelebrityActivity extends Activity {
 		m_lastNameEditText    = (EditText)    findViewById(R.id.lastNameEditText);
 		m_addCelebImageButton = (ImageButton) findViewById(R.id.addCelebImageButton);
 		m_celebrity = new Celebrity();
-	}
+    }
 
 	/**
 	 *  This method creates an AlertDialog with buttons that are used to capture the gender of the new Celebrity.

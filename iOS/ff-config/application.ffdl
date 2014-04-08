@@ -1,20 +1,37 @@
 SET ETaggingEnabled true
-SET LogLevel                    INFO
+SET LogLevel                    WARN
 SET AllowAutoRegistration       true
 SET AllowNewCollections         false
 SET AllowNewObjectTypes         false
-SET AllowNewMembers             true
+SET AllowNewMembers             false
 SET PushIsInactive              true
 SET ApplePushKeystorePassword   YOUR_KEYSTORE_PASSWORD_GOES_HERE
+SET ETaggingEnabled             true
+SET CORS https://system.fatfractal.com
 
 #
 # Edit this file to change application settings and to define resource collections, default permissions, data types, custom code
 #
-CREATE OBJECTTYPE Celebrity   (firstName string, lastName string, imageData BYTEARRAY image/jpeg)
-CREATE OBJECTTYPE WouldYa     (pickedGuid string, rejectedGuid string)
+CREATE OBJECTTYPE Celebrity   (firstName string, lastName string, gender string, imageData BYTEARRAY image/jpeg, selectedCount numeric, rejectedCount numeric)
+CREATE OBJECTTYPE WouldYa     (selectedGuid string, rejectedGuid string)
 CREATE COLLECTION /Celebrity OBJECTTYPE Celebrity
 CREATE COLLECTION /WouldYa OBJECTTYPE WouldYa
 CREATE COLLECTION /TopCelebrity OBJECTTYPE Celebrity
-CREATE HANDLER WouldYaCreate POST ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);
-CREATE EXTENSION /Stats AS javascript:var f = require ('scripts/AggregateStats'); f.aggregateStats (FF_EXTENSION_REQUEST_DATA_JSON);
 
+CREATE HANDLER WouldYaCreate  POST ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);
+CREATE HANDLER TopCelebUpdate POST ON /TopCelebrity Update as javascript:var h = require ('scripts/TopCelebrityEventHandlers'); h.handleTopCelebrityUpdate (FF_EVENT_DATA_JSON);
+
+CREATE EXTENSION /Stats AS javascript:var f = require ('scripts/AggregateStats'); f.aggregateStats (FF_EXTENSION_REQUEST_DATA_JSON);
+CREATE EXTENSION /TestPush AS javascript:var f = require ('scripts/AggregateStats'); f.sendPush (FF_EXTENSION_REQUEST_DATA_JSON);
+
+# CREATE OBJECTTYPE Picture (imageData BYTEARRAY, imageDescription STRING, author REFERENCE /FFUser)
+# CREATE OBJECTTYPE Comment (comment STRING, regarding REFERENCE /Pictures, author REFERENCE /FFUser)
+
+# CREATE COLLECTION /Pictures OBJECTTYPE Picture
+# CREATE COLLECTION /Comments OBJECTTYPE Comment
+
+# CREATE ALIAS myPictures on FFUser as BackReferences.Pictures.author
+
+# HTTP GET /FFUser/12345/myPictures/()/BackReferences.Comments.regarding
+
+# [ff getObjFromUri:[ff loggedInUser]

@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "Celebrity.h"
 #import "StatsObject.h"
+#import "AppDelegate.h"
 
 @interface TopCelebViewController : UIViewController
 

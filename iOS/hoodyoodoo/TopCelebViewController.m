@@ -7,7 +7,6 @@
 //
 
 #import "TopCelebViewController.h"
-#import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation TopCelebViewController
