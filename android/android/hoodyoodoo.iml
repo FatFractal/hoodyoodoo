@@ -36,7 +36,6 @@
           <path>/res-overlay</path>
         </resOverlayFolders>
         <includeSystemProguardFile>true</includeSystemProguardFile>
-        <additionalNativeLibs />
       </configuration>
     </facet>
   </component>
@@ -50,6 +49,15 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="Android 4.0.3 Platform" jdkType="Android SDK" />
     <orderEntry type="module-library">
+      <library name="FF-Android-SDK-1.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/FF-Android-SDK-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/Downloads/jackson-core-asl-1.9.6.jar!/" />
@@ -62,15 +70,6 @@
       <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/Downloads/jackson-mapper-asl-1.9.6.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/FF_ANDROID_SDK_BETA_3_R1793.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

@@ -23,13 +23,13 @@ public class HoodyoodooActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         TabHost tabHost = getTabHost();
-
+        
         // Tab for WouldYa
         TabSpec wouldYaSpec = tabHost.newTabSpec(TAB_WOULDYA_TAG);
         wouldYaSpec.setIndicator("WouldYa", getResources().getDrawable(R.drawable.icon_wouldya_tab));
         Intent wouldYaIntent = new Intent(this, WouldYaActivity.class);
         wouldYaSpec.setContent(wouldYaIntent);
-
+        
         // Tab for Add Celebrity
         TabSpec addCelebritySpec = tabHost.newTabSpec(TAB_ADD_CELEB_TAG);
         // setting Title and Icon for the Tab

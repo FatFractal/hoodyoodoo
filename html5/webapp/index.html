@@ -30,12 +30,26 @@
         <div data-role="page" id="WouldYa">
             <div data-role="content">
                 <h1>Who'd you do?</h1>
-                <center>
-                    <a style="height: 320px" data-role="button">
-                        <img id="leftCelebrityButton" class="celebImage" onclick="HoodyoodooViewModel.celebrityWasPicked(this)" src="Images/mystery2.png" alt="Celeb Image"/>
-                    </a>
-                    <span id="leftCelebrityLabel" style="color: white;">Celeb Name</span>
-                </center>
+                <div class="ui-grid-a">
+                    <div class="ui-block-a" style="text-align: center">
+                        <a style="height: 320px" data-role="button">
+                            <img id="leftCelebrityButton" class="celebImage" onclick="HoodyoodooViewModel.celebrityWasPicked(this)" src="Images/mystery2.png" alt="Celeb Image"/>
+                        </a>
+                        <span id="leftCelebrityLabel" style="color: white;">Celeb Name</span>
+                    </div>
+                    <div class="ui-block-b" style="text-align: center">
+                        <a style="height: 320px" data-role="button">
+                            <img id="rightCelebrityButton" class="celebImage" onclick="HoodyoodooViewModel.celebrityWasPicked(this)" src="Images/mystery3.png" alt="Celeb Image"/>
+                        </a>
+                        <span id="rightCelebrityLabel" style="color: white;">Celeb Name</span>
+                    </div>
+                </div>
+                <h1>
+                    Pick One!
+                    <br>
+                    <img id="playAgainButton" style="display:hidden;" onclick="HoodyoodooViewModel.loadCelebrities()" src="Images/button_go.png" alt="GO"/>    
+                </h1>
+                <img style="display: inline;" id="genderButton" onclick="HoodyoodooViewModel.toggleGender()" src="Images/button_gender_new.png" />
             </div> <!-- /content -->
             <div data-role="footer" data-position="fixed" class="nav-glyphish-example">
                 <div data-role="navbar" class="nav-glyphish-example">

@@ -10,6 +10,7 @@
 		0A2E4418150D755600A561F7 /* button_top_celebrity.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A2E4417150D755600A561F7 /* button_top_celebrity.png */; };
 		0A2E441A150D757100A561F7 /* FFEF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2E4419150D757100A561F7 /* FFEF.framework */; };
 		0A2E441B150D757100A561F7 /* FFEF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2E4419150D757100A561F7 /* FFEF.framework */; };
+		0A2FB47414F738F300347F1C /* WouldYa.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2FB47314F738F300347F1C /* WouldYa.m */; };
 		0A64309114FD770800E6FE27 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A64308D14FD770700E6FE27 /* Default@2x.png */; };
 		0A64309214FD770800E6FE27 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A64308E14FD770700E6FE27 /* icon@2x.png */; };
 		0A64309314FD770800E6FE27 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A64308F14FD770700E6FE27 /* icon.png */; };
@@ -56,6 +57,8 @@
 /* Begin PBXFileReference section */
 		0A2E4417150D755600A561F7 /* button_top_celebrity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_top_celebrity.png; sourceTree = "<group>"; };
 		0A2E4419150D757100A561F7 /* FFEF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FFEF.framework; sourceTree = "<group>"; };
+		0A2FB47214F738F300347F1C /* WouldYa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WouldYa.h; path = hoodyoodoo/WouldYa.h; sourceTree = SOURCE_ROOT; };
+		0A2FB47314F738F300347F1C /* WouldYa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WouldYa.m; path = hoodyoodoo/WouldYa.m; sourceTree = SOURCE_ROOT; };
 		0A64308D14FD770700E6FE27 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		0A64308E14FD770700E6FE27 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		0A64308F14FD770700E6FE27 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -128,6 +131,8 @@
 			children = (
 				0ACD4F5914E58E3A00988D51 /* Celebrity.h */,
 				0ACD4F5A14E58E3A00988D51 /* Celebrity.m */,
+				0A2FB47214F738F300347F1C /* WouldYa.h */,
+				0A2FB47314F738F300347F1C /* WouldYa.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -371,6 +376,7 @@
 				0ACD4F2814E580A100988D51 /* WouldYaViewController.m in Sources */,
 				0ACD4F2F14E580A100988D51 /* CelebrityViewController.m in Sources */,
 				0ACD4F5B14E58E3A00988D51 /* Celebrity.m in Sources */,
+				0A2FB47414F738F300347F1C /* WouldYa.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

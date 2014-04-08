@@ -16,6 +16,7 @@ import com.fatfractal.ffef.FatFractal;
 import com.fatfractal.ffef.impl.FatFractalHttpImpl;
 import com.fatfractal.ffef.json.FFObjectMapper;
 import com.hoodyoodoo.droidapp.model.Celebrity;
+import com.hoodyoodoo.droidapp.model.WouldYa;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,6 +54,7 @@ public class Hoodyoodoo extends Application {
 				ff = FatFractal.getInstance(new URI(baseUrl), new URI(sslUrl));
 				FatFractalHttpImpl.addTrustedHost("acme.fatfractal.com");
 				FFObjectMapper.registerClassNameForClazz(Celebrity.class.getName(), "Celebrity");
+				FFObjectMapper.registerClassNameForClazz(WouldYa.class.getName(), "WouldYa");
 			}
             catch (URISyntaxException e) {
 				e.printStackTrace();

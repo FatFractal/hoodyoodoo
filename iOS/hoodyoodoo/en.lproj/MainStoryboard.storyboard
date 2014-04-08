@@ -23,7 +23,7 @@
                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="FKU-Vq-6mb">
-                                <rect key="frame" x="95" y="58" width="130" height="190"/>
+                                <rect key="frame" x="20" y="58" width="130" height="190"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal">
@@ -37,20 +37,83 @@
                                     <action selector="celebrityWasPicked:" destination="2" eventType="touchDown" id="a1h-yl-Ltj"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LBQ-nM-qQ7">
+                                <rect key="frame" x="169" y="58" width="131" height="190"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="celebrityWasPicked:" destination="2" eventType="touchDown" id="O5K-wa-2s7"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="huX-wj-6om">
-                                <rect key="frame" x="95" y="257" width="130" height="21"/>
+                                <rect key="frame" x="20" y="257" width="130" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="5HB-KH-vrY">
+                                <rect key="frame" x="169" y="257" width="131" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="s2e-fq-Znr">
+                                <rect key="frame" x="55" y="347" width="44" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" backgroundImage="button_gender_new.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleGender:" destination="2" eventType="touchDown" id="MQA-Om-O6M"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ezr-GM-MUe">
+                                <rect key="frame" x="121" y="199" width="79" height="79"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="button_go.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playAgain:" destination="2" eventType="touchDown" id="kZj-IS-2Rt"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Pick One!" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="45" id="EDc-RK-S8Q">
+                                <rect key="frame" x="20" y="286" width="280" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="45"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="WouldYa" image="button_play_gray.png" id="7"/>
                     <connections>
+                        <outlet property="genderButton" destination="s2e-fq-Znr" id="HBs-W6-OHk"/>
                         <outlet property="leftCelebrityButton" destination="FKU-Vq-6mb" id="dWF-By-DPE"/>
                         <outlet property="leftCelebrityLabel" destination="huX-wj-6om" id="dK0-px-W1o"/>
+                        <outlet property="playAgainButton" destination="ezr-GM-MUe" id="cA4-xU-ta5"/>
+                        <outlet property="rightCelebrityButton" destination="LBQ-nM-qQ7" id="F19-mM-DS8"/>
+                        <outlet property="rightCelebrityLabel" destination="5HB-KH-vrY" id="9Ji-SZ-ECN"/>
                     </connections>
                 </viewController>
             </objects>
@@ -156,6 +219,8 @@
     </scenes>
     <resources>
         <image name="button_add_gr.png" width="30" height="30"/>
+        <image name="button_gender_new.png" width="40" height="40"/>
+        <image name="button_go.png" width="79" height="79"/>
         <image name="button_play_gray.png" width="31" height="31"/>
     </resources>
     <classes>
@@ -174,8 +239,16 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WouldYaViewController.h"/>
             <relationships>
                 <relationship kind="action" name="celebrityWasPicked:"/>
+                <relationship kind="action" name="playAgain:"/>
+                <relationship kind="action" name="toggleGender:"/>
+                <relationship kind="outlet" name="bottomResponseLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="genderButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="leftCelebrityButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="leftCelebrityLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="playAgainButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rightCelebrityButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="rightCelebrityLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="topResponseLabel" candidateClass="UILabel"/>
             </relationships>
         </class>
     </classes>

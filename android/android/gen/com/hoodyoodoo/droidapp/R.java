@@ -40,7 +40,12 @@ public final class R {
         public static final int loginRegisterErrorTextView=0x7f050009;
         public static final int passwordEditText=0x7f050008;
         public static final int passwordTextView=0x7f050007;
+        public static final int pickOneTextView=0x7f050010;
+        public static final int playAgainImageButton=0x7f05000f;
+        public static final int rightCelebImageView=0x7f05000d;
+        public static final int rightCelebTextView=0x7f05000e;
         public static final int root=0x7f050004;
+        public static final int toggleGenderImageButton=0x7f050011;
         public static final int userNameEditText=0x7f050006;
         public static final int userNameTextView=0x7f050005;
         public static final int wouldYaView=0x7f05000a;

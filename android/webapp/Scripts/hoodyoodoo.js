@@ -29,6 +29,19 @@ function Celebrity(data) {
     return this;
 }
 
+function WouldYa(data) {
+    if (data) {
+        this.clazz = data.clazz;
+        this.selectedGuid = data.selectedGuid;
+        this.rejectedGuid = data.rejectedGuid;
+    } else {
+        this.clazz = "WouldYa";
+        this.selectedGuid = null;
+        this.rejectedGuid = null;
+    }
+    return this;
+}
+
 function FileUploader() {
    // constants
    var MAX_FILE_SIZE = 300000;
@@ -146,13 +159,31 @@ var HoodyoodooViewModel = (function() {
     
     var previousPage = "";
 
+    var m_currentGender = "female";
+
     var m_leftCelebrity = null;
 
+    var m_rightCelebrity = null;
+
     var m_celebrity = null;
+
+    var m_topCeleb = null;
+
+    var m_genderButton = null;
 
     var m_leftCelebrityButton = null;
 
     var m_leftCelebrityLabel = null;
+
+    var m_rightCelebrityButton = null;
+
+    var m_rightCelebrityLabel = null;
+
+    var m_topResponseLabel = null;
+
+    var m_bottomResponseLabel = null;
+
+    var m_playAgainButton = null;
 
     var m_doneButton = null;
     
@@ -167,13 +198,22 @@ var HoodyoodooViewModel = (function() {
     var self = {
         init: function() {
             ff.setDebug(G_DEBUG);
+            m_genderButton = document.getElementById("genderButton");
             m_leftCelebrityButton = document.getElementById("leftCelebrityButton");
             m_leftCelebrityLabel = document.getElementById("leftCelebrityLabel");
+            m_rightCelebrityButton = document.getElementById("rightCelebrityButton");
+            m_rightCelebrityLabel = document.getElementById("rightCelebrityLabel");
+            m_topResponseLabel = document.getElementById("topResponseLabel");
+            m_bottomResponseLabel = document.getElementById("bottomResponseLabel");
+            m_playAgainButton = document.getElementById("playAgainButton");
             m_doneButton = document.getElementById("doneButton");
             m_firstNameField = document.getElementById("firstNameField");
             m_lastNameField = document.getElementById("lastNameField");
             m_addCelebImage = document.getElementById("addCelebImage");
             m_loadingImageElement = document.getElementById("imgAjaxLoader");
+            if(m_topResponseLabel) m_topResponseLabel.style.visibility="hidden";
+            if(m_bottomResponseLabel) m_bottomResponseLabel.style.visibility="hidden";
+            if(m_playAgainButton) m_playAgainButton.style.visibility="hidden";
             m_celebrity = new Celebrity();
             loader = new FileUploader();
             loader.init();
@@ -182,16 +222,28 @@ var HoodyoodooViewModel = (function() {
 
         loadCelebrities: function() {
             if(G_DEBUG) console.log("loadCelebrities() called");
+            m_playAgainButton.style.visibility="hidden";
             self.showLoading(true);
-            ff.getArrayFromUri("/ff/resources/Celebrity",
-                function(celebArray) {
-                    var leftCelebrity = celebArray[Math.floor(Math.random() * celebArray.length)];
+            ff.getObjFromUri("/ff/resources/Celebrity/(gender eq '" + m_currentGender + "' and guid eq random(guid))",
+                function(leftCelebrity){
                     self.showLoading(false);
                     if(leftCelebrity) {
                         m_leftCelebrity = new Celebrity(leftCelebrity);
                         m_leftCelebrityButton.setAttribute('src', m_leftCelebrity.imageSrc);
                         m_leftCelebrityLabel.innerHTML = leftCelebrity.firstName + " " + leftCelebrity.lastName;
+                        ff.getObjFromUri("/ff/resources/Celebrity/(gender eq '" + m_currentGender + "' and guid ne '" + leftCelebrity.guid + "' and guid eq random(guid))",
+                            function(rightCelebrity){
+                                if(rightCelebrity) {
+                                    m_rightCelebrity = new Celebrity(rightCelebrity);
+                                    m_rightCelebrityButton.setAttribute('src', m_rightCelebrity.imageSrc);
+                                    m_rightCelebrityLabel.innerHTML = rightCelebrity.firstName + " " + rightCelebrity.lastName;
+                                } else if(G_DEBUG) console.log("No celebrity found for m_rightCelebrity");
+                            }, function(statusCode, responseText){
+                                console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+                            }
+                        );
                     } else if(G_DEBUG) console.log("No celebrity found for m_leftCelebrity, skipping get for m_rightCelebrity");
+
                 }, function(statusCode, responseText){
                     self.showLoading(false);
                     console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
@@ -199,11 +251,69 @@ var HoodyoodooViewModel = (function() {
             );
         },
 
-        celebrityWasPicked: function(sender) {
-            if(G_DEBUG) console.log("celebrityWasPicked() called");
+        toggleGender: function() {
+            if(G_DEBUG) console.log("toggleGender() called");
+            if(m_currentGender == "male") {
+                m_genderButton.setAttribute("src", "Images/button_gender_female.png");
+                m_currentGender = "female";
+            } else {
+                m_genderButton.setAttribute("src", "Images/button_gender_male.png");
+                m_currentGender = "male";
+            }
+            if(G_DEBUG) console.log("toggleGender() set m_currentGender to: " + m_currentGender);
             self.loadCelebrities();
         },
+
+        celebrityWasPicked: function(sender) {
+            if(G_DEBUG) console.log("celebrityWasPicked() called");
+    	    var wouldYa = new WouldYa();
+            if(sender == m_leftCelebrityButton && m_leftCelebrity) {
+                if(G_DEBUG) console.log("celebrityWasPicked() found m_leftCelebrity selected");
+                wouldYa.selectedGuid = m_leftCelebrity.guid;
+                wouldYa.rejectedGuid = m_rightCelebrity.guid;
+                //[[leftCelebrityButton layer] setBorderColor:[UIColor greenColor].CGColor];
+                //[[rightCelebrityButton layer] setBorderColor:[UIColor redColor].CGColor];
+                //m_topResponseLabel.innerHTML = "Woo Hoo! Thanks!";
+                //m_bottomResponseLabel.innerHTML = "Awww Man!";
+                m_wouldYa = wouldYa;
+                self.persistWouldYa();
+            } else if(sender == m_rightCelebrityButton && m_rightCelebrity) {
+                if(G_DEBUG) console.log("celebrityWasPicked() found m_rightCelebrityButton selected");
+                wouldYa.selectedGuid = m_rightCelebrity.guid;
+                wouldYa.rejectedGuid = m_leftCelebrity.guid;
+                //[[leftCelebrityButton layer] setBorderColor:[UIColor redColor].CGColor];
+                //[[rightCelebrityButton layer] setBorderColor:[UIColor greenColor].CGColor];
+                //m_bottomResponseLabel.innerHTML = "Woo Hoo! Thanks!";
+                //m_topResponseLabel.innerHTML = "Awww Man!";
+                m_wouldYa = wouldYa;
+                self.persistWouldYa();
+            } else if(G_DEBUG) console.log("celebrityWasPicked() could not determine which celebrity was picked");
+        },
     
+        persistWouldYa: function() {
+            if(G_DEBUG) console.log("persistWouldYa() called");
+            m_playAgainButton.style.visibility="visible";
+            if(!ff.loggedIn()) {
+                if(G_DEBUG) console.log("persistWouldYa() not logged in");
+                $("#wouldYaLoginPopup").popup('open');
+            } else {
+                //m_topResponseLabel.style.visibility="visible";
+                //m_bottomResponseLabel.style.visibility="visible";
+                self.showLoading(true);
+                if(m_wouldYa) {
+                    ff.createObjAtUri(m_wouldYa, "/WouldYa",
+                        function(data) {
+                            self.showLoading(false);
+                            // what to do here??
+                        }, function(statusCode, responseText){
+                            self.showLoading(false);
+                            console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+                        }
+                    );
+                } else console.error("WouldYaViewController persistWouldYa failed: m_wouldYa is null");
+            }
+        },
+
         login: function(callback) {
             if(callback == 'persistWouldYa') {
                 self.showLoading(true);
@@ -261,7 +371,7 @@ var HoodyoodooViewModel = (function() {
                 }
             }
         },
-
+    
         addImage:function() {
             if(G_DEBUG) console.log("addImage() called");
             var picker = new FileUploader();
