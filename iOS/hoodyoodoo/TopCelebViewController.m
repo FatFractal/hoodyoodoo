@@ -1,6 +1,6 @@
 //
 //  TopCelebViewController.m
-//  hoodyadoo
+//  hoodyoodoo
 //
 //  Created by Kevin Nickels on 1/6/12.
 //  Copyright (c) 2012 FatFractal, Inc. All rights reserved.
@@ -22,7 +22,7 @@
 
 -(void) getTopCelebrity {
     NSError *error;
-    NSArray *celebs = [[FatFractal main] getArrayFromUrl:@"/ff/resources/TopCelebrity" error:&error];
+    NSArray *celebs = [[FatFractal main] getArrayFromUrl:@"/TopCelebrity" error:&error];
     if (error) {
         NSLog(@"StatsViewController getTopCelebrity failed: %@", [error localizedDescription]);
         celebrityLabel.text = @"No Top Celebrity found";             

@@ -14,4 +14,6 @@ CREATE OBJECTTYPE Celebrity   (firstName string, lastName string, imageData BYTE
 CREATE OBJECTTYPE WouldYa     (pickedGuid string, rejectedGuid string)
 CREATE COLLECTION /Celebrity OBJECTTYPE Celebrity
 CREATE COLLECTION /WouldYa OBJECTTYPE WouldYa
+CREATE COLLECTION /TopCelebrity OBJECTTYPE Celebrity
+CREATE HANDLER WouldYaCreate POST ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);
 

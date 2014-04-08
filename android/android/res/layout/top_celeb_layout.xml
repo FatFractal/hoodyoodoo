@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+  
+  <!-- Screen Design for Top Celebrity -->
+
+  <ImageView
+      android:id="@+id/topCelebImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:src="@drawable/mystery2" />
+
+  <TextView
+      android:id="@+id/celebrityNameTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Medium Text"
+      android:textAppearance="?android:attr/textAppearanceMedium" />
+
+  <TableLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" android:layout_marginTop="15dip" android:padding="15dip">
+
+      <TableRow
+          android:id="@+id/selectedTableRow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" >
+          <TextView
+              android:id="@+id/selectedTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:gravity="right"
+              android:text="Was selected"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+
+          <TextView
+              android:id="@+id/selectedValueTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dip"
+              android:gravity="left"
+              android:text="Selected Count"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+      </TableRow>
+
+      <TableRow
+          android:id="@+id/rejectedTableRow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" >
+          <TextView
+              android:id="@+id/rejectedTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:gravity="right"
+              android:text="Was rejected"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+          <TextView
+              android:id="@+id/rejectedValueTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dip"
+              android:gravity="left"
+              android:text="Rejected Count"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+      </TableRow>
+
+      </TableLayout>
+  
+</LinearLayout>

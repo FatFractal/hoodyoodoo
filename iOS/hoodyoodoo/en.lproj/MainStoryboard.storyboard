@@ -211,10 +211,83 @@
                     <connections>
                         <segue destination="2" kind="relationship" relationship="viewControllers" id="26"/>
                         <segue destination="3" kind="relationship" relationship="viewControllers" id="27"/>
+                        <segue destination="rnw-Dw-SdZ" kind="relationship" relationship="viewControllers" id="Zop-ph-CIX"/>
                     </connections>
                 </tabBarController>
             </objects>
             <point key="canvasLocation" x="132" y="180"/>
+        </scene>
+        <!--Top Celeb View Controller - Third-->
+        <scene sceneID="vgt-qM-OSw">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yz4-Is-okz" sceneMemberID="firstResponder"/>
+                <viewController title="Third" id="rnw-Dw-SdZ" customClass="TopCelebViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0Vg-6L-fe3">
+                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Top Celebrity" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="mMc-km-1we">
+                                <rect key="frame" x="51" y="0.0" width="219" height="43"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="36"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="Dci-3j-1U2">
+                                <rect key="frame" x="93" y="51" width="134" height="144"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Was rejected" lineBreakMode="tailTruncation" minimumFontSize="10" id="drE-tQ-hUF">
+                                <rect key="frame" x="13" y="254" width="141" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Rejected Count" lineBreakMode="tailTruncation" minimumFontSize="10" id="H3P-T1-g1w">
+                                <rect key="frame" x="162" y="254" width="145" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Was selected" lineBreakMode="tailTruncation" minimumFontSize="10" id="5lD-4S-cbh">
+                                <rect key="frame" x="13" y="225" width="141" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Name" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" id="EBl-c9-0zG">
+                                <rect key="frame" x="13" y="196" width="287" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Selected Count" lineBreakMode="tailTruncation" minimumFontSize="10" id="ZQS-3H-sRG">
+                                <rect key="frame" x="162" y="225" width="145" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Top Celebrity" image="button_top_celebrity.png" id="n5E-QP-sNP"/>
+                    <navigationItem key="navigationItem" id="qu1-UC-pRM"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="celebrityLabel" destination="EBl-c9-0zG" id="Wmp-oz-6Ow"/>
+                        <outlet property="rejectedLabel" destination="H3P-T1-g1w" id="jsJ-3C-hOB"/>
+                        <outlet property="selectedLabel" destination="ZQS-3H-sRG" id="0wu-Ai-ww5"/>
+                        <outlet property="topCelebImageView" destination="Dci-3j-1U2" id="dtk-ub-X71"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="653" y="1100"/>
         </scene>
     </scenes>
     <resources>
@@ -222,6 +295,7 @@
         <image name="button_gender_new.png" width="40" height="40"/>
         <image name="button_go.png" width="79" height="79"/>
         <image name="button_play_gray.png" width="31" height="31"/>
+        <image name="button_top_celebrity.png" width="30" height="30"/>
     </resources>
     <classes>
         <class className="CelebrityViewController" superclassName="UIViewController">
@@ -233,6 +307,19 @@
                 <relationship kind="outlet" name="firstNameField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="lastNameField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="selectImageButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="TopCelebViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TopCelebViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="celebrityLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="rejectedLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="selectedLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="topCelebImageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="totalCelebritiesLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="totalRatingsLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="totalUsersLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="yourRatingsLabel" candidateClass="UILabel"/>
             </relationships>
         </class>
         <class className="WouldYaViewController" superclassName="UIViewController">

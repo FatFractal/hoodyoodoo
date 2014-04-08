@@ -189,6 +189,14 @@ var HoodyoodooViewModel = (function() {
     
     var m_addCelebImage = null;
 
+    var m_topCelebImage = null;
+
+    var m_topCelebrityLabel = null;
+
+    var m_selectedCountLabel = null;
+
+    var m_rejectedCountLabel = null;
+
     var m_firstNameField = null;
 
     var m_lastNameField = null;
@@ -207,8 +215,12 @@ var HoodyoodooViewModel = (function() {
             m_bottomResponseLabel = document.getElementById("bottomResponseLabel");
             m_playAgainButton = document.getElementById("playAgainButton");
             m_doneButton = document.getElementById("doneButton");
+            m_topCelebrityLabel = document.getElementById("topCelebrityLabel");
+            m_selectedCountLabel = document.getElementById("selectedCountLabel");
+            m_rejectedCountLabel = document.getElementById("rejectedCountLabel");
             m_firstNameField = document.getElementById("firstNameField");
             m_lastNameField = document.getElementById("lastNameField");
+            m_topCelebImage = document.getElementById("topCelebImage");
             m_addCelebImage = document.getElementById("addCelebImage");
             m_loadingImageElement = document.getElementById("imgAjaxLoader");
             if(m_topResponseLabel) m_topResponseLabel.style.visibility="hidden";
@@ -372,6 +384,26 @@ var HoodyoodooViewModel = (function() {
             }
         },
     
+        getTopCelebrity: function() {
+            if(G_DEBUG) console.log("getTopCelebrity() called");
+            self.showLoading(true);
+            ff.getObjFromUri("/TopCelebrity",
+                function(topCeleb) {
+                    self.showLoading(false);
+                    if(topCeleb) {
+                        var tc = new Celebrity(topCeleb);
+                        m_topCelebImage.setAttribute('src', tc.imageSrc);
+                        m_topCelebrityLabel.innerHTML = tc.firstName + " " + tc.lastName;
+                        if(tc.selectedCount) m_selectedCountLabel.innerHTML = tc.selectedCount;
+                        if(tc.rejectedCount) m_rejectedCountLabel.innerHTML = tc.rejectedCount;
+                    } else if(G_DEBUG) console.log("getTopCelebrity() found no top celebrity");
+                }, function(statusCode, responseText){
+                    self.showLoading(false);
+                    console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+                }
+            );
+        },
+
         addImage:function() {
             if(G_DEBUG) console.log("addImage() called");
             var picker = new FileUploader();

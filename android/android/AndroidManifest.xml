@@ -21,7 +21,8 @@
         <activity android:name="com.hoodyoodoo.droidapp.activity.CelebrityActivity" />
         
         <!--  TopCeleb Activity -->
-
+        <activity android:name="com.hoodyoodoo.droidapp.activity.TopCelebActivity" />
+        
         <!--  WouldYa Activity Activity -->
         <activity android:name="com.hoodyoodoo.droidapp.activity.WouldYaActivity" />
     </application>

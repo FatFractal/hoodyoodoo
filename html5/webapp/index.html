@@ -18,8 +18,9 @@
             .ui-field-contain { text-align: center; }
             .nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
             .nav-glyphish-example .ui-btn .ui-icon { width: 30px !important; height: 30px !important; margin-left: -15px !important; box-shadow: none !important; -moz-box-shadow: none !important; -webkit-box-shadow: none !important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
-            #wypwyt .ui-icon, #acpwyt .ui-icon { background: url(Images/button_play_gray.png) 50% 50% no-repeat; background-size: 32px 32px; }
-            #wypact .ui-icon, #acpact .ui-icon { background: url(Images/button_add_gray.png) 50% 50% no-repeat; background-size: 32px 32px;  }
+            #wypwyt .ui-icon, #acpwyt .ui-icon, #tcpwyt .ui-icon{ background: url(Images/button_play_gray.png) 50% 50% no-repeat; background-size: 32px 32px; }
+            #wypact .ui-icon, #acpact .ui-icon, #tcpact .ui-icon { background: url(Images/button_add_gray.png) 50% 50% no-repeat; background-size: 32px 32px;  }
+            #wyptct .ui-icon, #acptct .ui-icon, #tcptct .ui-icon { background: url(Images/button_top_celebrity.png) 50% 50% no-repeat;  background-size: 32px 32px; }
             .imgAjaxLoader{position: fixed;top: 50%;left: 50%;margin-top: -24px;margin-left: -24px;z-index: 100;display: none;}
             .celebImage{max-width:200px;max-height:300px;}
             #fileUploaderDropDiv{margin:0;padding:0;}
@@ -56,6 +57,7 @@
                     <ul>
                         <li><a href="#" id="wypwyt" data-icon="custom">WouldYa</a></li>
                         <li><a href="#AddCelebrity" id = "wypact" data-icon="custom">Add Celebrity</a></li>
+                        <li><a href="#TopCelebrity" id = "wyptct" onclick="HoodyoodooViewModel.getTopCelebrity()" data-icon="custom">Top Celebrity</a></li>
                     </ul>
                 </div> <!-- /navbar -->
             </div> <!-- /footer -->
@@ -97,6 +99,7 @@
                     <ul>
                         <li><a href="#WouldYa" id="acpwyt" data-icon="custom">WouldYa</a></li>
                         <li><a href="#" id="acpact" data-icon="custom">Add Celebrity</a></li>
+                        <li><a href="#TopCelebrity" onclick="HoodyoodooViewModel.getTopCelebrity()" id="acptct" data-icon="custom">Top Celebrity</a></li>
                     </ul>
                 </div> <!-- /navbar -->
             </div> <!-- /footer -->
@@ -118,6 +121,41 @@
                 <a id="selectFemaleButton" data-role="button" onclick="HoodyoodooViewModel.addGender('female')">Female</a>
             </div> <!-- /Select Gender Popup for AddCelebrity -->
         </div> <!-- /AddCelebrity -->
+        <div data-role="page" id="TopCelebrity">
+            <div data-role="content">
+                <h1>Top Celebrity<br><br>
+                    <img id="topCelebImage" class="celebImage" src="Images/mystery3.png" alt="Celeb Image"/>
+                    <br>
+                    <br>
+                    <div id="topCelebrityInfo" style="color: white; display: hidden;">
+                        <span id="topCelebrityLabel" style="color: white;">Top Celeb Name</span>
+                    </div>
+                </h1>
+                <h3 style="color: white; text-align: center; display: hidden;">Was selected &emsp;&emsp;<span id="selectedCountLabel">0</span></h3>
+                <h3 style="color: white; text-align: center; display: hidden;">Was rejected &emsp;&emsp;<span id="rejectedCountLabel">0</span></h3>
+            </div> <!-- /content -->
+            <div data-role="footer" data-position="fixed" class="nav-glyphish-example">
+                <div data-role="navbar" class="nav-glyphish-example">
+                    <ul>
+                        <li><a href="#WouldYa" id="tcpwyt" data-icon="custom">WouldYa</a></li>
+                        <li><a href="#AddCelebrity" id="tcpact" data-icon="custom">Add Celebrity</a></li>
+                        <li><a href="#" onclick="HoodyoodooViewModel.getTopCelebrity()"  id="tcptct" data-icon="custom">Top Celebrity</a></li>
+                    </ul>
+                </div> <!-- /navbar -->
+            </div> <!-- /footer -->
+            <div data-role="popup" data-position-to="window" id="topCelebLoginPopup" data-theme="a" class="ui-content">
+                <h1>Please Register/Log In</h1>
+                <div data-role="fieldcontain">
+                       <label for="topCelebUsernameField">Username</label>
+                    <input type="text" id="topCelebUsernameField"/>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="topCelebPasswordField">Password</label>
+                    <input type="password" id="topCelebPasswordField"/>
+                </div>
+                <a id="topCelebrityLoginButton" data-role="button" onclick="HoodyoodooViewModel.login('getTopCelebrity')">Log In</a>
+            </div> <!-- /Login Popup for TopCelebrity -->
+        </div> <!-- /TopCelebrity -->
     </body>
 </html>
 
