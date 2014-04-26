@@ -63,7 +63,7 @@
                 </p>
                 <h3>Section 1: Adding event handlers to the API</h3>
                 <p> 
-                    One of the most powerful capabilities of the FatFractal API is the ability to create event based actions. From the last Tutorial, selecting a <strong><em>Celebrity</em></strong> creates a <strong><em>WouldYa</em></strong> record on the API. In Part 3 of the Tutorial, we will define an event handler that is triggered by a <strong><em>WouldYa</em></strong> Create event and then update the <strong><em>Celebrity</em></strong> resource with two counters.
+                    One of the most powerful capabilities of NoServer APIs is the ability to create event based actions. From the last Tutorial, selecting a <strong><em>Celebrity</em></strong> creates a <strong><em>WouldYa</em></strong> record on the API. In Part 3 of the Tutorial, we will define an event handler that is triggered by a <strong><em>WouldYa</em></strong> Create event and then update the <strong><em>Celebrity</em></strong> resource with two counters.
                 </p>
                 <h4>Server Description for the Event Handler</h4>
                 <p> 
@@ -77,11 +77,11 @@
                 </p>
                 <pre><code>CREATE HANDLER WouldYaCreate_1 ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);</code></pre>
                 <p> 
-                    This entry tells the FatFractal noserver to create an event on <strong><em>WouldYa</em></strong> Create, and execute the <strong><em>handleWouldYaCreate</em></strong> function that is in WouldYaEventHandlers.js file passing in the event data.
+                    This entry tells the NoServer Framework to create an event on <strong><em>WouldYa</em></strong> Create, and execute the <strong><em>handleWouldYaCreate</em></strong> function that is in WouldYaEventHandlers.js file passing in the event data.
                 </p>
                 <h4>A JavaScript Event Handler</h4>
                 <p> 
-                    We will now create a event handler JavaScript file that defines an additional object model called <strong><em>TopCeleb</em></strong>, and also adds additional information (<strong><em>selectedCount</em></strong> and <strong><em>rejectedCount</em></strong>) to the <strong><em>Celebrity</em></strong> objects whenever a new <strong><em>WouldYa</em></strong> record is created. The FatFractal noserver will automatically add the <strong><em>selectedCount</em></strong> and <strong><em>rejectedCount</em></strong> ivars to the <strong><em>Celebrity</em></strong> class and will also create the <strong><em>TopCeleb</em></strong> class for you as well.
+                    We will now create a event handler JavaScript file that defines an additional object model called <strong><em>TopCeleb</em></strong>, and also adds additional information (<strong><em>selectedCount</em></strong> and <strong><em>rejectedCount</em></strong>) to the <strong><em>Celebrity</em></strong> objects whenever a new <strong><em>WouldYa</em></strong> record is created. The NoServer Framework will automatically add the <strong><em>selectedCount</em></strong> and <strong><em>rejectedCount</em></strong> ivars to the <strong><em>Celebrity</em></strong> class and will also create the <strong><em>TopCeleb</em></strong> class for you as well.
                 </p>
                 <p> 
                     Note: the additional fields:
@@ -105,7 +105,7 @@ exports.handleWouldYaCreate = handleWouldYaCreate;</code></pre>
                     FatFractal.js is the server-side encapsulation of the NoServer API that is available to the EventHandler functions. For more information, see the <a href="http://www.fatfractal.com/prod/linked_files/FF-Javascript-Server-Side-Docs/global.html">HTML5/JS SDK Reference</a>.
                 </p>
                 <p> 
-                    This gives us another example of the power of the FatFractal API. We are now going to create another <strong><em>RESOURCE</em></strong> called <strong><em>TopCelebrity</em></strong> which will be of TYPE Celebrity. This allows us to easily reuse our object models for other purposes. This new resource will keep track of the top rated celebrity over time.
+                    This gives us another example of the power of NoServer APIs. We are now going to create another <strong><em>RESOURCE</em></strong> called <strong><em>TopCelebrity</em></strong> which will be of TYPE Celebrity. This allows us to easily reuse our object models for other purposes. This new resource will keep track of the top rated celebrity over time.
                 </p>
                 <p> 
                     Let’s have a look at what data we get from the event:

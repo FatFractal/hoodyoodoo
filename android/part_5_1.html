@@ -134,7 +134,7 @@ SET AndroidPushAuthToken your_API_key</code></pre>
                 </p>
                 <h4>If you are running in the Cloud</h4>
                 <p>
-                    From the hoodyoodoo application directory, deploy the modified hoodyoodoo API to the FatFractal Platform, you use the command line <strong>deployFFFabric</strong>:
+                    From the hoodyoodoo application directory, deploy the modified hoodyoodoo API to the NoServer Public Cloud, you use the command line <strong>deployFFFabric</strong>:
                 </p>
                 <pre><code>> $HOME/ff/ffnsbin/ffef deployFFFabric</code></pre>
                 <p>
@@ -195,7 +195,7 @@ if (registrationId == null || registrationId.equals("")) {
     GCMRegistrar.register(this, GCM_SENDER_ID);
 }</code></pre>
                 <p>
-                    This code does a couple of things. First, it saves the application context to a place where the FatFractal Framework can access it. Next, we call the <code>getNotificationID()</code> method. This first checks the application preferences for a saved GCM registration ID; if we don't find one, we use the <code>GCMRegistrar.register</code> method to register the device with the GCM service.
+                    This code does a couple of things. First, it saves the application context to a place where the NoServer Framework can access it. Next, we call the <code>getNotificationID()</code> method. This first checks the application preferences for a saved GCM registration ID; if we don't find one, we use the <code>GCMRegistrar.register</code> method to register the device with the GCM service.
                 </p>
                 <p>
                     Next, we need to add a new class to the com.hoodyoodoo.droidapp package. The class will extend the <em><strong>GCMBaseIntentService</strong></em> class provided by the GCM library. It's purpose is to respond to messaging events, such as registering your device or receiving a push notification. Create the file <em><strong>GCMIntentService.java</strong></em> and enter the following:

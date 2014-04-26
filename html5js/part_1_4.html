@@ -234,7 +234,7 @@
     reader.readAsArrayBuffer(file);
 }</code></pre>
                 <p>
-                    Next, we'll add a method for logging in to the FatFractal backend:
+                    Next, we'll add a method for logging in to the API:
                 </p>
 <pre><code>login: function(callback) {
     if(callback == 'persistWouldYa') {
@@ -262,7 +262,7 @@
     }
 }</code></pre>
                 <p>
-                    The method simple grabs the username and password entered into the form, then uses the FatFractal JavaScript method <code>login</code> to log in to the backend.
+                    The method simple grabs the username and password entered into the form, then uses the NoServer JavaScript method <code>login</code> to log in to the backend.
                 </p>
                 <p>
                     Next, there are a couple of utility methods that we need to define. The first, <code>addGender</code>, is used to pop up a query box asking whether a celebrity is male or female, and to store the answer in our <strong><em>Celebrity</em></strong> object. The second, <code>showLoading</code>, shows an animated graphic while things are loading. Here are the methods:
@@ -341,13 +341,13 @@ showLoading:function(show) {
     }
 }</code></pre>
                 <p>
-                    After checking that the user is logged in&mdash;a requirement on the FatFractal platform if you want to create any backend objects&mdash;the code does some verification of the data. If all is well, then the FatFractal method <code>createObjAtUri</code> is called, which stores our new <strong><em>Celebrity</em></strong> object in a <a href="../../../../docs/hierarchy/#collection">collection</a> called "/Celebrity".
+                    After checking that the user is logged in&mdash;a requirement on the FatFractal platform if you want to create any backend objects&mdash;the code does some verification of the data. If all is well, then the FatFractal method <code>createObjAtUri</code> is called, which stores our new <strong><em>Celebrity</em></strong> object in a collection called "/Celebrity".
                 </p>
                 <p>
                     That’s it! Now, we can select an image from your computer, enter the first and last name, add the gender and the new <em><strong>Celebrity</strong></em> is stored to your API.
                 </p>
                 <p>
-                    As mentioned previously, the FatFractal API can store any type of object, not just JSON or text. In this case, we have stored a <em><strong>Celebrity</strong></em> object that contains an image (<em><strong>byte[]</strong></em>) with a single method and can retrieve it the same way. And that is what we will do next.
+                    As mentioned previously, NoServer APIs can store any type of object, not just JSON or text. In this case, we have stored a <em><strong>Celebrity</strong></em> object that contains an image (<em><strong>byte[]</strong></em>) with a single method and can retrieve it the same way. And that is what we will do next.
                 </p>
                 <p>
                     Go ahead and add a few celebrities to you API as we will need them for the next section.

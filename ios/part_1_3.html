@@ -37,7 +37,7 @@
                     <a name="ios-tutorial-add-framework" class="anchor" href="#ios-tutorial-add-framework"><span class="octicon octicon-link"></span></a>
                     Add the Celebrity Model
                 </h2>
-                <p>In this section, we will create the Objective-C native, object classes that the app will use. At this point, we will create a Celebrity object using standard Objective-C patterns. This is <em>your</em> object definition, the FatFractal Platform does not create dependencies in your code by requiring you to use our own proprietary object classes.
+                <p>In this section, we will create the Objective-C native, object classes that the app will use. At this point, we will create a Celebrity object using standard Objective-C patterns. This is <em>your</em> object definition, the NoServer Fraamework does not create dependencies in your code by requiring you to use our own proprietary object classes.
                 </p>
                 <h3>Creating the Celebrity Class</h3>
                 <p>We will create a Celebrity data model that contains the following members:</p>
@@ -99,8 +99,8 @@
                 <p>
                     Modify the files to include the members for the object. For Celebrity class, we will modify Celebrity.h.
                 </p>
-<pre><code>
-@interface Celebrity : NSObject {
+                <a href = https://github.com/FatFractal/hoodyoodoo/blob/part1/iOS/hoodyoodoo/Celebrity.h target="_blank">
+<pre><code>@interface Celebrity : NSObject {
     /*! The NSString that contains the First Name for this Celebrity */
     NSString        *firstName;
     /*! The NSString that contains the Last Name for this Celebrity */
@@ -115,12 +115,12 @@
 @property (strong, nonatomic) NSData            *imageData;
 @property (strong, nonatomic) NSString          *gender;
 
-@end</code></pre>
+@end</code></pre></a>
                 <p>
                     For Celebrity.m, we use a standard model approach and include a description method (always a good practice).
                 </p>
-<pre><code>
-#import &quot;Celebrity.h&quot;
+                <a href = https://github.com/FatFractal/hoodyoodoo/blob/part1/iOS/hoodyoodoo/Celebrity.m target="_blank">
+<pre><code>#import &quot;Celebrity.h&quot;
 @implementation Celebrity
 @synthesize firstName, lastName, imageData, gender;
 - (id)init {
@@ -135,7 +135,7 @@
     [[self imageData] length],
     [self gender]];
 }
-@end</code></pre>
+@end</code></pre></a>
                 <p>The Celebrity object is now ready to interact with your API.
                 </p>
                 <p>

@@ -38,7 +38,7 @@
                     The WouldYa View
                 </h2>
                 <p>
-                    Now, set up the Scene to play the game. Start by retrieving a random <strong><em>Celebrity</em> </strong>that was saved to the app's backend and displaying it in a new view, which we call a <strong><em>WouldYa</em></strong> view. What’s a <strong><em>WouldYa</em></strong>, you ask? You'll find out in part II of the Tutorial! But for now...
+                    Now, set up the Scene to play the game. Start by retrieving a random <strong><em>Celebrity</em> </strong>that was saved to the API and displaying it in a new view, which we call a <strong><em>WouldYa</em></strong> view. What’s a <strong><em>WouldYa</em></strong>, you ask? You'll find out in part II of the Tutorial! But for now...
                 </p>
                 <h3>Add the UI</h3>
                 <p>
@@ -97,7 +97,9 @@
                     The naming of the members anticipates the addition of another celebrity, which we do in Section II.
                 </p>
                 <p>
-                    Next, we create the methods we need. We want to use a single CRUD method that will retrieve all the objects needed from the app's backend at once. The <code>getArrayFromUri</code> FatFractal method returns all objects found at a specified URI (called a "<a href="../../../../../docs/hierarchy/#collection">collection</a>"). We will create the <strong><em>loadCelebrities</em></strong> method to test this out. Add the following member to your <strong><em>HoodyoodooViewModel</em></strong>:
+                    Next, we create the methods we need. We want to use a single CRUD method that will retrieve all the objects needed from the API at once.
+                </p>
+                The <code>getArrayFromUri</code> NoServer method returns all objects found at a specified URI Collection. We will create the <strong><em>loadCelebrities</em></strong> method to test this out. Add the following member to your <strong><em>HoodyoodooViewModel</em></strong>:
                 </p>
 <pre><code>loadCelebrities: function() {
     self.showLoading(true);
@@ -119,14 +121,14 @@
                 <p>
                     This code does the following:
                     <ol>
-                        <li>Retrieves all of the <strong><em>Celebrity</em></strong> objects from the app's backend anonymously and receives the results in <strong><em>celebArray</em></strong>.</li>
+                        <li>Retrieves all of the <strong><em>Celebrity</em></strong> objects from the API anonymously and receives the results in <strong><em>celebArray</em></strong>.</li>
                         <li>Selects a random <strong><em>Celebrity</em></strong> object from <strong><em>celebArray</em></strong> and sets it to <strong><em>m_leftCelebrity</em></strong>.</li>
                         <li>Sets the text of<strong><em>m_leftCelebrityLabel</em></strong> to the concatenation of the celebrity's first and last names.</li>
                         <li>Sets the background image for <strong><em>m_leftCelebrityButton</em></strong> to the image data from <strong><em>m_leftCelebrity</em></strong>.</li>
                     </ol>
                 </p>
                 <p>
-                    <em>Side note:</em> Getting all objects at once is a very expensive operation for your app's backend, from both client- and network-resource perspectives. We will explore how to use queries in the Tutorial Part II, to address this important development issue.
+                    <em>Side note:</em> Getting all objects at once is a very expensive operation for your API, from both client- and network-resource perspectives. We will explore how to use queries in the Tutorial Part II, to address this important development issue.
                 </p>
                 <p>
                     We also need to define a <code>celebrityWasPicked</code> method, which is called when a celebrity button is clicked:
@@ -141,7 +143,7 @@
                     When you run the app, it loads and populates the <strong><em>WouldYaViewController</em></strong> Scene. Then, if everything is working right, it successfully retrieves a Celebrity object, randomly, and populates the UI.
                 </p>
                 <p>
-                    <em>Side note:</em> You may notice, when this Scene loads, the end-user is not yet authenticated. Until the end-user attempts to affect data on the app's backend, they may retrieve objects anonymously.
+                    <em>Side note:</em> You may notice, when this Scene loads, the end-user is not yet authenticated. Until the end-user attempts to affect data on the API, they may retrieve objects anonymously.
                 </p>
                 <p class="aligncenter">
                     <a href="http://fatfractal.com/beta/wp-content/uploads/2012/10/64BB5638-EC2A-4CD7-A1D7-FF4D40538AA7.png"><img src="http://fatfractal.com/beta/wp-content/uploads/2012/10/64BB5638-EC2A-4CD7-A1D7-FF4D40538AA7.png" alt="" title="Lily Allen 2" width="597" height="705" class="aligncenter size-full wp-image-8777" /></a>
@@ -154,7 +156,7 @@
                     Another key concept that we have demonstrated is the power of creating a complex object. In this case, an object with a blob (an image) that is seamlessly persisted and retrieved from the API. There is virtually no limit to the objects that you can exchange with your API. In fact, one could easily persist <strong><em>HoodyoodooViewModel</em></strong> if one wanted to.
                 </p>
                 <p>
-                    We have also built a view that Creates a <strong><em>Celebrity</em></strong> and a second one that Retrieves it. The <strong><em>Celebrity</em></strong> view shows a nice pattern for authentication and the <strong><em>WouldYa</em></strong> view shows that you can retrieve objects from the FatFractal API anonymously, which is very convenient for the developer and can greatly improve the end user experience with your application.
+                    We have also built a view that Creates a <strong><em>Celebrity</em></strong> and a second one that Retrieves it. The <strong><em>Celebrity</em></strong> view shows a nice pattern for authentication and the <strong><em>WouldYa</em></strong> view shows that you can retrieve objects from NoServer APIs anonymously, which is very convenient for the developer and can greatly improve the end user experience with your application.
                 </p>
                 <p>
                     NEXT: <a href="part_2_1.html">Tutorial Part II, Using Queries</a>

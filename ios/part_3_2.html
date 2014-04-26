@@ -50,25 +50,25 @@
                 <h4>Define the Event Handler:</h4>
                 <pre><code>CREATE HANDLER WouldYaCreate POST ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);</code></pre>
                 <p>
-                    This entry tells the FatFractal noserver to create an event on <strong><em>WouldYa</em></strong> Create, and execute the <strong><em>handleWouldYaCreate</em></strong> function that is in WouldYaEventHandlers.js file passing in the event data.
+                    This entry tells the NoServer Framework to create an event on <strong><em>WouldYa</em></strong> Create, and execute the <strong><em>handleWouldYaCreate</em></strong> function that is in WouldYaEventHandlers.js file passing in the event data.
                 </p>
                 <h4>Add a new Collection:</h4>
                 <p>
-                    This gives us another example of the power of the FatFractal API. We are now going to create another <strong><em>COLLECTION</em></strong> called <strong><em>TopCelebrity</em></strong> which will be of <strong><em>OBJECTYPE</em></strong> Celebrity. This allows us to easily reuse our object models for other purposes. This new resource will keep track of the top rated celebrity over time.
+                    This gives us another example of the power of NoServer APIs. We are now going to create another <strong><em>COLLECTION</em></strong> called <strong><em>TopCelebrity</em></strong> which will be of <strong><em>OBJECTYPE</em></strong> Celebrity. This allows us to easily reuse our object models for other purposes. This new resource will keep track of the top rated celebrity over time.
                 </p>
                 <p>
                     Since we have already defined the OBJECTTYPE Celebrity in Part1, we can just reuse that class here (hey - ain’t code reuse wonderful?). We add this to our application.ffdl file.
                 </p>
                 <pre><code>CREATE COLLECTION /TopCelebrity OBJECTTYPE Celebrity</code></pre>
                 <p>
-                    This entry tells the FatFractal noserver to create a new <strong><em>COLLECTION</em></strong> called <strong><em>TopCelebrity</em></strong> that will use the existing <strong><em>OBJECTTYPE</em></strong> defined earlier - the <strong><em>Celebrity.</em></strong>
+                    This entry tells the NoServer Framework to create a new <strong><em>COLLECTION</em></strong> called <strong><em>TopCelebrity</em></strong> that will use the existing <strong><em>OBJECTTYPE</em></strong> defined earlier - the <strong><em>Celebrity.</em></strong>
                 </p>
                 <p>
                     To make your API aware of these new items, you need to deploy again (have you noticed how little you have to fiddle around with your API so far??) by doing the following:
                 </p>
                 <h5>If you are running in the Cloud</h5>
                 <p>
-                    If you haven't already, go to the <a href="https://system.fatfractal.com/console/application.html">Console</a> and add an application called hoodyoodoo to <em>&lt;your subdomain&gt;</em>. From the hoodyoodoo application directory, deploy the modified hoodyoodoo API to the FatFractal Platform, you use the command line <strong>deployFFFabric</strong>:
+                    If you haven't already, go to the <a href="https://system.fatfractal.com/console/application.html">Console</a> and add an application called hoodyoodoo to <em>&lt;your subdomain&gt;</em>. From the hoodyoodoo application directory, deploy the modified hoodyoodoo API to the NoServer Public Cloud, you use the command line <strong>deployFFFabric</strong>:
                 </p>
                 <pre><code>&gt; $HOME/ff/ffnsbin/ffef deployFFFabric</code></pre>
                 <p>
