@@ -1,0 +1,153 @@
+<html>
+<head>
+    <title>Add the Celebrity Model</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-add-framework" class="anchor" href="#ios-tutorial-add-framework"><span class="octicon octicon-link"></span></a>
+                    Add the Celebrity Model
+                </h2>
+                <p>In this section, we will create the Objective-C native, object classes that the app will use. At this point, we will create a Celebrity object using standard Objective-C patterns. This is <em>your</em> object definition, the FatFractal Platform does not create dependencies in your code by requiring you to use our own proprietary object classes.
+                </p>
+                <h3>Creating the Celebrity Class</h3>
+                <p>We will create a Celebrity data model that contains the following members:</p>
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Celebrity</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>firstName</td>
+                            <td>the celebrity’s first name</td>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>lastName</td>
+                            <td>the celebrity’s last name</td>
+                        </tr>
+                        <tr>
+                            <td>{byte[]}</td>
+                            <td>imageData</td>
+                            <td> the celebrity’s profile image</td>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>gender</td>
+                            <td>the gender of the celebrity</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>You may notice that we are anticipating a byte array datatype for the image data as a native member of this class–stay tuned to see how that works.
+                </p>
+                <p>
+                    In order to create the Celebrity class for your project, choose File&gt;New&gt;New File to bring up the Template Chooser for the new class file. We will use the standard Objective-C class template. Click Next.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/03/image06.png"><img class="wp-image-1157 alignnone" title="image06" src="http://fatfractal.com/beta/wp-content/uploads/2012/03/image06.png" alt="" width="585" height="394" /></a>
+                </p>
+                <p>
+                    Enter the name of the Objective-C class, Celebrity, as a subclass of NSObject.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/03/image00.png"><img class="wp-image-1159 alignnone" title="image00" src="http://fatfractal.com/beta/wp-content/uploads/2012/03/image00.png" alt="" width="584" height="394" /></a>
+                </p>
+                <p>
+                    Click Next to create a Celebrity.h and Celebrity.m files in your project, which contain the following information, respectively:
+                </p>
+<pre><code>
+#import &lt;Foundation/Foundation.h&gt;
+@interface Celebrity : NSObject
+@end
+
+#import &quot;Celebrity.h&quot;
+@implementation Celebrity
+@end</code></pre>
+                <p>
+                    Modify the files to include the members for the object. For Celebrity class, we will modify Celebrity.h.
+                </p>
+<pre><code>
+@interface Celebrity : NSObject {
+    /*! The NSString that contains the First Name for this Celebrity */
+    NSString        *firstName;
+    /*! The NSString that contains the Last Name for this Celebrity */
+    NSString        *lastName;
+    /*! The NSData for the profile image for this Celebrity */
+    NSData          *imageData;
+    /*! The NSString that contains the gender (male or female) for this Celebrity */
+    NSString        *gender;
+}
+@property (strong, nonatomic) NSString          *firstName;
+@property (strong, nonatomic) NSString          *lastName;
+@property (strong, nonatomic) NSData            *imageData;
+@property (strong, nonatomic) NSString          *gender;
+
+@end</code></pre>
+                <p>
+                    For Celebrity.m, we use a standard model approach and include a description method (always a good practice).
+                </p>
+<pre><code>
+#import &quot;Celebrity.h&quot;
+@implementation Celebrity
+@synthesize firstName, lastName, imageData, gender;
+- (id)init {
+    self = [super init];
+    return self;
+}
+- (NSString*) description {
+    return [[NSString alloc]
+    initWithFormat:@&quot;Celebrity[firstName[%@], lastName[%@], imageData[%d], gender[%@]]&quot;,
+    [self firstName],
+    [self lastName],
+    [[self imageData] length],
+    [self gender]];
+}
+@end</code></pre>
+                <p>The Celebrity object is now ready to interact with your API.
+                </p>
+                <p>
+                    NEXT: <a href="part_1_4.html">Add in the Class</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    </body>
+    </html>

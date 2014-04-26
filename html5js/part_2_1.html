@@ -1,0 +1,128 @@
+<html>
+<head>
+    <title>Queries</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HTML5/JS Tutorial Part II
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part2/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-part-2-1" class="anchor" href="#html5-js-tutorial-part-2-1"><span class="octicon octicon-link"></span></a>
+                    Queries
+                </h2>
+                <p>
+                    In Tutorial Part I, we created a test class, one model class and two scenes that demonstrated basic CRUD functionality with complex model objects as well as authentication.
+                </p>
+                <p>
+                    If you wish, you can download the complete Part II project file from <a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip" title="part2.zip">Download Tutorial Part 2 Sample Files</a>, unzip and then either run newapp again from this directory to use this application or copy the files that are enclosed to the application directory you created in a previous section <a href="index.html#local-install">Installing FatFractal</a> allowing the copy to replace all the previous files.
+                </p>
+                <p>
+                    If you have not scaffolded your app already, it is not a problem, just run <strong>ffef newapp</strong>, using your subdomain, as before from the directory with the Part II files you have just downloaded and it will set up all the things that you need.
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef newapp hoodyoodoo <em>&lt;your subdomain&gt;</em></code></pre>
+                <p>
+                    <em>Note: The subdomain refers to the name you signed up with, e.g. acme in acme.fatfractal.com</em>
+                </p>
+                <p>
+                    <strong>Note:</strong> When you download the project, the client application is configured to use a API that is already deployed and populated with data. This means you can run the application on your simulator immediately. To use your API, you should edit the Hoodyoodoo.java file as before to point to the API that you have set up.
+                </p>
+                <p>
+                    In Tutorial Part II, we will streamline retrieving objects such that we only transfer the required data to the client. To do that we will use a query. Then we will begin to add the game mechanic to the <strong><em>WouldYaViewController</em></strong>. The design is that we will present two random and unique celebrities of the gender the player chooses, and when selected, create a record which we will call a “WouldYa” and store that in the API. In order to do that, we need to do the following:
+                    <ol>
+                        <li>Retrieve a random <strong><em>Celebrity</em></strong> of the selected gender using a query.</li>
+                        <li>Retrieve a second random <strong><em>Celebrity</em></strong> of the selected gender that is different from the first one using a more complex query.</li>
+                        <li>Add a new model class called “<strong><em>WouldYa</em></strong>” to our API.</li>
+                        <li>Add the CRUD method to <strong><em>WouldYaViewController</em></strong> to persist our <strong><em>WouldYa</em></strong> to the API.</li>
+                    </ol>
+                </p>
+                <h3>Retrieve a random Celebrity</h3>
+                <h3>Retrieve all Celebrities</h3>
+                <p>
+                    To recap, Part I showed you how to retrieve all objects of a certain class from the API using the <em>getArrayFromUri</em> method.
+                </p>
+<pre><code>ff.getArrayFromUri("/ff/resources/Celebrity",
+function(celebArray) {
+    ...
+}, ...);</code></pre>
+                <p>
+                    And we used the following to pick out a random <strong><em>Celebrity</em></strong> from <strong><em>celebArray</em></strong> and set it to <strong><em>leftCelebrity</em></strong>which resulted in a major performance issue with large numbers of Celebrity objects.
+                </p>
+                <pre><code>var leftCelebrity = celebArray[Math.floor(Math.random() * celebArray.length)];</code></pre>
+                <p>
+                    This is not efficient as we would retrieve all Celebrity objects, along with their images to the client application, and then force the client code to extract what it needs. If there were thousands of Celebrities in the datastore, this would be a huge load on the backend, the network and the client.
+                </p>
+                <h3>Retrieve a single random Celebrity</h3>
+                <p>
+                    So, we need a better way to filter the result set on the backend. FatFractal features an elegant method of filtering results using queries expressed as natural language strings. For example, if we wanted to retrieve a random Celebrity from the API, we write a query as follows: In the <strong><em>loadCelebrities</em></strong> method:
+                    <ol>
+                        <li>Change the method from <strong><em>getArrayFromUri</em></strong> to <strong><em>getObjFromUri</em></strong> since we only want to retrieve one object after all.</li>
+                        <li>Add a query to the request in the form: <strong><em>/(guid eq random(guid))</em></strong> that will return a single random <strong><em>Celebrity</em></strong>.</li>
+                    </ol>
+                </p>
+<pre><code>ff.getObjFromUri("/ff/resources/Celebrity/(gender eq '" + m_currentGender + "'",
+function(leftCelebrity) {
+    ...
+}, ...);</code></pre>
+                <p>
+                    This will return a single random <strong><em>Celebrity </em></strong>which is far more efficient for both the backend as well as the client code.
+                </p>
+                <h3>Retrieve a single random Celebrity filtered by gender parameter</h3>
+                <p>
+                    For our application, we need to do also filter by gender,  which will be selected by the user. To do that we need to be able to pass parameters in to the query. This is easily done by constructing the query string using NSString stringWithFormat as shown below and pass in the desired parameter(s).
+                </p>
+<pre><code>ff.getObjFromUri("/ff/resources/Celebrity/(gender eq '" + m_currentGender + "' and guid eq random(guid))",
+function(leftCelebrity) {
+    ...
+}, ...);</code></pre>
+                <p>
+                    <strong>Note:</strong> The code on this page demonstrates the principles of using queries in Hoodyoodoo using synchronous requests. We will later implement <strong><em>loadCelebrities</em></strong> using asynchronous requests to allow the downloads to occur in the background.
+                </p>
+                <p>
+                    Retrieve a second Celebrity filtered by gender parameter and not equal to the first Celebrity
+                </p>
+                <p>
+                    Now, to complete <em><strong>loadCelebrities,</strong></em> we add the code to get the second <em><strong>Celebrity.</strong></em> This will use the <em><strong>FatFractal getMetaDataForObj</strong></em> method to get the guid from the meta data supplied by the API along with <em><strong>m_leftCeleb</strong></em> and pass the guid a as a parameter for another query that will make sure that the two Celebrities are unique.
+                </p>
+<pre><code>ff.getObjFromUri("/ff/resources/Celebrity/(gender eq '" + m_currentGender + "' and guid ne '" + leftCelebrity.guid + "' and guid eq random(guid))",
+function(rightCelebrity) {
+    ...
+}, ...);</code></pre>
+                <p>
+                    NEXT: <a href="part_2_2.html">The WouldYa Class</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

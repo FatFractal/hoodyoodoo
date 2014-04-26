@@ -1,0 +1,191 @@
+<html>
+    <head>
+        <title>Modify the WouldYa View</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+        <link rel="stylesheet" href="../stylesheets/styles.css">
+        <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+        <script src="../javascripts/scale.fix.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HTML5/JS Tutorial Part II
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part2/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-part-2-3" class="anchor" href="#html5-js-tutorial-part-2-3"><span class="octicon octicon-link"></span></a>
+                    Modify the WouldYa View
+                </h2>
+                <p>
+                    In this section, we will modify the <em><strong>WouldYa</strong></em> view to include a second celebrity and to use queries to retrieve the <em><strong>Celebrity</strong></em> objects from the API.
+                </p>
+                <h3>Add instance variables</h3>
+                <p>
+                    First, add the following instance variables to the <strong><em>HoodyoodooViewModel</em></strong>:
+                </p>
+<pre><code>var m_currentGender = "female";
+var m_rightCelebrity = null;
+var m_topCeleb = null;
+var m_genderButton = null;
+var m_rightCelebrityButton = null;
+var m_rightCelebrityLabel = null;
+var m_topResponseLabel = null;
+var m_bottomResponseLabel = null;
+var m_playAgainButton = null;</code></pre>
+                <p>
+                    These variables hold information for a second celebrity, a <em><strong>WouldYa</strong></em> object, and UI, which we add in the next section.
+                </p>
+                <h3>Modify loadCelebrities method</h3>
+                <p>
+                    First, we must modify the <strong><em>init</em></strong> method to hook up our divs with our new instance variables. Here is the modified method:
+                </p>
+<pre><code>init: function() {
+    ff.setDebug(G_DEBUG);
+    m_genderButton = document.getElementById("genderButton");
+    m_leftCelebrityButton = document.getElementById("leftCelebrityButton");
+    m_leftCelebrityLabel = document.getElementById("leftCelebrityLabel");
+    m_rightCelebrityButton = document.getElementById("rightCelebrityButton");
+    m_rightCelebrityLabel = document.getElementById("rightCelebrityLabel");
+    m_topResponseLabel = document.getElementById("topResponseLabel");
+    m_bottomResponseLabel = document.getElementById("bottomResponseLabel");
+    m_playAgainButton = document.getElementById("playAgainButton");
+    m_doneButton = document.getElementById("doneButton");
+    m_firstNameField = document.getElementById("firstNameField");
+    m_lastNameField = document.getElementById("lastNameField");
+    m_addCelebImage = document.getElementById("addCelebImage");
+    m_loadingImageElement = document.getElementById("imgAjaxLoader");
+    if(m_topResponseLabel) m_topResponseLabel.style.visibility="hidden";
+    if(m_bottomResponseLabel) m_bottomResponseLabel.style.visibility="hidden";
+    if(m_playAgainButton) m_playAgainButton.style.visibility="hidden";
+    m_celebrity = new Celebrity();
+    loader = new FileUploader();
+    loader.init();
+    this.loadCelebrities();
+}</code></pre>
+                <p>
+                    The most important thing is to change the <strong><em>loadCelebrities</em></strong> method to use queries instead of filtering in the client. We are also adding <strong><em>m_rightCelebrity</em></strong>. You will see that <strong><em>m_leftCelebrity</em></strong> is retrieved with the following query:
+                </p>
+                <pre><code>"(gender eq '" + m_currentGender + "' and guid eq random(guid))"</code></pre>
+                <p>
+                    For <em><strong>m_rightCelebrity</strong></em>, we need to also ensure that we do not retrieve the same celebrity as <em><strong>m_leftCelebrity</strong></em>, and so we have to get the guid for <em><strong>m_leftCelebrity</strong></em>, create a query that will make sure that <em><strong>m_rightCelebrity</strong></em> is different. To do this, we create the query string and getting the guid for <em><strong>m_leftCelebrity</strong></em>.
+                </p>
+                <pre><code>"/Celebrity/(gender eq '" + m_currentGender + "' and guid ne '" + m_leftCelebrity.guid + "' and guid eq random(guid))"</code></pre>
+                <p>
+                    Here is the modified <strong><em>loadCelebrities</em></strong> method:
+                </p>
+<pre><code>loadCelebrities: function() {
+    m_playAgainButton.style.visibility="hidden";
+    self.showLoading(true);
+    ff.getObjFromUri("/ff/resources/Celebrity/(gender eq '" + m_currentGender + "' and guid eq random(guid))",
+    function(leftCelebrity){
+        self.showLoading(false);
+        if(leftCelebrity) {
+            m_leftCelebrity = new Celebrity(leftCelebrity);
+            m_leftCelebrityButton.setAttribute('src', m_leftCelebrity.imageSrc);
+            m_leftCelebrityLabel.innerHTML = leftCelebrity.firstName + " " + leftCelebrity.lastName;
+            ff.getObjFromUri("/ff/resources/Celebrity/(gender eq '" + m_currentGender + "' and guid ne '" + leftCelebrity.guid + "' and guid eq random(guid))",
+            function(rightCelebrity){
+                if(rightCelebrity) {
+                    m_rightCelebrity = new Celebrity(rightCelebrity);
+                    m_rightCelebrityButton.setAttribute('src', m_rightCelebrity.imageSrc);
+                    m_rightCelebrityLabel.innerHTML = rightCelebrity.firstName + " " + rightCelebrity.lastName;
+                } else if(G_DEBUG) console.log("No celebrity found for m_rightCelebrity");
+            }, function(statusCode, responseText){
+                console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+            }
+            );
+        } else if(G_DEBUG) console.log("No celebrity found for m_leftCelebrity, skipping get for m_rightCelebrity");
+
+    }, function(statusCode, responseText){
+        self.showLoading(false);
+        console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+    }
+    );
+}</code></pre>
+                <h3>Add methods</h3>
+                <p>
+                    Next, we add the <strong><em>toggleGender</em></strong> method implementation to handle the <strong><em>m_toggleGenderImageButton</em></strong> click:
+                </p>
+<pre><code>toggleGender: function() {
+    if(m_currentGender == "male") {
+        m_genderButton.setAttribute("src", "Images/button_gender_female.png");
+        m_currentGender = "female";
+    } else {
+        m_genderButton.setAttribute("src", "Images/button_gender_male.png");
+        m_currentGender = "male";
+    }
+    if(G_DEBUG) console.log("toggleGender() set m_currentGender to: " + m_currentGender);
+    self.loadCelebrities();
+}</code></pre>
+                <p>
+                    Add the <strong><em>celebrityWasPicked</em></strong> method implementation to handle <strong><em>m_leftCelebImageView</em></strong> or <strong><em>m_rightCelebImageView</em></strong> clicks:
+                </p>
+<pre><code>celebrityWasPicked: function(sender) {
+    if(G_DEBUG) console.log("celebrityWasPicked() called");
+    var wouldYa = new WouldYa();
+    if(sender == m_leftCelebrityButton && m_leftCelebrity) {
+        wouldYa.selectedGuid = m_leftCelebrity.guid;
+        wouldYa.rejectedGuid = m_rightCelebrity.guid;
+        m_wouldYa = wouldYa;
+        self.persistWouldYa();
+    } else if(sender == m_rightCelebrityButton && m_rightCelebrity) {
+        wouldYa.selectedGuid = m_rightCelebrity.guid;
+        wouldYa.rejectedGuid = m_leftCelebrity.guid;
+        m_wouldYa = wouldYa;
+        self.persistWouldYa();
+    } else if(G_DEBUG) console.log("celebrityWasPicked() could not determine which celebrity was picked");
+}</code></pre>
+                <p>
+                    Now, add the <strong><em>persistWouldYa</em></strong> method implementation that will persist your <strong><em>WouldYa</em></strong> instance to the back-end after ensuring that the user is logged in. This is implemented as a separate method to make it easier to use a callback from a login dialog.
+                </p>
+<pre><code>persistWouldYa: function() {
+    m_playAgainButton.style.visibility="visible";
+    if(!ff.loggedIn()) {
+        $("#wouldYaLoginPopup").popup('open');
+    } else {
+        self.showLoading(true);
+        if(m_wouldYa) {
+            ff.createObjAtUri(m_wouldYa, "/WouldYa",
+            function(data) {
+                self.showLoading(false);
+            }, function(statusCode, responseText){
+                self.showLoading(false);
+                console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+            }
+            );
+        } else console.error("WouldYaViewController persistWouldYa failed: m_wouldYa is null");
+    }
+}</code></pre>
+                <p>
+                    NEXT: <a href="part_2_4.html">Adding the UI</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

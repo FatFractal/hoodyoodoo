@@ -1,0 +1,188 @@
+<html>
+    <head>
+        <title>Modify the WouldYaActivity</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+        <link rel="stylesheet" href="../stylesheets/styles.css">
+        <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+        <script src="../javascripts/scale.fix.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part II
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part2/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-2-3" class="anchor" href="#android-tutorial-part-2-3"><span class="octicon octicon-link"></span></a>
+                    Modify the WouldYaActivity
+                </h2>
+                <p>
+                    In this section, we will modify the <em><strong>WouldYaActivity</strong></em> class to include a second celebrity and to use queries to retrieve the <em><strong>Celebrity</strong></em> objects from the FatFractal Platform.
+                </p>
+                <h5>Add instance variables</h5>
+                <p>
+                    First, add the following instance variables to the WouldYaActivity class:
+                </p>
+<pre><code>private Celebrity   m_rightCeleb;
+private WouldYa     m_wouldYa;
+private ImageView   m_rightCelebImageView;
+private TextView    m_rightCelebNameTextView;
+private String      m_currentGender = "female";
+private ImageButton m_playAgainImageButton;
+private ImageButton m_toggleGenderImageButton;</code></pre>
+                <p>
+                    These variables hold information for a second celebrity, a <em><strong>WouldYa</strong></em> object, and button objects to support the UI, which we add in the next section.
+                </p>
+                <h5>Modify loadCelebrities method</h5>
+                <pThe most important thing is to change the <strong><em>loadCelebrities</em></strong> method to use queries instead of filtering in the client. We are also adding <strong><em>m_rightCeleb</em></strong>. You will see that <strong><em>m_leftCeleb</em></strong> is retrieved with the following query:
+                </p>
+                <pre><code>"(gender eq '" + m_currentGender + "' and guid eq random(guid))"</code></pre>
+                <p>
+                    For <em><strong>m_rightCeleb</strong></em>, we need to also ensure that we do not retrieve the same celebrity as <em><strong>m_leftCeleb</strong></em>, and so we have to get the guid for <em><strong>m_leftCeleb</strong></em>, create a query that will make sure that <em><strong>m_rightCeleb</strong></em> is different. To do this, we create the query string and getting the guid for <em><strong>m_leftCeleb</strong></em> using the <strong><em>getMetaDataForObj</em></strong> method.
+                </p>
+<pre><code>String guid = ff.getMetaDataForObj(m_leftCeleb).getGuid();
+String q2 = "/Celebrity/(gender eq '" + m_currentGender + "' and guid ne '" + guid + "' and guid eq random(guid))";
+celeb = ff.getObjFromUri(q2);</code></pre>
+                <p>
+                    Here is the modified <strong><em>loadCelebrities</em></strong> method:
+                </p>
+<pre><code>private void loadCelebrities() {
+    // Get a Celebrity Object called leftCeleb synchronously using getObjFrom(String url).
+    // Note: this is not generally recommended, you should usually use wrap with AsyncTask as below.
+    try {
+        String q0 = "/Celebrity/(gender eq '" + m_currentGender + "' and guid eq random(guid))";
+        m_leftCeleb = ff.getObjFromUri(q0);
+        m_leftCelebNameTextView.setText(m_leftCeleb.getFirstName() + " " + m_leftCeleb.getLastName());
+        if (m_leftCeleb.getImageData() != null) {
+            Bitmap bm = BitmapFactory.decodeByteArray(m_leftCeleb.getImageData(), 0, m_leftCeleb.getImageData().length);
+            m_leftCelebImageView.setImageBitmap(bm);
+        }
+    } catch (FFException e) {
+        e.printStackTrace();
+    }
+    // Get a Celebrity Object called rightCeleb asynchronously using getObjFrom(String url) wrapped with an AsyncTask.
+    new AsyncTask() {
+        @Override
+        protected Celebrity doInBackground(String... params) {
+            try {
+                Celebrity celeb = new Celebrity();
+                if (m_leftCeleb != null) {
+                    String guid = ff.getMetaDataForObj(m_leftCeleb).getGuid();
+                    String q2 = "/Celebrity/(gender eq '" + m_currentGender + "' and guid ne '" + guid + "' and guid eq random(guid))";
+                    celeb = ff.getObjFromUri(q2);
+                }
+                return celeb;
+            } catch (FFException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        @Override
+        protected void onPostExecute(Celebrity rightCeleb) {
+            if (rightCeleb != null) {
+                m_rightCeleb = rightCeleb;
+                m_rightCelebNameTextView.setText(m_rightCeleb.getFirstName() + " " + m_rightCeleb.getLastName());
+                if (m_rightCeleb.getImageData() != null) {
+                    Bitmap bm = BitmapFactory.decodeByteArray(m_rightCeleb.getImageData(), 0, m_rightCeleb.getImageData().length);
+                    m_rightCelebImageView.setImageBitmap(bm);
+                }
+            }
+        }
+    }.execute();
+    m_playAgainImageButton.setVisibility(View.INVISIBLE);
+}</code></pre>
+                <h5>Add methods</h5>
+                <p>
+                    Next, we add the <strong><em>toggleGender</em></strong> method implementation to handle the <strong><em>m_toggleGenderImageButton</em></strong> click:
+                </p>
+<pre><code>public void toggleGender(View view) {
+    if (m_currentGender.equals("male")) {
+        m_currentGender = "female";
+        m_toggleGenderImageButton.setImageResource(R.drawable.button_gender_female);
+    } else {
+        m_currentGender = "male";
+        m_toggleGenderImageButton.setImageResource(R.drawable.button_gender_male);
+    }
+    loadCelebrities();
+}</code></pre>
+                <p>
+                    Add the <strong><em>celebrityWasPicked</em></strong> method implementation to handle <strong><em>m_leftCelebImageView</em></strong> or <strong><em>m_rightCelebImageView</em></strong> clicks:
+                </p>
+<pre><code>public void celebrityWasPicked(View view) {
+    m_wouldYa = new WouldYa();
+    if (view == m_leftCelebImageView) {
+        m_wouldYa.setSelectedGuid(ff.getMetaDataForObj(m_leftCeleb).getGuid());
+        m_wouldYa.setRejectedGuid(ff.getMetaDataForObj(m_rightCeleb).getGuid());
+    } else if (view == m_rightCelebImageView) {
+        m_wouldYa.setSelectedGuid(ff.getMetaDataForObj(m_rightCeleb).getGuid());
+        m_wouldYa.setRejectedGuid(ff.getMetaDataForObj(m_leftCeleb).getGuid());
+    }
+    if (m_wouldYa != null) {
+        persistWouldYa();
+    } else System.out.println("WouldYaViewController celebrityWasPicked failed: m_wouldYa is null");
+}</code></pre>
+                <p>
+                    Now, add the <strong><em>persistWouldYa</em></strong> method implementation that will persist your <strong><em>WouldYa</em></strong> instance to the API after ensuring that the user is logged in. This is implemented as a separate method to make it easier to use a callback from a login dialog.
+                </p>
+<pre><code>public void persistWouldYa() {
+    if (!ff.isLoggedIn()) {
+        System.out.println("persistWouldYa found ff.isLoggedIn() false");
+        Hoodyoodoo hoodyoodoo = new Hoodyoodoo();
+        AlertDialog alert = hoodyoodoo.loginDialog(this, "You must be logged in to record a WouldYa selection.");
+        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (ff.isLoggedIn()) persistWouldYa();
+            }
+        });
+        alert.show();
+    } else {
+        if (m_wouldYa != null) {
+            try {
+                m_playAgainImageButton.setVisibility(View.VISIBLE);
+                ff.createObjAtUri(m_wouldYa, "/WouldYa");
+            } catch (FFException e) {
+                e.printStackTrace();
+            }
+        } else System.out.println("WouldYaActivity persistWouldYa failed: m_wouldYa is null");
+    }
+}</code></pre>
+                <p>
+                    Finally, add the <strong><em>playAgain</em></strong> method to handle clicks on the <strong><em>m_playAgainImageButton</em></strong>:
+                </p>
+<pre><code>public void playAgain(View view) {
+    loadCelebrities();
+}</code></pre>
+                <p>
+                    NEXT: <a href="part_2_4.html">Adding the UI</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

@@ -1,0 +1,158 @@
+<html>
+<head>
+    <title>Add the Celebrity Model</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HTML5/JS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-add-framework" class="anchor" href="#html5-js-tutorial-add-framework"><span class="octicon octicon-link"></span></a>
+                    Add the Celebrity Model
+                </h2>
+                <p>
+                    In this section, we will create the Javascript native object classes that the app will use. At this point, we will create a Celebrity object using standard Javascript patterns. This is <em>your</em> object definition, the FatFractal Platform does not create dependencies in your code by requiring you to use our own proprietary object classes.
+                </p>
+                <h2>Creating the Celebrity Class</h2>
+                <p>We will create a Celebrity data model that contains the following members:</p>
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Celebrity</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>firstName</td>
+                            <td>the celebrity’s first name</td>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>lastName</td>
+                            <td>the celebrity’s last name</td>
+                        </tr>
+                        <tr>
+                            <td>{byte[]}</td>
+                            <td>imageData</td>
+                            <td> the celebrity’s profile image</td>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>gender</td>
+                            <td>the gender of the celebrity</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>You may notice that we are anticipating a byte array datatype for the image data as a native member of this class–stay tuned to see how that works.
+                </p>
+                <h3>The hoodyoodoo.js File</h3>
+                <p>
+                    We will now start creating the JavaScript code for our application. In the <code>Scripts</code> directory of your scaffolded application, create a file called <code>hoodyoodoo.js</code>. We will first add a little bit of JQuery and initialize some global variables:
+                </p>
+<pre><code>$(document).ready(function(){
+    HoodyoodooViewModel.init();
+});
+
+var G_DEBUG = false;
+var m_loadingImageElement = null;</code></pre>
+                <p>
+                    Next, we define the Celebrity object model:
+                </p>
+<pre><code>// models
+function Celebrity(data) {
+    if (data) {
+        this.clazz = data.clazz;
+        this.guid = data.guid;
+        this.firstName = data.firstName;
+        this.lastName = data.lastName;
+        this.gender = data.gender;
+        this.selectedCount = data.selectedCount;
+        this.rejectedCount = data.rejectedCount;
+        this.imageSrc = '.' + data.ffUrl + '/imageData';
+    } else {
+        this.clazz = "Celebrity";
+        this.guid = null;
+        this.firstName = null;
+        this.lastName = null;
+        this.gender = null;
+        this.imageData = null;
+        this.selectedCount = null;
+        this.rejectedCount = null;
+    }
+    return this;
+}</code></pre>
+                <p>
+                    Notice that, in addition to the members listed in the table above, we have defined a member named <code>clazz</code>. This member tells the NoServer API the objecttype of the object. The objecttype may be one you have <a href="http://fatfractal.com/v2/documentation/#document-noserver-ffdl-create-objecttype-command">defined in FFDL</a>, or an objecttype which your API has learned</a>. <strong>Any JavaScript object you intend to persist to your API must define a <code>clazz</code> member</strong>. We also copy a member named <code>guid</code>, which is one of the <a href="http://fatfractal.com/v2/documentation/#document-noserver-api-basics-object-metadata">NoServer Object Metadata</a> members.
+                </p>
+                <p>
+                    Finally, we define a view model for our app:
+                </p>
+<pre><code>var HoodyoodooViewModel = (function() {
+    var ff =  new FatFractal();
+
+    var previousPage = "";
+
+    var m_leftCelebrity = null;
+    var m_celebrity = null;
+    var m_leftCelebrityButton = null;
+    var m_leftCelebrityLabel = null;
+    var m_doneButton = null;
+    var m_addCelebImage = null;
+    var m_firstNameField = null;
+    var m_lastNameField = null;
+    var m_wouldYa = null;
+
+    var self = {
+        init: function() {
+            ff.setDebug(G_DEBUG);
+
+            m_celebrity = new Celebrity();
+        }
+    }
+    return self;
+})();</code></pre>
+                <p>
+                    We define a number of member variables that we'll use in the coming sections.
+                </p>
+                <p>
+                    NEXT: <a href="part_1_4.html">Storing a Celebrity Object</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    </body>
+</html>

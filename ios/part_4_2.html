@@ -1,0 +1,184 @@
+<html>
+<head>
+    <title>Update the Client Code</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part IV
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part4.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part4/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-part-4-2" class="anchor" href="#ios-tutorial-part-4-2"><span class="octicon octicon-link"></span></a>
+                    Update the Client Code
+                </h2>
+                <p>
+                    In order to use this new extension method, you need to do add a matching <strong><em>StatsObject</em></strong> to your project.
+                </p>
+<pre><code>#import <Foundation/Foundation.h>
+@interface StatsObject : NSObject {
+    NSNumber        *totalUsers;
+    NSNumber        *totalCelebrities;
+    NSNumber        *totalRatings;
+    NSNumber        *yourRatings;
+}
+
+@property (strong, nonatomic) NSNumber          *totalUsers;
+@property (strong, nonatomic) NSNumber          *totalCelebrities;
+@property (strong, nonatomic) NSNumber          *totalRatings;
+@property (strong, nonatomic) NSNumber          *yourRatings;
+@end</code></pre>
+                <p>
+                    as well as StatsObject.m
+                </p>
+<pre><code>#import "StatsObject.h"
+@implementation StatsObject
+@synthesize totalUsers, totalCelebrities, totalRatings, yourRatings;
+- (id)init {
+    self = [super init];
+    if (self) {
+    }
+    return self;
+}
+
+- (NSString*) description {
+    return [[NSString alloc]
+    initWithFormat:@"StatsObject[totalUsers[%d] totalCelebrities[%d] totalRatings[%d] yourRatings[%d]]",
+    [self totalUsers], [self totalCelebrities], [self totalRatings], [self yourRatings]];
+}
+@end</code></pre>
+                <p>
+                    You can then call the extension using the standard CRUD url pattern.
+                </p>
+                <pre><code>statsObject= [[FatFractal main] getObjFromUrl:@"/ff/ext/Stats" error:&error];</code></pre>
+                <p>
+                    We also need to update <strong><em>TopCelebViewController.h</em></strong> to import our new <strong><em>StatsObject </em></strong>class.
+                </p>
+                <pre><code>#import "StatsObject.h"</code></pre>
+                <p>
+                    And add in the additional properties we will be using:
+                </p>
+<pre><code>@property (nonatomic, retain) IBOutlet UILabel *totalUsersLabel;
+@property (nonatomic, retain) IBOutlet UILabel *totalCelebritiesLabel;
+@property (nonatomic, retain) IBOutlet UILabel *totalRatingsLabel;
+@property (nonatomic, retain) IBOutlet UILabel *yourRatingsLabel;</code></pre>
+                <p>
+                    We also need to update <strong><em>TopCelebViewController.m</em></strong> to use these and add a new method to retrieve the data.
+                </p>
+                <p>
+                    First, let’s synthesize the properties we have added:
+                </p>
+                <pre><code>@synthesize statsObject, totalUsersLabel, totalRatingsLabel, totalCelebritiesLabel, yourRatingsLabel;</code></pre>
+                <p>
+                    And add in a new method to retrieve the data:
+                </p>
+<pre><code>-(void) getStats {
+    if(![[FatFractal main] loggedIn]) {
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate]
+        showLoginWithDelegate:self action:@selector(getStats)
+        message:@"Please Login"];
+    }
+    else {
+        NSError *error;
+        statsObject= [[FatFractal main] getObjFromUrl:@"/ff/ext/Stats" error:&error];
+        if (error) {
+            NSLog(@"StatsViewController getStats failed: %@", [error localizedDescription]);
+            return;
+        } else {
+            totalUsersLabel.text = [statsObject.totalUsers stringValue];
+            totalCelebritiesLabel.text = [statsObject.totalCelebrities stringValue];
+            totalRatingsLabel.text = [statsObject.totalRatings stringValue];
+            yourRatingsLabel.text = [statsObject.yourRatings stringValue];
+        }
+    }
+}</code></pre>
+                <p>
+                    Now that we have our statsObject, let’s add in the UI components to display the results. To do this, we add additional UILabels for both the headings and the data as follows:
+                    <ol>
+                        <li>Add two <strong><em>UILabel</em></strong>s that will display “Total Users” and the data from <strong><em>totalUsers</em></strong>.</li>
+                        <li>Add two <strong><em>UILabel</em></strong>s that will display “Total Celebrities” and the data from <strong><em>totalCelebrities</em></strong>.</li>
+                        <li>Add two <strong><em>UILabel</em></strong>s that will display “Total Ratings” and the data from <strong><em>totalRatings</em></strong>.</li>
+                        <li>Add two <strong><em>UILabel</em></strong>s that will display “Your Ratings” and the data from <strong><em>yourRatings</em></strong>.</li>
+                    </ol>
+                </p>
+                <p>
+                    Your scene should look something like this:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_4_UI.png"><img class="alignnone size-medium wp-image-2836" title="Part_4_UI" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_4_UI-198x300.png" alt="" width="198" height="300" /></a>
+                </p>
+                <p>
+                    Next, make sure and connect up your <strong><em>UIComponents</em></strong> in the <strong><em>MainStoryboard.storyboard </em></strong> for the <strong><em>TopCelebViewController</em></strong> elements.
+                </p>
+                <p>
+                    <strong><em>totalUsersLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>TopCelebViewController</em></strong>/<strong><em>totalUsersLabel</em></strong>
+                </p>
+                <p>
+                    <strong><em>totalCelebritiesLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>TopCelebViewController</em></strong>/<strong><em>totalCelebritiesLabel</em></strong>
+                </p>
+                <p>
+                    <strong><em>totalRatingsLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>TopCelebViewController</em></strong>/<strong><em>totalRatingsLabel</em></strong>
+                </p>
+                <p>
+                    <strong><em>yourRatingsLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>TopCelebViewController</em></strong>/<strong><em>yourRatingsLabel</em></strong>
+                </p>
+                <p>
+                    Lastly, we need to initialize these new properties by adding the following to <strong><em>viewDidLoad</em></strong> and call the <strong><em>getStats</em></strong> method:
+                </p>
+<pre><code>statsObject = [[StatsObject alloc]init];
+totalRatingsLabel.text = nil;
+totalCelebritiesLabel.text = nil;
+totalUsersLabel.text = nil;
+yourRatingsLabel.text = nil;
+[self getStats];</code></pre>
+                    <h3>That’s it!</h3>
+                    <p>
+                        Now, as soon as ratings are being captured in <strong><em>WouldYa</em></strong>’s, then we can call the server extension that will aggregate the statistics on the fly and return a <strong><em>StatsObject</em></strong> that can be used to populate the scene.
+                    </p>
+                    <p>
+                        Final result - successfully created a <strong><em>StatsObject</em></strong> on the API from an server extension that updates the corresponding UI components.
+                    </p>
+                    <p class="aligncenter">
+                        <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_4_final.png"><img class="alignnone size-medium wp-image-2835" title="Part_4_final" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_4_final-200x300.png" alt="" width="200" height="300" /></a>
+                    </p>
+                <p>
+                    NEXT: <a href="part_5_1.html">Push Notifications</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Xcode Love</title>
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        HooDyooDoo iOS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-part1_1" class="anchor" href="#ios-tutorial-part1_1"><span class="octicon octicon-link"></span></a>
+                    Xcode Love
+                </h2>
+                <p>Create the core object model for the Hoodyoodoo app and verify it works with its API.
+                </p>
+                <p><strong>Note:</strong> When you download the project, the client application is configured to use a API that is already deployed and populated with data. This means you can run the application on your simulator immediately. To use your API, you should edit the AppDelegate.m file as before to point to the API that you have set up.
+                </p>
+                <p><strong>Warning:</strong> If you run the application or the tests in the simulator configured to use the acme.fatfractal.com/hoodyoodoo API, you will notice that the initial load takes a very long time as a result of the amount of data that it is retrieving (all Celebrities). This is by design to demonstrate some of the capabilities of the FatFractal Framework, so do not be dismayed as this will show clearly the power of Queries that are covered in Part II. You can also change the baseUrl to localhost.
+                </p>
+                <h3 dir="ltr">Create a new iOS project in Xcode</h3>
+                <ol>
+                    <li>Select File&gt;New&gt;New Project to bring up the Template Chooser. For our purposes here, select the Tabbed Application template and click Next.
+                        <p class="aligncenter">
+                            <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image05.png"><img class="aligncenter" title="image05" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image05.png" alt="" width="586" height="396" />
+                            </a>
+                        </p>
+                    </li>
+                    <li>Enter the name, "hoodyoodoo", and fill in a Company Identifier for your new project.  Select iPhone in the Device Family dropdown and check all three boxes, as shown here.
+                        <p class="aligncenter">
+                            <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image10.png"><img class="aligncenter" title="image10" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image10.png" alt="" width="583" height="395" />
+                            </a>
+                        </p>
+                    </li>
+                    <li>After clicking Next, choose a location for your application source and you are ready to start writing your app.</li>
+                </ol>
+                <p>
+                    NEXT: <a href="part_1_2.html">Add the iOS SDK to the Project</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+    </html>

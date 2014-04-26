@@ -1,0 +1,175 @@
+<html>
+<head>
+    <title>Add the TopCelebrity Scene</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part III
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part3.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part3/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-part-3-3" class="anchor" href="#ios-tutorial-part-3-3"><span class="octicon octicon-link"></span></a>
+                    Add the TopCelebrity Scene
+                </h2>
+                <p>
+                    <strong>Note:</strong> No client code is required for an event handler as it creates only API functionality and cannot be accessed by the client directly. However, the data that is created in the <strong><em>TopCeleb</em></strong> resource can be accessed by the client.
+                </p>
+                <p>
+                    Since the TopCeleb resource uses the Celebrtiy object type, there is no need to define another class in the client code, To use it in the application, we need to add a new Scene, and then populate it with data that is created for us by the event handler in <strong><em>TopCeleb</em></strong>.
+                </p>
+                <p>
+                    First, we add a new File using the UIView Controller subclass template.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image02.png"><img class="alignnone  wp-image-2041" title="image02" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image02.png" alt="" width="582" height="393" /></a>
+                </p>
+                <p>
+                    Will call this <strong><em>UIViewController</em></strong> <strong><em>TopCelebViewController</em></strong>
+                </p>
+                <p>
+                    Next, we add a new <strong><em>UIViewController</em></strong> to the <strong><em>MainStoryboard</em></strong> by dragging and dropping a View Controller from the Objects library. We set the Custom Class for this <strong><em>UIViewController</em></strong> to the new <strong><em>TopCelebViewController</em></strong> class that we have created.
+                </p>
+                <p>
+                    We then click on the Tab Bar Controller and connect a new Relationship under the Story Board Segues to the <strong><em>TopCelebViewController</em></strong>.
+                </p>
+                <p>
+                    We can now add the UI components we need to this scene. We will add the following:
+                    <ol>
+                        <li>Add a<strong><em> UILabel</em></strong> for the to display the title for this page.</li>
+                        <li>Add a <strong><em>UIImageView</em></strong> to display the image for the celebrity.</li>
+                        <li>Add a<strong><em> UILabel</em></strong> to display the name of the celebrity.</li>
+                        <li>Add two <strong><em>UILabel</em></strong>s that will display “Was Selected” and Was Rejected”.</li>
+                        <li>Add two <strong><em>UILabel</em></strong>s that will display the actual results for “Was Selected” and Was Rejected”.</li>
+                    </ol>
+                </p>
+                <p>
+                    When you are done, the scene should look like this...
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_3_UI.png"><img class="alignnone size-medium wp-image-2837" title="Part_3_UI" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_3_UI-201x300.png" alt="" width="201" height="300" /></a>
+                </p>
+                <p>
+                    We can now complete the <strong><em>TopCelebViewController</em></strong> implementation. First, we will add the following imports to <strong><em>TopCelebViewController.h</em></strong>:
+                </p>
+<pre><code>#import "Celebrity.h"
+#import "AppDelegate.h"</code></pre>
+                <p>
+                    Now, we add the following properties:
+                </p>
+<pre><code>@property (strong, nonatomic) Celebrity *topCeleb;
+@property (nonatomic, retain) IBOutlet UIImageView *topCelebImageView;
+@property (nonatomic, retain) IBOutlet UILabel *celebrityLabel;
+@property (nonatomic, retain) IBOutlet UILabel *selectedLabel;
+@property (nonatomic, retain) IBOutlet UILabel *rejectedLabel;</code></pre>
+                <p>
+                    In addition to the UI components that we will be using, we also add a <strong><em>Celebrity</em></strong> object (<strong><em>topCeleb</em></strong>) to this class that we will populate from the <strong><em>TopCeleb</em></strong> resource on the API.
+                </p>
+                <p>
+                    Now, to the <strong><em>TopCelebViewController.m</em></strong> file, we synthesize the properties:
+                </p>
+                <pre><code>@synthesize selectedLabel, rejectedLabel, topCeleb, celebrityLabel, topCelebImageView;</code></pre>
+                <p>
+                    We want to retrieve the latest topCeleb object, so we create a <strong><em>getTopCelebrity</em></strong> method:
+                </p>
+<pre><code>-(void) getTopCelebrity {
+    NSError *error;
+    topCeleb = [[FatFractal main] getObjFromUrl:@"/ff/resources/TopCelebrity?start=0&count=1" error:&error];
+    if (error) {
+        NSLog(@"TopCelebViewController getTopCelebrity failed: %@", [error localizedDescription]);
+        celebrityLabel.text = @"No Top Celebrity found";
+        return;
+    } else {
+        topCelebImageView.image = [[UIImage alloc] initWithData:topCeleb.imageData];
+        celebrityLabel.text = [NSString stringWithFormat:@"%@ %@", topCeleb.firstName, topCeleb.lastName];
+    }
+}</code></pre>
+                <p>
+                    Then, we need to initialize the properties in the <strong><em>viewDidLoad</em></strong> method and call <strong><em>getTopCelebrity</em></strong>.
+                </p>
+<pre><code>- (void)viewDidLoad {
+    [super viewDidLoad];
+    topCeleb = [[Celebrity alloc]init];
+    celebrityLabel.text = nil;
+    selectedLabel.text = nil;
+    rejectedLabel.text = nil;
+    topCelebImageView = nil;
+    [self getTopCelebrity];
+}</code></pre>
+                <p>
+                    And clear them on an unload:
+                </p>
+<pre><code>- (void)viewDidUnload {
+    [super viewDidUnload];
+    topCeleb = nil;
+    celebrityLabel.text = nil;
+    selectedLabel.text = nil;
+    rejectedLabel.text = nil;
+    topCelebImageView = nil;
+}</code></pre>
+                <p>
+                    Lastly, make sure and connect up your <strong><em>UIComponents</em></strong> in the <strong><em>MainStoryboard.storyboard </em></strong> for the <strong><em>TopCelebViewController</em></strong> elements.
+                </p>
+                <p>
+                    <strong><em>celebrityLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>TopCelebViewController</em></strong>/<strong><em>celebrityLabel</em></strong>
+                </p>
+                <p>
+                    <strong><em>selectedLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>TopCelebViewController</em></strong>/<strong><em>selectedLabel</em></strong>
+                </p>
+                <p>
+                    <strong><em>rejectedLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>TopCelebViewController</em></strong>/<strong><em>rejectedLabel</em></strong>
+                </p>
+                <p>
+                    <strong><em>topCelebImageView</em></strong><br>
+                    Referencing Outlet to <strong><em>TopCelebViewController</em></strong>/<strong><em>topCelebImageView</em></strong>
+                </p>
+                <h2>That’s it!</h2>
+                <p>
+                    Now, as soon as ratings are being captured in <strong><em>WouldYa</em></strong>’s, then the <strong><em>topCeleb</em></strong> will be populated by the event handler and can be viewed in this scene.
+                </p>
+                <p>
+                    Final result - successfully created a <strong><em>TopCelebrity</em></strong> on the API from an event handler. We have also added a scene to display the results.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_3_final.png"><img title="Part_3_final" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_3_final-200x300.png" alt="" width="200" height="300" /></a>
+                </p>
+                <p>
+                    NEXT: <a href="part_4_1.html">Part IV, Server Extensions</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

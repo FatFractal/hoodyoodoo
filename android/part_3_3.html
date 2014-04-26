@@ -1,0 +1,268 @@
+<html>
+<head>
+    <title>Add the TopCelebrity Scene</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part III
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part3.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part3/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-3-3" class="anchor" href="#android-tutorial-part-3-3"><span class="octicon octicon-link"></span></a>
+                    Add the TopCelebrity Scene
+                </h2>
+                <p>
+                    <strong>Note:</strong> No client code is required for an event handler as it creates only API functionality and cannot be accessed by the client directly. However, the data that is created in the <strong><em>TopCeleb</em></strong> resource can be accessed by the client.
+                </p>
+                <p>
+                    Since the TopCeleb resource uses the Celebrity object type, there is no need to define another class in the client code, To use it in the application, we need to add a new Scene, and then populate it with data that is created for us by the event handler in <strong><em>TopCeleb</em></strong>.
+                </p>
+                <p>
+                    First, we add a new activity. We will call this activity <strong><em>TopCelebActivity</em></strong>, in the package <em><strong>com.hoodyoodoo.droidapp.activity</strong></em>.
+                </p>
+                <p>
+                    Next, we create a new layout called <strong><em>top_celeb_layout.xml</em></strong>. We can now add the UI components we need to this scene. We will add the following:
+                    <ol>
+                        <li>Add an <strong><em>ImageView</em></strong> to display the image for the celebrity.</li>
+                        <li>Add a <strong><em>TextView</em></strong> to display the name of the celebrity.</li>
+                        <li>Add two <strong><em>TextView</em></strong>s that will display “Was Selected” and Was Rejected”.</li>
+                        <li>Add two <strong><em>TextView</em></strong>s that will display the actual results for “Was Selected” and Was Rejected”.</li>
+                    </ol>
+                </p>
+                <p>
+                    The code for the file is:
+                </p>
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" &gt;
+  &lt;ImageView
+      android:id="@+id/topCelebImageView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:src="@drawable/mystery2" /&gt;
+  &lt;TextView
+      android:id="@+id/celebrityNameTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Medium Text"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+  &lt;TableLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="15dip"
+      android:padding="15dip"&gt;
+      &lt;TableRow
+          android:id="@+id/selectedTableRow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" &gt;
+          &lt;TextView
+              android:id="@+id/selectedTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:gravity="right"
+              android:text="Was selected"
+              android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+          &lt;TextView
+              android:id="@+id/selectedValueTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dip"
+              android:gravity="left"
+              android:text="Selected Count"
+              android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+      &lt;/TableRow&gt;
+      &lt;TableRow
+          android:id="@+id/rejectedTableRow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" &gt;
+          &lt;TextView
+              android:id="@+id/rejectedTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              android:gravity="right"
+              android:text="Was rejected"
+              android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+          &lt;TextView
+              android:id="@+id/rejectedValueTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dip"
+              android:gravity="left"
+              android:text="Rejected Count"
+              android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+      &lt;/TableRow&gt;
+      &lt;/TableLayout&gt;
+&lt;/LinearLayout&gt;</code></pre>
+                <p>
+                    When you are done, the scene should look like this...
+                </p>
+                <p class = "aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/06/7097F275-3BBB-4DD5-8CC5-0B2E6CAE2A13.png"><img class="alignnone size-medium wp-image-4088" title="Android_Tutorial_Part_III_TopCeleb_Scene" src="http://fatfractal.com/alpha/wp-content/uploads/2012/06/7097F275-3BBB-4DD5-8CC5-0B2E6CAE2A13-225x300.png" alt="" width="225" height="300" /></a>
+                </p>
+                <p>
+                    We can now complete the <strong><em>TopCelebActivity</em></strong> implementation. First, we add the following instance variables:
+                </p>
+<pre><code>private ImageView m_topCelebImageView;
+private TextView m_celebrityNameTextView;
+private TextView m_selectedValueTextView;
+private TextView m_rejectedValueTextView;
+private FatFractal ff = Hoodyoodoo.getFF();</code></pre>
+                <p>
+                    Now, we implement some methods. We want to retrieve the latest top celebrity object, so we create a <strong><em>getTopCelebrity</em></strong> method:
+                </p>
+<pre><code>public void getTopCelebrity() {
+    try {
+        Celebrity topCeleb = ff.getObjFromUri("/ff/resources/TopCelebrity");
+        if (topCeleb != null) {
+            if (topCeleb.getImageData() != null) {
+                Bitmap bm = BitmapFactory.decodeByteArray(topCeleb.getImageData(), 0, topCeleb.getImageData().length);
+                m_topCelebImageView.setImageBitmap(bm);
+            }
+            String name = "";
+            if (topCeleb.getFirstName() != null) name = topCeleb.getFirstName();
+            if (topCeleb.getLastName() != null) name = name + " " + topCeleb.getLastName();
+            m_celebrityNameTextView.setText(name);
+            if (topCeleb.getSelectedCount() != null) m_selectedValueTextView.setText(topCeleb.getSelectedCount().toString());
+            if (topCeleb.getRejectedCount() != null) m_rejectedValueTextView.setText(topCeleb.getRejectedCount().toString());
+        } else {
+            System.out.println("getTopCelebrity did not retrieve a Celebrity");
+        }
+    }
+    catch (FFException e) {
+        e.printStackTrace();
+    }
+}</code></pre>
+                <p>
+                    Then, we need to call <strong><em>getTopCelebrity</em></strong> in the <strong><em>onResume</em></strong> method:
+                </p>
+<pre><code>public void onResume() {
+    super.onResume();
+    getTopCelebrity();
+}</code></pre>
+                <p>
+                    Now, make sure and connect up your UI components in <strong><em>top_celeb_layout.xml</em></strong> for the <strong><em>TopCelebActivity</em></strong> elements:
+                </p>
+<pre><code>public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.top_celeb_layout);
+    m_topCelebImageView             = (ImageView) findViewById(R.id.topCelebImageView);
+    m_celebrityNameTextView         = (TextView)  findViewById(R.id.celebrityNameTextView);
+    m_selectedValueTextView         = (TextView)  findViewById(R.id.selectedValueTextView);
+    m_rejectedValueTextView         = (TextView)  findViewById(R.id.rejectedValueTextView);
+}</code></pre>
+                <p>
+                    As usual, we need to declare our new Activity in <strong><em>AndroidManifest.xml</em></strong>. Add the following to the <code>application</code> element:
+                </p>
+                <pre><code>&lt;activity android:name="com.hoodyoodoo.droidapp.activity.TopCelebActivity" /&gt;</code></pre>
+                <h3>Add a Tab</h3>
+                <p>
+                    Finally, we need to tell our Tab Activity about the new Scene. We therefore need to make some additions to the <strong><em>HoodyoodooActivity</em></strong> class. First, add another constant to refer to the new tab:
+                </p>
+                <pre><code>public static final String TAB_TOP_CELEB_TAG   = "TopCeleb";</code></pre>
+                <p>
+                    Next, after the code for creating the two other tabs in <strong><em>onCreate</em></strong>, add the following:
+                </p>
+<pre><code>// Tab for TopCeleb
+TabSpec topCelebritySpec = tabHost.newTabSpec(TAB_TOP_CELEB_TAG);
+topCelebritySpec.setIndicator("TopCeleb", getResources().getDrawable(R.drawable.icon_top_celeb_tab));
+Intent topCelebrityIntent = new Intent(this, TopCelebActivity.class);
+topCelebritySpec.setContent(topCelebrityIntent);</code></pre>
+                <p>
+                    Finally, add the following line to add the tab to the tab host:
+                </p>
+                <pre><code>tabHost.addTab(topCelebritySpec);</code></pre>
+                <p>
+                    For reference, we reproduce the complete class here:
+                </p>
+<pre><code>public class HoodyoodooActivity extends TabActivity {
+    public static final String TAB_WOULDYA_TAG     = "WouldYa";
+    public static final String TAB_ADD_CELEB_TAG   = "AddCelebrity";
+    public static final String TAB_TOP_CELEB_TAG   = "TopCeleb";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        TabHost tabHost = getTabHost();
+
+        // Tab for WouldYa
+        TabSpec wouldYaSpec = tabHost.newTabSpec(TAB_WOULDYA_TAG);
+        wouldYaSpec.setIndicator("WouldYa", getResources().getDrawable(R.drawable.icon_wouldya_tab));
+        Intent wouldYaIntent = new Intent(this, WouldYaActivity.class);
+        wouldYaSpec.setContent(wouldYaIntent);
+
+        // Tab for Add Celebrity
+        TabSpec addCelebritySpec = tabHost.newTabSpec(TAB_ADD_CELEB_TAG);
+        // setting Title and Icon for the Tab
+        addCelebritySpec.setIndicator("AddCelebrity", getResources().getDrawable(R.drawable.icon_celebrity_tab));
+        Intent addCelebrityIntent = new Intent(this, CelebrityActivity.class);
+        addCelebritySpec.setContent(addCelebrityIntent);
+
+        // Tab for TopCeleb
+        TabSpec topCelebritySpec = tabHost.newTabSpec(TAB_TOP_CELEB_TAG);
+        topCelebritySpec.setIndicator("TopCeleb", getResources().getDrawable(R.drawable.icon_top_celeb_tab));
+        Intent topCelebrityIntent = new Intent(this, TopCelebActivity.class);
+        topCelebritySpec.setContent(topCelebrityIntent);
+
+        // Adding all TabSpec to TabHost
+        tabHost.addTab(wouldYaSpec); // Adding wouldYaSpec tab
+        tabHost.addTab(addCelebritySpec); // Adding addCelebrity tab
+        tabHost.addTab(topCelebritySpec); // Adding topCelebrity tab
+    }
+}</code></pre>
+                <p>
+                    That’s it!
+                </p>
+                <p>
+                    Now, as soon as ratings are being captured in <strong><em>WouldYa</em></strong>’s, then the <strong><em>topCeleb</em></strong> will be populated by the event handler and can be viewed in this scene.
+                </p>
+                <p>
+                    Final result: We successfully created a <strong><em>TopCelebrity</em></strong> on the API from an event handler. We have also added a scene to display the results.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/06/F267FEFE-7C48-45F8-8FFC-3D54CB9F476E.png"><img class="alignnone size-medium wp-image-4106" title="Android_Tutorial_Part_III_Final" src="http://fatfractal.com/alpha/wp-content/uploads/2012/06/F267FEFE-7C48-45F8-8FFC-3D54CB9F476E-180x300.png" alt="Katy Perry" width="180" height="300" /></a>
+                </p>
+                <p>
+                    NEXT: <a href="part_4_1.html">Part IV, Server Extensions</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

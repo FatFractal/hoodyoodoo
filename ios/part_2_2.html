@@ -1,0 +1,145 @@
+<html>
+<head>
+    <title>Modify WouldYaViewController</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part II
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part2/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-part-2-2" class="anchor" href="#ios-tutorial-part-2-2"><span class="octicon octicon-link"></span></a>
+                    Modify WouldYaViewController
+                </h2>
+                <p>
+                    Now, with the two Celebrity objects retrieved, we need to add the logic to create and persist the players <strong><em>WouldYa </em></strong>results to the API. This involves creating a new object, that we will call a WouldYa. In order to create the “WouldYa” class for your project, click “File”, “New”, “New File” to bring up the template chooser for the new class file. We will use the standard Objective-C class template. Click Next.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image06.png"><img class="alignnone  wp-image-1157" title="image06" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image06.png" alt="" width="585" height="394" /></a>
+                </p>
+                <p>
+                    We now enter the name of the Objective-C class that we want to create (“WouldYa”) as a subclass of NSObject.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image11.png"><img title="image11" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/image11.png" alt="" width="583" height="393" /></a>
+                </p>
+                <p>
+                    Clicking “Next” will create a <strong><em>WouldYa.h</em></strong> and <strong><em>WouldYa.m</em></strong> file in your project.
+                </p>
+                <p>
+                    If you open the <strong><em>WouldYa.h</em></strong> file, you will see that it contains:
+                </p>
+<pre><code>@interface WouldYa : NSObject
+@end</code></pre>
+                <p>
+                    If you open the <strong><em>WouldYa.m</em></strong> file, you will see that it contains:
+                </p>
+<pre><code>#import "WouldYa.h"
+@implementation WouldYa
+@end
+</code></pre>
+                <p>
+                    We now need to modify these files to include the ivars that you want for this object.
+                </p>
+                <h3>Creating the WouldYa.h header file</h3>
+                <p>
+                    For the <strong><em>WouldYa</em></strong> class, we will modify the <strong><em>WouldYa.h</em></strong> file as follows.
+                </p>
+<pre><code>@interface WouldYa : NSObject {
+    NSString        *selectedGuid;
+    NSString        *rejectedGuid;
+}
+@property (strong, nonatomic) NSString          *selectedGuid;
+@property (strong, nonatomic) NSString          *rejectedGuid;
+@end</code></pre>
+                <h3>Creating the WouldYa.m implementation file</h3>
+                <p>
+                    For the <em><strong>WouldYa.m</strong></em> file, we follow a typical object model pattern, and we include a description method for convenience as well for good practice.
+                </p>
+<pre><code>#import "WouldYa.h"
+@implementation WouldYa
+@synthesize selectedGuid, rejectedGuid;
+- (id)init {
+    self = [super init];
+    if (self) {
+    }
+    return self;
+}
+- (NSString*) description {
+    return [[NSString alloc]
+    initWithFormat:@"WouldYa[selectedGuid[%@] rejectedGuid[%@]]",
+    [self selectedGuid], [self rejectedGuid]];
+}
+@end</code></pre>
+                <h3>Modify WouldYaViewController.h</h3>
+                <p>
+                    Next, we need to modify the <strong><em>WouldYaViewController.h</em></strong> header file as follows:
+                </p>
+                <p>
+                    Add the import for the WouldYa class:
+                </p>
+<pre><code>#import "WouldYa.h"
+// Add the following properties:
+@property (strong, nonatomic) WouldYa            *wouldYa;
+@property (strong, nonatomic) IBOutlet UIButton  *rightCelebrityButton;
+@property (strong, nonatomic) IBOutlet UILabel   *rightCelebrityLabel;
+@property (strong, nonatomic) IBOutlet UIButton  *genderButton;
+@property (strong, nonatomic) IBOutlet UIButton  *playAgainButton;
+@property (strong, nonatomic) NSString           *currentGender;</code></pre>
+                <p>
+                    Add the following methods
+                </p>
+                <p>
+                    The <strong><em>toggleGender</em></strong> method toggles the value of the  <strong><em>currentGender</em></strong> property when the <strong><em>genderButton</em></strong> is clicked:
+                </p>
+                <pre><code>- (IBAction)toggleGender:(id)sender;</code></pre>
+                <p>
+                    The <strong><em>celebrityWasPicked</em></strong> method sets the value of the  <strong><em>wouldYa</em></strong> property when either the <strong><em>leftCelebrityButton</em></strong> or <strong><em>rightCelebrityButton</em></strong> is clicked:
+                </p>
+                <pre><code>- (IBAction)celebrityWasPicked:(id)sender;</code></pre>
+                <p>
+                    The <strong><em>persistWouldYa</em></strong> method verifies that the user is logged in, that <strong><em>wouldYa</em></strong> is not nil and then persists <strong><em>wouldYa</em></strong> to the API.
+                </p>
+                <pre><code>- (void) persistWouldYa;</code></pre>
+                <p>
+                    The <strong><em>playAgain</em></strong> method calls <strong><em>loadCelebrities</em></strong> when <strong><em>playAgainButton</em></strong> is clicked:
+                </p>
+                <pre><code>- (IBAction)playAgain:(id)sender;</code></pre>
+                <p>
+                    NEXT: <a href="part_2_3.html">Logic for WouldYa</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

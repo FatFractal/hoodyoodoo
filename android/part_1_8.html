@@ -1,0 +1,206 @@
+<html>
+<head>
+    <title>The WouldYaActivity</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-1-7" class="anchor" href="#android-tutorial-part-1-7"><span class="octicon octicon-link"></span></a>
+                    The WouldYaActivity
+                </h2>
+                <p>
+                    Now, set up the Scene to play the game. Start by retrieving a random <strong><em>Celebrity</em> </strong>that was saved to the API and displaying it on a new tab, which we will link to a new activity, <strong><em>WouldYaActivity</em></strong>. What’s a <strong><em>WouldYa</em></strong>, you ask? You'll find out in part II of the Tutorial! But for now...
+                </p>
+                <h3>Add the UI</h3>
+                <p>
+                    First, we will create a new layout file called <em><strong>wouldya_layout.xml</strong></em> and add the necessary UI components:
+                    <ol>
+                        <li><em><strong>ImageView</strong></em> to hold the Celebrity image.</li>
+                        <li><em><strong>TextView</strong></em> for Celebrity name.</li>
+                    </ol>
+                </p>
+                <p>
+                    Enter the following code in the layout file:
+                </p>
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/wouldYaView"&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"&gt;
+        &lt;LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"&gt;
+            &lt;ImageView
+                android:id="@+id/leftCelebImageView"
+                android:layout_width="100dip"
+                android:layout_height="150dip"
+                android:background="@drawable/mystery2" 
+                android:layout_marginBottom="10dip" 
+                android:layout_marginRight="10dip"
+            /&gt;
+            &lt;TextView
+                android:id="@+id/leftCelebTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" 
+                android:hint="Celebrity 1"
+            /&gt;
+        &lt;/LinearLayout&gt;
+    &lt;/LinearLayout&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-50dip"
+        android:gravity="center_horizontal"&gt;
+    &lt;/LinearLayout&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="0dip"&gt;
+    &lt;/LinearLayout&gt;
+&lt;/LinearLayout&gt;</code></pre>
+                <p>
+                    And the Activity should look like this:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/06/22BDFF4A-0DF9-4773-A7AA-5CE9D4C9FC62.png"><img class="alignnone size-medium wp-image-3933" title="Android_Tutorial_Part_I_WouldYa" src="http://fatfractal.com/beta/wp-content/uploads/2012/06/22BDFF4A-0DF9-4773-A7AA-5CE9D4C9FC62-224x300.png" alt="" width="224" height="300" /></a>
+                </p>
+                <p>
+                    We also have to add some resources for the tab appearance, to the appropriate <strong><em>res/drawable</em></strong> directories. Add the file <strong><em>icon_wouldya_tab.xml</em></strong>:
+                </p>
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;selector xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;item android:drawable="@drawable/button_play_blue"
+    android:state_selected="true" /&gt;
+    &lt;item android:drawable="@drawable/button_play_gray" /&gt;
+&lt;/selector&gt;</code></pre>
+                <h3>The WouldYaActivity Class</h3>
+                <p>
+                    Next, add a new activity class, <strong><em>WouldYaActivity</em></strong>. First, add the following data members:
+                </p>
+<pre><code>private Celebrity   m_leftCeleb;
+private ImageView   m_leftCelebImageView;
+private TextView    m_leftCelebNameTextView;
+private FatFractal ff = Hoodyoodoo.getFF();</code></pre>
+                <p>
+                    The naming of the members anticipates the addition of another celebrity, which we do in Section II.
+                </p>
+                <p>
+                    Next, we create the methods we need in <strong><em>WouldYaActivity</em></strong>.
+                </p>
+                <p>
+                    We want to use a single CRUD method that will retrieve all the objects needed from the API at once.
+                </p>
+                <p>
+                    This line of code returns all objects found at that API collection. We will create the <strong><em>loadCelebrities</em></strong> method to test this out.
+                </p>
+<pre><code>private void loadCelebrities() {
+    try {
+        List celebArray = ff.getArrayFromUri("/Celebrity");
+        int r = new Random().nextInt(celebArray.size());
+        m_leftCeleb = celebArray.get(r);
+        m_leftCelebNameTextView.setText(m_leftCeleb.getFirstName() + " " + m_leftCeleb.getLastName());
+        if (m_leftCeleb.getImageData() != null) {
+            Bitmap bm = BitmapFactory.decodeByteArray(m_leftCeleb.getImageData(), 0, m_leftCeleb.getImageData().length);
+            m_leftCelebImageView.setImageBitmap(bm);
+        }
+    } catch (FFException e) {
+        e.printStackTrace();
+    }
+}</code></pre>
+                <p>
+                    This code does the following:
+                    <ol>
+                        <li>Retrieves all of the <strong><em>Celebrity</em></strong> objects from the API anonymously and populates the results to <strong><em>celebArray</em></strong> using a synchronous method.</li>
+                        <li>Selects a random <strong><em>Celebrity</em></strong> object from <strong><em>celebArray</em></strong> and sets it to <strong><em>m_leftCeleb</em></strong>.</li>
+                        <li>Sets the <strong><em>text</em></strong> field of<strong> <em>m_leftCelebNameTextView</em></strong> to the concatenation of the celebrity's first and last names.</li>
+                        <li>Sets the background image for <strong><em>m_leftCelebImageView</em></strong> using a bitmap created from the image data from <strong><em>m_leftCeleb</em></strong>.</li>
+                    </ol>
+                    <em>Side note:</em> Getting all objects at once is a very expensive operation for your API, from both client- and network-resource perspectives. We will explore how to use queries in the Tutorial Part II, to address this important development issue.
+                </p>
+                <p>
+                    Now, connect up your UI components from <em><strong>wouldya_layout.xml</strong></em>. Add the following <em><strong>onCreate</strong></em> method:
+                </p>
+<pre><code>public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.wouldya_layout);
+    m_leftCelebImageView      = (ImageView)   findViewById(R.id.leftCelebImageView);
+    m_leftCelebNameTextView   = (TextView)    findViewById(R.id.leftCelebTextView);
+    loadCelebrities();
+}</code></pre>
+                <p>
+                    Finally, as always, we need to declare our new Activity in <strong><em>AndroidManifest.xml</em></strong>. Add the following to the <code>application</code> element:
+                </p>
+                <pre><code>
+                    <activity android:name="com.hoodyoodoo.droidapp.activity.WouldYaActivity" />
+                </code></pre>
+                <p>
+                    When you run the app, it loads and populates the <strong><em>WouldYaViewController</em></strong> Scene. Then, if everything is working right, it successfully retrieves a Celebrity object, randomly, and populates the UI.
+                </p>
+                <p>
+                    <em>Side note:</em> You may notice, when this Scene loads, the end-user is not yet authenticated. Until the end-user attempts to affect data on the API, they may retrieve objects anonymously.
+                    <p class="aligncenter">
+                        <a href="http://fatfractal.com/beta/wp-content/uploads/2012/06/655341B9-5EA1-48B7-B989-A641B55023281.png"><img class="alignnone size-medium wp-image-3951" title="Android_Tutorial_Part_I_SingleWouldYa" src="http://fatfractal.com/beta/wp-content/uploads/2012/06/655341B9-5EA1-48B7-B989-A641B55023281-181x300.png" alt="Katy Perry" width="181" height="300" /></a>
+                    </p>
+                    <h3>Summary</h3>
+                    <p>
+                        In this tutorial, we have created our unit tests for all CRUD actions for a our very own <strong><em>Celebrity</em></strong> class we created as well as authentication without having to translate in and out of NSDictionary objects or use some other third party object models. We have used both synchronous as well as asynchronous methods within the tests to make sure they operate correctly.
+                    </p>
+                    <p>
+                        Another key concept that we have demonstrated is the power of creating a complex object. In this case, an object with a blob (an image) that is seamlessly persisted and retrieved from the API. There is virtually no limit to the objects that you can exchange with your API. In fact, one could easily persist <strong><em>CelebrityActivity</em></strong> if one wanted to.
+                    </p>
+                    <p>
+                        We have also built a Scene that Creates a <strong><em>Celebrity</em></strong> and a second one that Retrieves it. The <strong><em>CelebrityActivity</em></strong> Scene shows a nice pattern for authentication and the <strong><em>WouldYaActivity</em></strong> shows that you can retrieve objects from the FatFractal API anonymously which is very convenient for the developer and can greatly improve the end user experience with your application.
+                    </p>
+                    <p>
+                    NEXT: <a href="part_2_1.html">Tutorial Part II, Using Queries</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

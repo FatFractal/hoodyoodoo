@@ -1,0 +1,190 @@
+<html>
+    <head>
+        <title>Event Handlers</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+        <link rel="stylesheet" href="../stylesheets/styles.css">
+        <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+        <script src="../javascripts/scale.fix.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part III
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part3.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part3/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-3-1" class="anchor" href="#android-tutorial-part-3-1"><span class="octicon octicon-link"></span></a>
+                    Event Handlers
+                </h2>
+                <p>
+                    The next thing we need to do with our application is keep track of information across all players to determine global statistics. To do that, we will create an Event Handler that is triggered any time a new <strong><em>WouldYa</em></strong> is created. Upon that event, we want to update a counter for each celebrity, and also check to see if we have a new top rated celebrity and update a record for that position.
+                </p>
+                <p> 
+                    If you wish, you can download the complete Part III project file from <a href="https://github.com/FatFractal/hoodyoodoo/archive/part3.zip" title="part3.zip">Download Tutorial Part 3 Sample Files</a> and then unzip and then either run newapp again from this directory to use this application or copy the files that are enclosed to the application directory you created in a previous section <a href="index.html#local-install">Installing FatFractal</a> allowing the copy to replace all the previous files.
+                </p>
+                <p> 
+                    If you have not scaffolded your app already, it is not a problem, just run <strong>ffef newapp</strong>, using your subdomain, as before from the directory with the Part III files you have just downloaded and it will set up all the things that you need.
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef newapp hoodyoodoo <em>&lt;your subdomain&gt;</em></code></pre>
+                <p>
+                    <em>Note: The subdomain refers to the organization name you signed up with, e.g. acme in acme.fatfractal.com</em>
+                </p>
+                <p> 
+                    <strong>Note:</strong> When you download the project, the client application is configured to use an API that is already deployed and populated with data. This means you can run the application on your simulator immediately. To use your API, you should edit the Hoodyoodoo.java file as before to point to the API that you have set up.
+                </p>
+                <p> 
+                    In Part III, we will do the following:
+                    <ol>
+                        <li>Add an event handler called <strong><em>handleWouldYaCreate();</em></strong> that is called whenever a <strong><em>WouldYa</em></strong> object is created.</li>
+                        <li>Update the <strong><em>Celebrity</em></strong> records with a counter field to track their selections and rejections.</li>
+                        <li>Create a new resource called <strong><em>TopCelebrity</em></strong> that is updated whenever a new high score is found from the <strong><em>WouldYa</em></strong> create.</li>
+                        <li>Add a new Scene that will retrieve the latest results and display them.</li>
+                    </ol>
+                </p>
+                <h3>Section 1: Adding event handlers to the API</h3>
+                <p> 
+                    One of the most powerful capabilities of the FatFractal API is the ability to create event based actions. From the last Tutorial, selecting a <strong><em>Celebrity</em></strong> creates a <strong><em>WouldYa</em></strong> record on the API. In Part 3 of the Tutorial, we will define an event handler that is triggered by a <strong><em>WouldYa</em></strong> Create event and then update the <strong><em>Celebrity</em></strong> resource with two counters.
+                </p>
+                <h4>Server Description for the Event Handler</h4>
+                <p> 
+                    The Event Handler must be defined in your application.fddl file that is in the ff-config directory that was created for you during scaffolding. See <a href="http://fatfractal.com/v2/documentation/#document-noserver-ffdl-overview">FatFractal Definition Language</a> for more information.
+                </p>
+                <p> 
+                    The download of the project for Tutorial Part 3 also includes the files that were generated for you by the scaffolding process so that you can see what the application.fddl looks like at the end of the Tutorial.
+                </p>
+                <p> 
+                    The FFDL looks like:
+                </p>
+                <pre><code>CREATE HANDLER WouldYaCreate_1 ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);</code></pre>
+                <p> 
+                    This entry tells the FatFractal noserver to create an event on <strong><em>WouldYa</em></strong> Create, and execute the <strong><em>handleWouldYaCreate</em></strong> function that is in WouldYaEventHandlers.js file passing in the event data.
+                </p>
+                <h4>A JavaScript Event Handler</h4>
+                <p> 
+                    We will now create a event handler JavaScript file that defines an additional object model called <strong><em>TopCeleb</em></strong>, and also adds additional information (<strong><em>selectedCount</em></strong> and <strong><em>rejectedCount</em></strong>) to the <strong><em>Celebrity</em></strong> objects whenever a new <strong><em>WouldYa</em></strong> record is created. The FatFractal noserver will automatically add the <strong><em>selectedCount</em></strong> and <strong><em>rejectedCount</em></strong> ivars to the <strong><em>Celebrity</em></strong> class and will also create the <strong><em>TopCeleb</em></strong> class for you as well.
+                </p>
+                <p> 
+                    Note: the additional fields:
+                    {number} <strong><em>selectedCount</em></strong>
+                    {number}  <strong><em>rejectedCount</em></strong>
+                </p>
+                <p> 
+                    are added lazily to the returned data for the <strong><em>Celebrity</em></strong> class. You can modify the model class in your Java class if you like, or just access the data as returned as you wish.
+                </p>
+                <p> 
+                    To create this Event Handler, we create a javascript file (in this case called WouldYaEventHandlers.js) in the /ff-scripts directory of your application. The basic structure of the file is:
+                </p>
+<pre><code>var ff = require('ffef/FatFractal');
+
+function handleWouldYaCreate(json) {
+    … do some stuff
+}
+
+exports.handleWouldYaCreate = handleWouldYaCreate;</code></pre>
+                <p> 
+                    FatFractal.js is the server-side encapsulation of the NoServer API that is available to the EventHandler functions. For more information, see the <a href="http://www.fatfractal.com/prod/linked_files/FF-Javascript-Server-Side-Docs/global.html">HTML5/JS SDK Reference</a>.
+                </p>
+                <p> 
+                    This gives us another example of the power of the FatFractal API. We are now going to create another <strong><em>RESOURCE</em></strong> called <strong><em>TopCelebrity</em></strong> which will be of TYPE Celebrity. This allows us to easily reuse our object models for other purposes. This new resource will keep track of the top rated celebrity over time.
+                </p>
+                <p> 
+                    Let’s have a look at what data we get from the event:
+                </p>
+                <pre><code>var data = ff.getEventHandlerData();</code></pre>
+                <p> 
+                    The data that was created by the CRUD <strong><em>Create</em></strong> event (a new <strong><em>WouldYa</em></strong> in this case) looks liks:
+                </p>
+<pre><code>{
+    "guid":"2T0M7sJpXjaJp7OZtzQhK4",
+    "updatedAt":1330302739991,
+    "createdBy":"kevin",
+    "createdAt":1330302739991,
+    "rejectedGuid":"evusq-FzgU-ZgN0vR6pZv7",
+    "ffUrl":"/ff/resources/WouldYa/2T0M7sJpXjaJp7OZtzQhK4",
+    "selectedGuid":"xQ08Si91cPg3JEuDOR2wz4",
+    "clazz":"WouldYa",
+    "ffRL":"/WouldYa",
+    "updatedBy":"kevin",
+    "version":1
+}</code></pre>
+                <p> 
+                    Get the <strong><em>Celebrity</em></strong> objects for the <strong><em>selectedGuid</em></strong> and <strong><em>rejectedGuid</em></strong> that are in the <strong><em>WouldYa</em></strong> from the DataStore.
+                </p>
+<pre><code>var selectedCelebrity = ff.getObjFromUri("/Celebrity/" + data.selectedGuid);
+var rejectedCelebrity = ff.getObjFromUri("/Celebrity/" + data.rejectedGuid);</code></pre>
+                <p> 
+                    Since we are adding <strong><em>selectedCount</em></strong> and <strong><em>rejectedCount</em></strong> fields to the <strong><em>Celebrity</em></strong> object lazily, make sure and set the initial values.
+                </p>
+<pre><code>if(!selectedCelebrity.selectedCount) selectedCelebrity.selectedCount = 0;
+selectedCelebrity.selectedCount++;
+if(!rejectedCelebrity.rejectedCount) rejectedCelebrity.rejectedCount = 0;
+rejectedCelebrity.rejectedCount++;</code></pre>
+                <p> 
+                    Next, we update the Celebrity resources with the updated counters.
+                </p>
+<pre><code>ff.updateObj(selectedCelebrity);
+ff.updateObj(rejectedCelebrity);</code></pre>
+                <p> 
+                    Now, we want to check if the results are that we have a new top rated celebrity.
+                </p>
+                <p> 
+                    First, get the latest top celebrity resource
+                </p>
+                <pre><code>var topCelebrityCheck = ff.getArrayFromUri("/TopCelebrity");</code></pre>
+                <p> 
+                    If there is no record, create the first one.
+                </p>
+<pre><code>if(topCelebrityCheck.length == 0)  {
+    var topCelebrity = ff.createObjAtUri(selectedCelebrity, "/TopCelebrity");
+}</code></pre>
+                <p>
+                    If there is a record, compare the two and decide whether to create a new one- or not.
+                </p>
+<pre><code>var topCelebrity = topCelebrityCheck[0];
+if(selectedCelebrity.selectedCount > topCelebrity.selectedCount) {
+    if (selectedCelebrity.guid == topCelebrity.guid) { // update the topCelebrity's counts
+        topCelebrity.rejectedCount = selectedCelebrity.rejectedCount || 0;
+        topCelebrity.selectedCount = selectedCelebrity.selectedCount;
+        ff.updateObj(topCelebrity);
+    } else { // it's a new one!
+        ff.deleteObj(topCelebrity);
+        ff.createObjAtUrl(selectedCelebrity, "/TopCelebrity");
+    }
+} else if (rejectedCelebrity.guid == topCelebrity.guid) { // update the topCelebrity's rejected count                                                        
+    topCelebrity.rejectedCount = rejectedCelebrity.rejectedCount || 0;
+    topCelebrity.selectedCount = rejectedCelebrity.selectedCount;
+    ff.updateObj(topCelebrity);
+}</code></pre>
+<p>
+    NEXT: <a href="part_3_2.html">Add the Event Handler to Your Application Description</a>
+</p>
+</section>
+</div>
+<footer>
+<p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+<p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+</footer>
+<!--[if !IE]><script>fixScale(document);</script><![endif]-->
+</body>
+</html>

@@ -1,0 +1,80 @@
+<html>
+<head>
+    <title>Add the Android SDK</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->    
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-1-2" class="anchor" href="#android-tutorial-part-1-2"><span class="octicon octicon-link"></span></a>
+                    Add the Android SDK
+                </h2>
+                <p>
+                    If you downloaded the Part I project files, the libraries are already included in the download. If you are creating from scratch, you need to add the Android SDK to your project. You can download the <a href="http://system.fatfractal.com/console/ff/ext/Releases/Latest/FF_ANDROID_SDK">FatFractal Android SDK</a>.
+                </p>
+                <p>
+                    You will also need two Jackson high-performance JSON processor jar files as well:
+                </p>
+                <p>
+                    <a href="http://repo1.maven.org/maven2/org/codehaus/jackson/jackson-core-asl/1.9.6/jackson-core-asl-1.9.6.jar" title="Jackson Core">Jackson Core</a>
+                </p>
+                <p>
+                    and 
+                </p>
+                <p>
+                    <a href="http://repo1.maven.org/maven2/org/codehaus/jackson/jackson-mapper-asl/1.9.6/jackson-mapper-asl-1.9.6.jar" title="Jackson Mapper">Jackson Mapper</a>
+                </p>
+                <p>
+                    After you download these, you will find a set of jar files that you can add to your applications. Move these files to a directory that you keep your Java libraries in.
+                </p>
+                <p>
+                    Then, in Eclipse, we do the following to add the FatFractal libraries to the hoodyoodoo app:
+                    <ol>
+                        <li>In the Project Explorer, select your project root module.</li>
+                        <li>If there is no "libs" folder, click on File &gt; New &gt; Folder and add a libs folder with "hoodyoodoo" as the parent folder.</li>
+                        <li>Drag and drop the FF-Android-SDK-1.0.jar, jackson-core-asl-1-1.9.6.jar and jackson-mapper-asl-1-1.9.6.jar files onto the libs folder.</li>
+                    </ol>
+                </p>
+                <p>
+                    When prompted, you can choose to copy the framework to the application source if you wish or refer to it from the application code which can make it easier to upgrade your applications from that common store.
+                </p>
+                <p>
+                    NEXT: <a href="part_1_3.html">Add the "Celebrity" Object Model to Your Application</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+    </html>

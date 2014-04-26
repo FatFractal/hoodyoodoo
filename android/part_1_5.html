@@ -1,0 +1,136 @@
+<html>
+<head>
+    <title>Create Login Dialog</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-1-5" class="anchor" href="#android-tutorial-part-1-5"><span class="octicon octicon-link"></span></a>
+                    Create Login Dialog
+                </h2>
+                <p>
+                    First, we need to create a new layout file. Create a file called <strong><em>login.xml</em></strong> in your layout directory, and enter the following code:
+                </p>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;LinearLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/root"
+    xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;TextView
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:id="@+id/userNameTextView"
+    android:text="User Name"
+    android:textStyle="bold" /&gt;
+    &lt;EditText
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:id="@+id/userNameEditText"
+    android:inputType="text" /&gt;
+    &lt;TextView
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:id="@+id/passwordTextView"
+    android:text="Password"
+    android:textStyle="bold" /&gt;
+    &lt;EditText
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:id="@+id/passwordEditText"
+    android:inputType="textPassword" /&gt;
+    &lt;TextView
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:id="@+id/loginRegisterErrorTextView"
+    android:textStyle="bold"
+    android:gravity="center" /&gt;
+&lt;/LinearLayout&gt;</code></pre>
+            <p>
+                The resulting layout should look something like this:
+            </p>
+            <p class = "aligncenter">
+                <a href="http://fatfractal.com/beta/wp-content/uploads/2012/07/5E74A457-CD1A-4A85-AFD7-DB5234FC8C711.png"><img src="http://fatfractal.com/beta/wp-content/uploads/2012/07/5E74A457-CD1A-4A85-AFD7-DB5234FC8C711.png" alt="" title="5E74A457-CD1A-4A85-AFD7-DB5234FC8C71" width="235" height="315" class="aligncenter size-full wp-image-6949" /></a>
+            </p>
+            <p>
+                Then add the following method to the <strong><em>Hoodyoodoo</em></strong> class. The method provides a login dialog that can be used from anywhere in the app:
+            </p>
+<pre><code>public AlertDialog loginDialog(Context c, String message) {
+    LayoutInflater factory = LayoutInflater.from(c);            
+    final View textEntryView = factory.inflate(R.layout.login, null);
+    final AlertDialog.Builder failAlert = new AlertDialog.Builder(c);
+    failAlert.setTitle("Login/ Register Failed"); 
+    failAlert.setNegativeButton("OK", new DialogInterface.OnClickListener() { 
+        public void onClick(DialogInterface dialog, int whichButton) { 
+            // Cancelled
+        }
+    });
+    AlertDialog.Builder alert = new AlertDialog.Builder(c); 
+    alert.setTitle("Login/ Register"); 
+    alert.setMessage(message); 
+    alert.setView(textEntryView); 
+    alert.setPositiveButton("Login", new DialogInterface.OnClickListener() { 
+        public void onClick(DialogInterface dialog, int whichButton) { 
+            try {
+                final EditText usernameInput = (EditText) textEntryView.findViewById(R.id.userNameEditText);
+                final EditText passwordInput = (EditText) textEntryView.findViewById(R.id.passwordEditText);
+                ff.login(usernameInput.getText().toString(), passwordInput.getText().toString());
+            }
+            catch (FFException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { 
+        public void onClick(DialogInterface dialog, int whichButton) {
+            // Canceled. 
+        }
+    }); 
+    return alert.create();
+}</code></pre>
+            <p>
+                That's it for the <strong><em>Hoodyoodoo</em></strong> class! Now we're ready to move on and create some of the UI and controllers for the app!
+            </p>
+            <p>
+                    NEXT: <a href="part_1_6.html">Add a Tab Activity</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    </body>
+    </html>

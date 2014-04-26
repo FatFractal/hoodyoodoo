@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>Create HTML File</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->    
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HTML5/JS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-add-framework" class="anchor" href="#html5-js-tutorial-add-framework"><span class="octicon octicon-link"></span></a>
+                    Create HTML File
+                </h2>
+                <p>
+                    Time to write some HTML! Your project's <code>webapp</code> directory will already contain a default <code>index.html</code> file. In this section, we will replace the contents of that file.
+                </p>
+                <p>
+                    First, let's put down the basic skeleton of the file:
+                </p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+    &lt;/head&gt;
+    &lt;body id="body"&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>
+Next, put the following in the <code>&lt;head&gt;</code> tag:
+</p>
+<pre><code>&lt;meta charset="utf-8" /&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"&gt;
+&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;
+&lt;meta name="apple-mobile-web-app-status-bar-style" content="black"&gt;
+&lt;link rel="apple-touch-icon" href="Images/icon.png"/&gt;
+&lt;link rel="stylesheet" href="//ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.css"/&gt;
+&lt;script type="text/javascript" src="Scripts/FatFractal.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.1.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="Scripts/hoodyoodoo.js"&gt;&lt;/script&gt;
+&lt;style&gt;
+    label { color: white}
+    h1 { color: white; text-align: center; }
+    .ui-page { background: black; }
+    .ui-field-contain { text-align: center; }
+    .nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+    .nav-glyphish-example .ui-btn .ui-icon { width: 30px !important; height: 30px !important; margin-left: -15px !important; box-shadow: none !important; -moz-box-shadow: none !important; -webkit-box-shadow: none !important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+    #wypwyt .ui-icon, #acpwyt .ui-icon { background: url(Images/button_play_gray.png) 50% 50% no-repeat; background-size: 32px 32px; }
+    #wypact .ui-icon, #acpact .ui-icon { background: url(Images/button_add_gray.png) 50% 50% no-repeat; background-size: 32px 32px;  }
+    .imgAjaxLoader{position: fixed;top: 50%;left: 50%;margin-top: -24px;margin-left: -24px;z-index: 100;display: none;}
+    .celebImage{max-width:200px;max-height:300px;}
+    #fileUploaderDropDiv{margin:0;padding:0;}
+&lt;/style&gt;
+&lt;title&gt;HoodYooDoo?&lt;/title&gt;</code></pre>
+                <p>
+                This code simply sets some standard metadata for your app, defines some JavaScript requirements such as the FatFractal library, JQuery Mobile, defines some styles, and gives our app page a title. Also notice the dependency on the file <code>Scripts/hoodyoodoo.js</code>. We create that file in next section, and it will contain the JavaScript we use to interact with the FatFractal backend.
+                <p>
+                <p>NEXT: <a href="part_1_3.html">Add the Celebrity Model to your App</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+    </html>

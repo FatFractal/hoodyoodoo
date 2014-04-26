@@ -1,0 +1,247 @@
+<html>
+<head>
+    <title>Update the Client Code</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part IV
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part4.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part4/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-4-2" class="anchor" href="#android-tutorial-part-4-2"><span class="octicon octicon-link"></span></a>
+                    Update the Client Code
+                </h2>
+                <p>
+                    In order to use this new extension method, you need to do add a matching <strong><em>StatsObject</em></strong> to your project.
+                </p>
+<pre><code>public class StatsObject {
+	private Integer m_totalUsers = 0;
+	private Integer m_totalCelebrities = 0;
+	private Integer m_totalRatings = 0;
+	private Integer m_yourRatings = 0;
+
+	public StatsObject() {}
+
+	public Integer getTotalUsers() {return m_totalUsers;}
+	public Integer getTotalCelebrities() {return m_totalCelebrities;}
+	public Integer getTotalRatings() {return m_totalRatings;}
+	public Integer getYourRatings() {return m_yourRatings;}
+
+	public void setTotalUsers(Integer param) {m_totalUsers = param;}
+	public void setTotalCelebrities(Integer param) {m_totalCelebrities = param;}
+	public void setTotalRatings(Integer param) {m_totalRatings = param;}
+	public void setYourRatings(Integer param) {m_yourRatings = param;}
+}</code></pre>
+                <p>
+                    You can then call the extension using the standard CRUD url pattern.
+                </p>
+                <pre><code>statsObject = ff.getObjFromUri("/ff/ext/Stats");</code></pre>
+                <p>
+                    We also need to update <strong><em>TopCelebActivity</em></strong> to use our new <strong><em>StatsObject </em></strong>class. First, add in the additional instance variables we will be using:
+                </p>
+<pre><code>private TextView m_totalUsersValueTextView;
+private TextView m_totalCelebritiesValueTextView;
+private TextView m_totalRatingsValueTextView;
+private TextView m_yourRatingsValueTextView;</code></pre>
+                <p>
+                    Next, we need to add a new method to retrieve the data:
+                </p>
+<pre><code>public void getStats() {
+	if(!ff.isLoggedIn()) {
+		AlertDialog alert = new Hoodyoodoo().loginDialog(this, "You must be logged in to retrieve your personal stats.");
+		alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				if(ff.isLoggedIn()) getStats();
+			}
+		});
+		alert.show();
+	} else {
+		new AsyncTask() {
+			@Override
+			protected StatsObject doInBackground(String... params) {
+				try {
+					StatsObject statsObject = ff.getObjFromUri("/ff/ext/Stats");
+					return statsObject;
+				}
+				catch (FFException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+			@Override
+			protected void onPostExecute(StatsObject statsObject) {
+				if(statsObject != null) {
+					m_totalUsersValueTextView.setText(statsObject.getTotalUsers().toString());
+					m_totalCelebritiesValueTextView.setText(statsObject.getTotalCelebrities().toString());
+					m_totalRatingsValueTextView.setText(statsObject.getTotalRatings().toString());
+					m_yourRatingsValueTextView.setText(statsObject.getYourRatings().toString());
+				} else {
+					System.out.println("getStats did not retrieve a StatsObject");
+				}
+			}
+		}.execute();
+	}
+}</code></pre>
+                <p>
+                    Now that we have our statsObject, let’s add in the UI components to display the results. To do this, we add additional <em><strong>TextView</strong></em>s for both the headings and the data as follows to <strong><em>top_celeb_layout.xml</em></strong>:
+                    <ol>
+                        	<li>Add two <strong><em>TextView</em></strong>s that will display “Total Users” and the data from <strong><em>totalUsers</em></strong>.</li>
+                        	<li>Add two <strong><em>TextView</em></strong>s that will display “Total Celebrities” and the data from <strong><em>totalCelebrities</em></strong>.</li>
+                            <li>Add two <strong><em>TextView</em></strong>s that will display “Total Ratings” and the data from <strong><em>totalRatings</em></strong>.</li>
+                        	<li>Add two <strong><em>TextView</em></strong>s that will display “Your Ratings” and the data from <strong><em>yourRatings</em></strong>.</li>
+                    </ol>
+                </p>
+                <p>
+                    Add the following code to the end of your layout file, within the <code>TableLayout</code> element:
+                </p>
+<pre><code>
+&lt;TableRow
+  android:id="@+id/totalRatingsTableRow"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content" &gt;
+  &lt;TextView
+      android:id="@+id/totalRatingsTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="10dip"
+      android:gravity="right"
+      android:text="Total Ratings"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+  &lt;TextView
+      android:id="@+id/totalRatingsValueTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="10dip"
+      android:gravity="left"
+      android:text="Ratings Count"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+&lt;/TableRow&gt;
+&lt;TableRow
+  android:id="@+id/totalUsersTableRow"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content" &gt;
+  &lt;TextView
+      android:id="@+id/totalUsersTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="10dip"
+      android:gravity="right"
+      android:text="Total Users"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+  &lt;TextView
+      android:id="@+id/totalUsersValueTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="10dip"
+      android:gravity="left"
+      android:text="Total Users Value"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+&lt;/TableRow&gt;
+&lt;TableRow
+  android:id="@+id/totalCelebritiesTableRow"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content" &gt;
+  &lt;TextView
+      android:id="@+id/totalCelebritiesTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="10dip"
+      android:gravity="right"
+      android:text="Total Celebrities"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+  &lt;TextView
+      android:id="@+id/totalCelebritiesValueTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="10dip"
+      android:gravity="left"
+      android:text="Total Celebrities Value"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+&lt;/TableRow&gt;
+&lt;TableRow
+  android:id="@+id/yourRatingsTableRow"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content" &gt;
+  &lt;TextView
+      android:id="@+id/yourRatingsTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="10dip"
+      android:gravity="right"
+      android:text="Your Ratings"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+  &lt;TextView
+      android:id="@+id/yourRatingsValueTextView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="10dip"
+      android:gravity="left"
+      android:text="Your Ratings Value"
+      android:textAppearance="?android:attr/textAppearanceMedium" /&gt;
+&lt;/TableRow&gt;
+</code></pre>
+                <p>
+                    Your scene should look something like this:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/06/3F850E4A-C565-4D41-B44C-9703C58C3BBB.png"><img title="Android_Tutorial_Part_IV_Scene" src="http://fatfractal.com/beta/wp-content/uploads/2012/06/3F850E4A-C565-4D41-B44C-9703C58C3BBB-223x300.png" alt="" width="223" height="300" /></a>
+                </p>
+                <p>
+                    Next, make sure and connect up your UI components in the <strong><em>onCreate</em></strong> method of <strong><em>TopCelebActivity</em></strong>:
+                </p>
+<pre><code>m_totalRatingsValueTextView     = (TextView)  findViewById(R.id.totalRatingsValueTextView);
+m_totalUsersValueTextView       = (TextView)  findViewById(R.id.totalUsersValueTextView);
+m_totalCelebritiesValueTextView = (TextView)  findViewById(R.id.totalCelebritiesValueTextView);
+m_yourRatingsValueTextView      = (TextView)  findViewById(R.id.yourRatingsValueTextView);</code></pre>
+                <p>
+                    Lastly, we need to call the <strong><em>getStats</em></strong> method by adding the following line to the <strong><em>onResume</em></strong> method of <strong><em>TopCelebActivity</em></strong>:
+                </p>
+                <pre><code>getStats();</code></pre>
+                <h3>That’s it!</h3>
+                <p>
+                    Now, as soon as ratings are being captured in <strong><em>WouldYa</em></strong>’s, then we can call the server extension that will aggregate the statistics on the fly and return a <strong><em>StatsObject</em></strong> that can be used to populate the scene.
+                </p>
+                <p>
+                    Final result: We successfully created a <strong><em>StatsObject</em></strong> on the API from an server extension that updates the corresponding UI components.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/06/F0D36FA9-4CD9-452D-9511-8698D29945FF.png"><img class="alignnone size-medium wp-image-4124" title="Android_Tutorial_Part_IV_Final" src="http://fatfractal.com/beta/wp-content/uploads/2012/06/F0D36FA9-4CD9-452D-9511-8698D29945FF-181x300.png" alt="" width="181" height="300" /></a>
+                <p>
+                    NEXT: <a href="part_5_1.html">Push Notifications</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

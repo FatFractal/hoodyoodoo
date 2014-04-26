@@ -1,0 +1,175 @@
+<html>
+<head>
+    <title>Logic for WouldYa</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part II
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part2/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-part-2-3" class="anchor" href="#ios-tutorial-part-2-3"><span class="octicon octicon-link"></span></a>
+                    Logic for WouldYa
+                </h2>
+                <h3>WouldYaViewController.m modifications</h3>
+                <p>
+                    In the <strong><em>WouldYaViewController.m</em></strong> implementation file, we need to do the following:
+                </p>
+                <p>
+                    Synthesize the additional properties we have added:
+                </p>
+                <pre><code>@synthesize rightCelebrity, rightCelebrityLabel, rightCelebrityButton, currentGender, genderButton, playAgainButton, rightResponseLabel, leftResponseLabel, wouldYa;</code></pre>
+                <p>
+                    The most important thing is to change the <strong><em>loadCelebrities</em></strong> method to use queries instead of filtering in the client. We are also adding <strong><em>rightCelebrity</em></strong> as well. You will see that <strong><em>leftCelebrity</em></strong> is retrieved with the following query:
+                </p>
+                <pre><code>(gender eq '%@' and guid eq random(guid))</code></pre>
+                <p>
+                    For rightCelebrity, we need to also ensure that we do not retrieve the same celebrity as leftCelebrity, and so we have to get the guid for leftCelebrity, create a query that will make sure that rightCelebrity is different. To do this, we create the query string with <strong><em>NSString</em></strong> <strong><em>stringWithFormat:</em></strong> and getting the guid for leftCelebrity using the <strong><em>FatFractal</em></strong> <strong><em>metaDataForObj:</em></strong> method.
+                </p>
+<pre><code> [NSString stringWithFormat:
+    @"/ff/resources/Celebrity/(gender eq '%@' and guid ne '%@' and guid eq random(guid))",
+    currentGender,
+    [[[FatFractal main] metaDataForObj:leftCelebrity] guid]]</code></pre>
+                <p>
+                    Here is the modified <strong><em>loadCelebrities</em></strong> method:
+                </p>
+<pre><code>- (void) loadCelebrities {
+    playAgainButton.hidden = YES;
+    playAgainButton.enabled = NO;
+    [leftCelebrityButton setImage:nil forState:UIControlStateNormal];
+    [rightCelebrityButton setImage:nil forState:UIControlStateNormal];
+    [[leftCelebrityButton layer] setBorderColor:[UIColor grayColor].CGColor];
+    [[rightCelebrityButton layer] setBorderColor:[UIColor grayColor].CGColor];
+    [[FatFractal main] getObjFromUrl:[NSString stringWithFormat:
+    @"/ff/resources/Celebrity/(gender eq '%@' and guid eq random(guid))",
+    currentGender]
+    onComplete:^(NSError *err, id celeb, NSHTTPURLResponse *httpResponse)
+    {
+        if (err) {
+            NSLog(@"WouldYaViewController loadCelebrities leftCelebrity failed: %@", [err localizedDescription]);
+            [leftCelebrityButton setBackgroundImage:[UIImage imageNamed:@"mystery2.png"] forState:UIControlStateNormal];
+            leftCelebrityLabel.text = @"No celebrities found";
+            [rightCelebrityButton setBackgroundImage:[UIImage imageNamed:@"mystery3.png"] forState:UIControlStateNormal];
+            rightCelebrityLabel.text = @"No celebrities found";
+            return;
+        }
+        if(celeb) {
+            leftCelebrity = celeb;
+            FFMetaData *meta = [[FatFractal main] metaDataForObj:celeb];
+            leftCelebrityLabel.text = [NSString stringWithFormat:@"%@ %@", leftCelebrity.firstName, leftCelebrity.lastName];
+            [leftCelebrityButton setBackgroundImage:[[UIImage alloc] initWithData:leftCelebrity.imageData] forState:UIControlStateNormal];
+            NSError * error;
+            rightCelebrity = [[FatFractal main]
+            getObjFromUrl:[NSString stringWithFormat:
+            @"/ff/resources/Celebrity/(gender eq '%@' and guid ne '%@' and guid eq random(guid))",
+            currentGender,
+            [[[FatFractal main] metaDataForObj:leftCelebrity] guid]]
+            error:&error];
+            if (error) {
+                NSLog(@"WouldYaViewController loadCelebrities rightCelebrity failed: %@", [error localizedDescription]);
+                [rightCelebrityButton setBackgroundImage:[UIImage imageNamed:@"genericfriendicon.png"] forState:UIControlStateNormal];
+                rightCelebrityLabel.text = @"No celebrities found";
+                return;
+            }
+            if(rightCelebrity) {
+                FFMetaData *meta = [[FatFractal main] metaDataForObj:rightCelebrity];
+                rightCelebrityLabel.text = [NSString stringWithFormat:@"%@ %@", rightCelebrity.firstName, rightCelebrity.lastName];
+                [rightCelebrityButton setBackgroundImage:[[UIImage alloc] initWithData:rightCelebrity.imageData] forState:UIControlStateNormal];
+            } else {
+                NSLog(@"WouldYaViewController loadCelebrities rightCelebrity not found.");
+                [rightCelebrityButton setBackgroundImage:[UIImage imageNamed:@"genericfriendicon.png"] forState:UIControlStateNormal];
+                rightCelebrityLabel.text = @"No celebrities found";
+            }
+        } else {
+            NSLog(@"WouldYaViewController loadCelebrities leftCelebrity not found.");
+            [leftCelebrityButton setBackgroundImage:[UIImage imageNamed:@"genericfriendicon.png"] forState:UIControlStateNormal];
+            leftCelebrityLabel.text = @"No celebrities found";
+        }
+    }];
+}</code></pre>
+                <p>
+                    Next, we add the <strong><em>toggleGender</em></strong> method implementation to handle the <strong><em>genderButton</em></strong> click:
+                </p>
+<pre><code>- (IBAction)toggleGender:(id)sender {
+    if([genderButton.currentTitle isEqualToString:@"Male"]) {
+        [genderButton setTitle:@"Female" forState:UIControlStateNormal];
+        currentGender = @"female";
+    } else {
+        [genderButton setTitle:@"Male" forState:UIControlStateNormal];
+        currentGender = @"male";
+    }
+    [self loadCelebrities];
+}</code></pre>
+                <p>
+                    Add the <strong><em>celebrityWasPicked</em></strong> method implementation to handle <strong><em>leftCelebrityButton</em></strong> or <strong><em>rightCelebrityButton</em></strong> clicks:
+                </p>
+<pre><code>- (IBAction)celebrityWasPicked:(id)sender {
+    if(sender == leftCelebrityButton) {
+        wouldYa.selectedGuid = [[[FatFractal main] metaDataForObj:leftCelebrity] guid];
+        wouldYa.rejectedGuid = [[[FatFractal main] metaDataForObj:rightCelebrity] guid];
+    } else if(sender == rightCelebrityButton) {
+        wouldYa.selectedGuid = [[[FatFractal main] metaDataForObj:rightCelebrity] guid];
+        wouldYa.rejectedGuid = [[[FatFractal main] metaDataForObj:leftCelebrity] guid];
+    }
+    if(wouldYa) [self persistWouldYa];
+    else NSLog(@"WouldYaViewController celebrityWasPicked failed: wouldYa is nil");
+}</code></pre>
+                <p>
+                    Add the <strong><em>persistWouldYa</em></strong> method implementation that will persist your wouldYa instance to the API after ensuring that the user is logged in. This is implemented as a separate method to make it easier to use a callback from the <strong><em>showLoginWithDelegate: action: message:</em></strong> method in <strong><em>AppDelegate</em></strong>.
+                </p>
+<pre><code>- (void)persistWouldYa {
+    if(![[FatFractal main] loggedIn]) {
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate]
+        showLoginWithDelegate:self action:@selector(persistWouldYa)
+        message:@"Please Login"];
+    } else {
+        playAgainButton.enabled = YES;
+        playAgainButton.hidden = NO;
+        NSError *error;
+        if(wouldYa) { [[FatFractal main] createObj:wouldYa atUrl:@"/WouldYa" error:&error];
+            if(error) NSLog(@"WouldYaViewController persistWouldYa failed: %@", [error localizedDescription]);
+            else {
+                wouldYa = nil;
+                wouldYa = [[WouldYa alloc]init];
+            }
+        } else NSLog(@"WouldYaViewController persistWouldYa failed: wouldYa is nil");
+    }
+}</code></pre>
+            <p>
+                NEXT: <a href="part_2_4.html">Adding the UI</a>
+            </p>
+        </section>
+    </div>
+    <footer>
+        <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+        <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Create a New Project</title>
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        HooDyooDoo Android Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part1_1" class="anchor" href="#android-tutorial-part1_1"><span class="octicon octicon-link"></span></a>
+                    Create a New Project
+                </h2>
+                <p>
+                    Here, we create the core object model for the Hoodyoodoo app and verify that it works with its API. If you wish, you can download the complete Part I project file from <a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip" title="part1.zip">Download Tutorial Part 1 Sample Files</a> to the application directory you created in the section <a href="index.html#local-install">Installing FatFractal</a>.
+                </p>
+                <p>
+                    <strong>Note:</strong> When you download the project, the client application is configured to use a API that is already deployed and populated with data. This means you can run the application on your simulator immediately. To use your API, you should edit the Hoodyoodoo.java file to point to the API that you have set up.
+                </p>
+                <p>
+                    <strong>Warning:</strong> If you run the application or the tests in the simulator configured to use the acme.fatfractal.com/hoodyoodoo API, you will notice that the initial load takes a very long time as a result of the amount of data that it is retrieving (all Celebrities). This is by design to demonstrate some of the capabilities of the FatFractal Framework, so do not be dismayed as this will show clearly the power of Queries that are covered in Part II. You can also change the baseUrl to localhost.
+                </p>
+                <h2>Create a new Android project using Eclipse</h2>
+                <p>
+                    <ol>
+                        <li>Select File &gt; New &gt; Android Project to bring up the Template Chooser. For our purposes here, select the Tabbed Application template and click Next.
+                            <p class = "aligncenter">
+                                <a href="http://fatfractal.com/beta/wp-content/uploads/2012/05/eclipse-new-project.png"><img title="eclipse-new-project" src="http://fatfractal.com/beta/wp-content/uploads/2012/05/eclipse-new-project-300x286.png" alt="" width="300" height="286" /></a>
+                            </p>
+                        </li>
+                        <li>Enter the name of your project (we used "hoodyoodoo") then select "Create new project in workspace", enter your desired location and click "Next".
+                            <p class = "aligncenter">
+                                <a href="http://fatfractal.com/beta/wp-content/uploads/2012/05/eclipse-create-new-android-project.png"><img title="eclipse-create-new-android-project" src="http://fatfractal.com/beta/wp-content/uploads/2012/05/eclipse-create-new-android-project-285x300.png" alt="" width="285" height="300" /></a>
+                            </p>
+                        </li>
+                        <li>After clicking Next, select the target SDK that you wish to use as your build target.
+                            <p class = "aligncenter">
+                                <a href="http://fatfractal.com/beta/wp-content/uploads/2012/05/eclipse-build-target.png"><img class="aligncenter size-medium wp-image-3475" title="eclipse-build-target" src="http://fatfractal.com/beta/wp-content/uploads/2012/05/eclipse-build-target-286x300.png" alt="" width="286" height="300" />
+                                </a>
+                            </p>
+                        </li>
+                        <li>Configure the package name for your project and select "Create Activity and Create a Test Project".
+                            <p class = "aligncenter">
+                                <a href="http://fatfractal.com/beta/wp-content/uploads/2012/05/eclipse-package-tests.png"><img title="eclipse-package-tests" src="http://fatfractal.com/beta/wp-content/uploads/2012/05/eclipse-package-tests-286x300.png" alt="" width="286" height="300" />
+                                </a>
+                            </p>
+                        </li>
+                    </ol>
+                </p>
+                <p>
+                    NEXT: <a href="part_1_2.html">Add the FatFractal Android SDK to the Project</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+    </html>

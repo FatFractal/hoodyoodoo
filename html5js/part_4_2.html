@@ -1,0 +1,175 @@
+<html>
+<head>
+    <title>Update the Client Code</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HTML5/JS Tutorial Part IV
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part4.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part4/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-part-4-2" class="anchor" href="#html5-js-tutorial-part-4-2"><span class="octicon octicon-link"></span></a>
+                    Update the Client Code
+                </h2>
+                <p>
+                    In order to use this new extension method, you need to do add a matching <strong><em>StatsObject</em></strong> to your project.
+                </p>
+<pre><code>function StatsObject(data) {
+if(data) {
+    this.clazz = "StatsObject";
+    this.totalUsers = new Number(data.totalUsers);
+    this.totalCelebrities = new Number(data.totalCelebrities);
+    this.totalRatings = new Number(data.totalRatings);
+    this.yourRatings = new Number(data.yourRatings);
+} else {
+    this.clazz = "StatsObject";
+    this.totalUsers = null;
+    this.totalCelebrities = null;
+    this.totalRatings = null;
+    this.yourRatings = null;
+}
+return this;
+}</code></pre>
+                <p>
+                    You can then call the extension using the standard CRUD url pattern.
+                </p>
+                <pre><code>statsObject = ff.getObjFromUri("/ff/ext/Stats");</code></pre>
+                <p>
+                    We also need to update the <strong><em>init</em></strong> method. Add the following:
+                </p>
+<pre><code>m_ratingCountLabel = document.getElementById("ratingCountLabel");
+m_userCountLabel = document.getElementById("userCountLabel");
+m_celebrityCountLabel = document.getElementById("celebrityCountLabel");
+m_yourRatingCountLabel = document.getElementById("yourRatingCountLabel");</code></pre>
+                <p>
+                    Next, we need to add a new method to retrieve the data. We'll add this as a function within the <strong><em>getTopCelebrity</em></strong> method of <strong><em>HoodyoodooViewModel</em></strong>. Here's the new version of the method:
+                </p>
+<pre><code>getTopCelebrity: function() {
+    self.showLoading(true);
+    ff.getObjFromUri("/TopCelebrity",
+            function(topCeleb) {
+                self.showLoading(false);
+                if(topCeleb) {
+                    var tc = new Celebrity(topCeleb);
+                    m_topCelebImage.setAttribute('src', tc.imageSrc);
+                    m_topCelebrityLabel.innerHTML = tc.firstName + " " + tc.lastName;
+                    if(tc.selectedCount) m_selectedCountLabel.innerHTML = tc.selectedCount;
+                    if(tc.rejectedCount) m_rejectedCountLabel.innerHTML = tc.rejectedCount;
+                } else if(G_DEBUG) console.log("getTopCelebrity() found no top celebrity");
+                getStats();
+            }, function(statusCode, responseText){
+                self.showLoading(false);
+                console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+                getStats();
+            }
+    );
+    function getStats() {
+        if(!ff.loggedIn()) {
+            $("#topCelebLoginPopup").popup('open');
+        } else {
+            self.showLoading(true);
+            ff.getObjFromExtension("/ff/ext/Stats",
+                    function(statsObject) {
+                        self.showLoading(false);
+                        m_ratingCountLabel.innerHTML = statsObject.totalRatings;
+                        m_userCountLabel.innerHTML = statsObject.totalUsers;
+                        m_celebrityCountLabel.innerHTML = statsObject.totalCelebrities;
+                        m_yourRatingCountLabel.innerHTML = statsObject.yourRatings;
+                    }, function(statusCode, responseText){
+                        self.showLoading(false);
+                        console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+                    }
+            );
+        }
+    }
+}</code></pre>
+                <h3>Add the UI</h3>
+                <p>
+                    Now that we have our <strong><em>StatsObject</em></strong>, let’s add in the UI components to display the results. To do this, we just have to add a few lines to our TopCelebrity page. Here's the code for the page:
+<pre><code>&lt;div data-role="page" id="TopCelebrity"&gt;
+    &lt;div data-role="content"&gt;
+        &lt;h1&gt;Top Celebrity&lt;br&gt;&lt;br&gt;
+            &lt;img id="topCelebImage" class="celebImage" src="Images/mystery3.png" alt="Celeb Image"/&gt;
+            &lt;br&gt;
+            &lt;br&gt;
+            &lt;div id="topCelebrityInfo" style="color: white; display: hidden;"&gt;
+                &lt;span id="topCelebrityLabel" style="color: white;"&gt;Top Celeb Name&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/h1&gt;
+        &lt;h3 style="color: white; text-align: center; display: hidden;"&gt;Was selected &emsp;&emsp;&lt;span id="selectedCountLabel"&gt;0&lt;/span&gt;&lt;/h3&gt;
+        &lt;h3 style="color: white; text-align: center; display: hidden;"&gt;Was rejected &emsp;&emsp;&lt;span id="rejectedCountLabel"&gt;0&lt;/span&gt;&lt;/h3&gt;
+        &lt;h3 style="color: white; text-align: center; display: hidden;"&gt;Total Ratings &emsp;&emsp;&lt;span id="ratingCountLabel"&gt;0&lt;/span&gt;&lt;/h3&gt;
+        &lt;h3 style="color: white; text-align: center; display: hidden;"&gt;Total Users &emsp;&emsp;&lt;span id="userCountLabel"&gt;0&lt;/span&gt;&lt;/h3&gt;
+        &lt;h3 style="color: white; text-align: center; display: hidden;"&gt;Total Celebrities &emsp;&emsp;&lt;span id="celebrityCountLabel"&gt;0&lt;/span&gt;&lt;/h3&gt;
+        &lt;h3 style="color: white; text-align: center; display: hidden;"&gt;Your Ratings &emsp;&emsp;&lt;span id="yourRatingCountLabel"&gt;0&lt;/span&gt;&lt;/h3&gt;
+    &lt;/div&gt; &lt;!-- /content --&gt;
+    &lt;div data-role="footer" data-position="fixed" class="nav-glyphish-example"&gt;
+        &lt;div data-role="navbar" class="nav-glyphish-example"&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="#WouldYa" id="tcpwyt" data-icon="custom"&gt;WouldYa&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#AddCelebrity" id="tcpact" data-icon="custom"&gt;Add Celebrity&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#" onclick="HoodyoodooViewModel.getTopCelebrity()"  id="tcptct" data-icon="custom"&gt;Top Celebrity&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt; &lt;!-- /navbar --&gt;
+    &lt;/div&gt; &lt;!-- /footer --&gt;
+    &lt;div data-role="popup" data-position-to="window" id="topCelebLoginPopup" data-theme="a" class="ui-content"&gt;
+        &lt;h1&gt;Please Register/Log In&lt;/h1&gt;
+        &lt;div data-role="fieldcontain"&gt;
+            &lt;label for="topCelebUsernameField"&gt;Username&lt;/label&gt;
+            &lt;input type="text" id="topCelebUsernameField"/&gt;
+        &lt;/div&gt;
+        &lt;div data-role="fieldcontain"&gt;
+            &lt;label for="topCelebPasswordField"&gt;Password&lt;/label&gt;
+            &lt;input type="password" id="topCelebPasswordField"/&gt;
+        &lt;/div&gt;
+        &lt;a id="topCelebrityLoginButton" data-role="button" onclick="HoodyoodooViewModel.login('getTopCelebrity')"&gt;Log In&lt;/a&gt;
+    &lt;/div&gt; &lt;!-- /Login Popup for TopCelebrity --&gt;
+&lt;/div&gt; &lt;!-- /TopCelebrity --&gt;</code></pre>
+                <h3>That’s it!</h3>
+                <p>
+                    Now, as soon as ratings are being captured in <strong><em>WouldYa</em></strong>’s, then we can call the server extension that will aggregate the statistics on the fly and return a <strong><em>StatsObject</em></strong> that can be used to populate the scene.
+                </p>
+                <p>
+                    Final result: We successfully created a <strong><em>StatsObject</em></strong> on the backend from an server extension that updates the corresponding UI components.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/10/8F1ABB14-5050-4811-A445-84751721FC48.png"><img src="http://fatfractal.com/beta/wp-content/uploads/2012/10/8F1ABB14-5050-4811-A445-84751721FC48.png" alt="" title="Top Celeb + Stats" width="597" height="946" class="aligncenter size-full wp-image-8833" /></a>
+                </p>
+                <p>
+                    Have fun!
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

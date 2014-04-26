@@ -1,0 +1,121 @@
+<html>
+    <head>
+        <title>Create the Hoodyoodoo Class</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+        <link rel="stylesheet" href="../stylesheets/styles.css">
+        <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+        <script src="../javascripts/scale.fix.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-add-ff-app-delegate" class="anchor" href="#android-tutorial-add-ff-app-delegate"><span class="octicon octicon-link"></span></a>
+                    Create the Hoodyoodoo Class
+                </h2>
+                <p>
+                    For the purposes of the Tutorial, we will instantiate the <em><strong>FatFractal</strong></em> class as a singleton in a new Hoodyoodoo class which is a subclass of Application.
+                </p>
+                <p>
+                    First, add a new class to com.hoodyoodoo.droidapp called <strong><em>Hoodyoodoo</em></strong> that subclasses Application. This class will do a couple of things for us:
+                    <ul>
+                        <li>Create a singleton FatFractal object, which we use to talk to the API.</li>
+                        <li>Provide a method to display a login dialog.</li>
+                    </ul>
+                </p>
+                <p>
+                    First, enter the following package and import statements:
+                </p>
+<pre><code>package com.hoodyoodoo.droidapp;
+
+import android.app.AlertDialog;
+import android.app.Application;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import com.fatfractal.ffef.FFException;
+import com.fatfractal.ffef.FatFractal;
+import com.fatfractal.ffef.impl.FatFractalHttpImpl;
+import com.fatfractal.ffef.json.FFObjectMapper;
+import com.hoodyoodoo.droidapp.model.Celebrity;
+
+import java.net.URI;
+import java.net.URISyntaxException;</code></pre>
+                <p>
+                    Here, we define the <strong><em>Hoodyoodoo</em></strong> class itself:
+                </p>
+<pre><code>public class Hoodyoodoo extends Application {
+
+}</code></pre>
+                <p>
+                    The rest of this section will be filling in the definition of the <strong><em>Hoodyoodoo</em></strong> class. We first define a static FatFractal data member:
+                </p>
+                <pre><code>public static FatFractal ff = null;</code></pre>
+                <p>
+                    Next, define a <strong><em>getFF</em></strong> method that initializes the FatFractal class, sets the URL configuration for which API it will use, and registers the Celebrity Class:
+                </p>
+<pre><code>public static FatFractal getFF() {
+    if (ff == null) {
+        String baseUrl = "http://acme.fatfractal.com/hoodyoodoo";
+        String sslUrl = "https://acme.fatfractal.com/hoodyoodoo";
+        try {
+            ff = FatFractal.getInstance(new URI(baseUrl), new URI(sslUrl));
+            FatFractalHttpImpl.addTrustedHost("acme.fatfractal.com");
+            FFObjectMapper.registerClassNameForClazz(Celebrity.class.getName(), "Celebrity");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+    return ff;
+}</code></pre>
+                <p>
+                    We call <strong><em>getFF</em></strong> in the standard onCreate() method for Application:
+                </p>
+<pre><code>public void onCreate() {
+    super.onCreate();
+    if (ff == null) {
+        ff = Hoodyoodoo.getFF();
+    }
+}</code></pre>
+                <p>
+                    In the next section, we finish the <strong><em>Hoodyoodoo</em></strong> class by making a layout for a login dialog, and adding a method to show it and perform the login.
+                </p>
+                <p>
+                    NEXT: <a href="part_1_5.html">Create a Login Dialog</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    </body>
+</html>

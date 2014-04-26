@@ -1,70 +1,161 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Hoodyoodoo by FatFractal</title>
-
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
     <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header class="without-description">
-        <h1>Hoodyoodoo</h1>
-        <p></p>
-        <p class="view"><a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small></a></p>
-        <ul>
-          <li><a href="https://github.com/FatFractal/hoodyoodoo/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/FatFractal/hoodyoodoo/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/FatFractal/hoodyoodoo">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="images/icon@2x.png">
+                        HooDyooDoo Tutorial
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view"><a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small></a></p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/zipball/master">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <a href="images/Default@2x.png" style="float:right; padding-bottom:10px;padding-left:10px;">
+                    <img class="alignright" title="Hoo" src="images/Default@2x.png" alt="" width="180" height="342"/>
+                </a>
+                <h2>
+                    <a name="ios-tutorial-part1" class="anchor" href="#ios-tutorial-part1"><span class="octicon octicon-link"></span></a>
+                    Overview
+                </h2>
+                <p>Developing on a new platform can be challenging. In fact, that’s why we launched FatFractal. Building your mobile app together with your app’s powerful API is easier than ever before. But like you, we believe the proof is in the pudding: it’s one thing to create little “hello world” tests and quite another to build an entire app.</p>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+                <p>The purpose of this tutorial is to take you through every aspect of our platform from the point of view of an iOS developer. We will walk step-by-step through the process in the Xcode. If you haven’t done a lot of coding for iPhone devices, you can learn a little bit about that as well. Side benefit.</p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+                <p>The tutorial steps you through the creation of a native iOS application we call Hoodyoodoo, from start to finish, to illustrate some of the capabilities of the NoServer framework.</p>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+                <p>The source code for this app can be downloaded: the whole app is divided into five, compilable chunks that can be run independently, in case you want to tackle the sections in order. If you want to just look through the final, complete application, you can do that as well. You can download the <a href="https://github.com/FatFractal/hoodyoodoo/archive/part5.zip" title="iOS Tutorial Complete" target="_blank">complete tutorial files</a>.</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
-  </body>
-</html>
+                <p>The app itself is, conceptually, a simple game. The end-user is presented with two, random pictures of celebrities (or whomever) and selects the one the end-user would, um, “do;” naturally, we mean “do dinner with.” Although the game is played by one individual at a time, per phone, it is really a multi-user experience because the app’s API keeps track of everyone playing the game, tallying who’s chosen in each case and maintaining a bunch of stats. We think you will be pleasantly amazed at how quickly you can build the app, from start to finish, without ever dealing with the frustrating “API nonsense.”</p>
+                <h3>
+                    <a name="ios-tutorial-part1" class="anchor" href="#ios-tutorial-part1"><span class="octicon octicon-link"></span></a>
+                    Tutorial Part 1: Basic CRUD operations
+                </h3>
+                <p>In Part I, we define a class, write some unit tests to validate our app can perform all CRUD operations properly and then create the UI to add Celebrities to our app's datastore into our UI and prove we can retrieve them.</p>
+                <p>In Part I, we will accomplish the following:
+                    <ul>
+                        <li>Create our new project</li>
+                        <li>Add the FatFractal Framework to the project</li>
+                        <li>Add the Celebrity object model to the project</li>
+                        <li>Store and Retrieve Celebrity objects</li>
+                        <li>Use CRUD with images</li>
+                        <li>Create a UI to add a new celebrity</li>
+                        <li>Create a UI to retrieve the new celebrity</li>
+                    </ul>
+                </p>                
+                <h3>Tutorial Part 2: How to Use Queries</h3>
+                In Part II, we  implement the methods to create the data collected during game-play. We define an object, WouldYa, to  store  end-user selections, create the UI to present two celebrities to choose from, write  queries to populate the UI and store the results on our API.
+                <p>In Part II, we will accomplish the following:
+                    <ul>
+                        <li>Write queries to retrieve single objects</li>
+                        <li>Get random objects of a specified type</li>
+                        <li>Write queries with parameters passed in</li>
+                        <li>Write tests to validate retrieving multiple objects</li>
+                        <li>Simplify the code to increase performance</li>
+                    </ul>
+                </p>
+                <h3>Tutorial Part 3: Event Handlers</h3>
+                <p>In Part III, we focus on data tracking, which includes keeping track of the most popular celebrity-of-the-moment. Using ever-available CRUD events on our API, we will write a down-and-dirty event handler in JavaScript for use on the server-side (!). We could do this from the client side, but that would be inefficient and unreliable.</p>
+                <p>In Part III, we will accomplish the following:
+                    <ul>
+                        <li>Define an Event Handler in the FatFractal Definition Language (FFDL)</li>
+                        <li>Create a JavaScript function to do the following:
+                            <ul>
+                                <li type="square">Define a  model to be persisted on the API.</li>
+                                <li type="square">Lazily add two new members to our Celebrity model.</li>
+                                <li type="square">Initialize update data based on a CRUD event.</li>
+                                <li type="square">Update the TopCeleb object,  if a new celebrity-of-the-moment takes the lead.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </p>
+                <h3>Tutorial Part IV: Server Extensions</h3>
+                <p>In Part IV, we will tackle trending data across all our end-users by extending our API. We will create a groovy API extension that will efficiently aggregate data across multiple resource types. Yes, we are showing off how the NoServer Framework allows us to extend our API–but this is also far more efficient for the client code and to optimize performance.</p>
+                <p>In Part IV, we will accomplish the following:
+                    <ul>
+                        <li>Define an API extension in FFDL</li>
+                        <li>Create a JavaScript server-side function that will:
+                            <ul>
+                                <li type="square">Define a new model that will be generated on the fly and will <em>not</em> be persisted on our API</li>
+                                <li type="square">Calculate metrics based on queries from various, persisted collections</li>
+                                <li type="square">Populate the StatsObject with the result</li>
+                                <li type="square">Return the result to the client</li>
+                            </ul>
+                        </li>
+                        <li>Add the UI  to the client code to present this information</li>
+                        <li>Create the client code to retrieve this information from our API and populate the UI.</li>
+                    </ul>
+                </p>
+                <h3>Tutorial Part V: Push Notifications</h3>
+                <p>Finally, in Part V, we will top off our app by adding something everybody loves to have but hates to code: push notifications! Using a server extension, we'll fire off a push notification to Hoodyoodoo users every time a new Top Celebrity is crowned, because we know you don't want to miss an event like that!<p>
+                    <table style="text-align: left; width: 530px; height: 140px;" border="1"
+                    cellpadding="2" cellspacing="2">
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: top; text-align: center;">iOS Tutorial<br>
+                            </td>
+                            <td style="vertical-align: top; text-align: center;">Android
+                                Tutorial<br>
+                            </td>
+                            <td style="vertical-align: top; text-align: center;">HTML5/JS
+                                Tutorial<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top; text-align: center;">
+                                <a href="ios/index.html">
+                                    <img title="iOS Tutorial" style="width: 80px; height: 80px;"
+                                    alt="iOS Tutorial"
+                                    src="images/ios.png">
+                                </a>
+                                <br>
+                            </td>
+                            <td style="vertical-align: top; text-align: center;">
+                                <a href="android/index.html">
+                                    <img title="Android Tutorial" style="width: 80px; height: 80px;"
+                                    alt="Android Tutorial"
+                                    src="images/Android.png">
+                                </a>
+                                <br>
+                            </td>
+                            <td style="vertical-align: top; text-align: center;">
+                                <a href="html5js/index.html">
+                                    <img style="width: 80px; height: 80px;" alt="HTML5 Tutorial"
+                                    title="HTML5 Tutorial"
+                                    src="images/HTML5.png">
+                                </a>
+                                <br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Let's Get Going: <a href="#document-noserver-ios-tutorial-scaffold-deploy" title="Scaffold & Deploy">Preliminary SETUP</a></p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+    </html>

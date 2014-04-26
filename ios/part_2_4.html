@@ -1,0 +1,124 @@
+<html>
+<head>
+    <title>Adding the UI</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part II
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part2/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-part-2-4" class="anchor" href="#ios-tutorial-part-2-4"><span class="octicon octicon-link"></span></a>
+                    Adding the UI
+                </h2>
+                <p>
+                    Next, we add the necessary UI components to the <strong><em>WouldYaViewController</em></strong>. We will add the following elements:
+                    <ol>
+                        <li>Add a<strong><em> UIButton</em></strong> to hold the second Celebrity’s image.</li>
+                        <li>Add a<strong><em> UILabel</em></strong> for the second Celebrity’s name.</li>
+                        <li>Add a <strong><em>UIButton</em></strong> to play the game.</li>
+                        <li>Add a <strong><em>UIButton</em></strong> that is used to select the gender preference for the user.</li>
+                    </ol>
+                </p>
+                <p>
+                    And the Scene should look like this:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_2_wouldya_ui.png"><img class="aligncenter" title="Part_2_wouldya_ui" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_2_wouldya_ui-202x300.png" alt="" width="202" height="300" /></a>
+                </p>
+                <p>
+                    Lastly, make sure and connect up your <strong><em>UIComponents</em></strong> in the <strong><em>MainStoryboard.storyboard </em></strong> for the <strong><em>WouldYaViewController</em></strong> elements. Note - some of these were set in Tutorial Part I, but we will include them here again for convenience
+                </p>
+                <p>
+                    <strong><em>leftCelebrityLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>WouldYaViewController</em></strong>/<strong><em>leftCelebrityLabel</em></strong>
+                </p>
+                <p>
+                    <strong><em>leftCelebrityButton</em></strong><br>
+                    Referencing Outlet to <strong><em>WouldYaViewController</em></strong>/<strong><em>leftCelebrityButton</em></strong>
+                    Sent Events/ Touch Down to <strong><em>WouldYaViewController/celebrityWasPicked</em></strong>
+                </p>
+                <p>
+                    <strong><em>rightCelebrityLabel</em></strong><br>
+                    Referencing Outlet to <strong><em>WouldYaViewController</em></strong>/<strong><em>rightCelebrityLabel</em></strong>
+                </p>
+                <p>
+                    <strong><em>rightCelebrityButton</em></strong><br>
+                    Referencing Outlet to <strong><em>WouldYaViewController</em></strong>/<strong><em>rightCelebrityButton</em></strong>
+                    Sent Events/ Touch Down to <strong><em>WouldYaViewController/celebrityWasPicked</em></strong>
+                </p>
+                <p>
+                    <strong><em>genderButton</em></strong><br>
+                    Referencing Outlet to <strong><em>WouldYaViewController</em></strong>/<strong><em>genderButton</em></strong>
+                    Sent Events/ Touch Down to <strong><em>WouldYaViewController/toggleGender</em></strong>
+                </p>
+                <p>
+                    <strong><em>playAgainButton</em></strong><br>
+                    Referencing Outlet to <strong><em>WouldYaViewController</em></strong>/<strong><em>playAgainButton</em></strong><br>
+                    Sent Events/ Touch Down to <strong><em>WouldYaViewController/playAgain</em></strong>
+                </p>
+                <p>
+                    Now, when you run the application, it will first load and populate the <strong><em>WouldYaViewController</em></strong> Scene.
+                </p>
+                <p>
+                    Final result - successfully retrieved a random Celebrity, a second random and unique Celebrity and populated the UI:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_2_play.png"><img title="Part_2_play" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_2_play-200x300.png" alt="" width="200" height="300" /></a>
+                </p>
+                <p>
+                    <strong>Note</strong>: when this Scene loaded, we are not authenticated which shows that you are able to retrieve objects anonymously.
+                </p>
+                <p>
+                    When you click on a Celebrity button with image (either the <strong><em>topCelebrityButton</em></strong> or <strong><em>bottomCelebrityButton)</em></strong>, then a <strong><em>WouldYa</em></strong> is created and persisted to your app's API. If successful, the <strong><em>bottomResponseLabel</em></strong> and <strong><em>bottomResponseLabel</em></strong> labels appear as well as the <strong><em>playAgainButton</em></strong> which will <strong><em>loadCelebrities</em></strong> again when clicked.
+                </p>
+                <p>
+                    Final result - you can run the application without making any changes to your API and the FatFractal Framework will adapt to you new code. You have now successfully created a <strong><em>WouldYa</em></strong>, and populated the UI for replaying the game:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_2_final.png"><img class="aligncenter" title="Part_2_final" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_2_final-200x300.png" alt="" width="200" height="300" /></a>
+                </p>
+                <h2>Summary</h2>
+                <p>In this part of the tutorial, we have explored how to create simple and more complex queries that will greatly enhance the performance and reliability of our application by reducing the amount of data handling the client is required to do by using simple language queries to filter result sets down to the information that the client needs.
+                </p>
+                <p>
+                    Next, we will begin using events to extend the application further in Tutorial Part III.
+                </p>
+                <p>
+                    NEXT: <a href="part_3_1.html">Part III, Event Handlers</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+    </html>

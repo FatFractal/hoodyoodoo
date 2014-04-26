@@ -1,0 +1,299 @@
+<html>
+<head>
+    <title>The CelebrityViewController</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-add-ff-app-delegate" class="anchor" href="#ios-tutorial-add-ff-app-delegate"><span class="octicon octicon-link"></span></a>
+                    The CelebrityViewController
+                </h2>
+                <p>
+                    First, we want to create a UI so the user can create a <em><strong>Celebrity</strong></em> object that is stored to the API. To do this, we will modify the <em><strong>SecondViewController</strong></em> to provide this.
+                </p>
+                <p>
+                    First, we refactor the template <em><strong>SecondViewController</strong></em> to be called <em><strong>CelebrityViewController</strong></em> by renaming everything since refactor does not work so good in xCode. Also make sure that the scene is set to Custom Class with CelebrityViewController in the storyboard editor.
+                </p>
+                <p>
+                    Next, we add the necessary UI components to the <em><strong>CelebrityViewController.</strong></em> We will add the following elements:
+                    <ol>
+                        <li><em><strong>UIButton</strong></em> to hold the Celebrity image.</li>
+                        <li><em><strong>UITextField</strong></em> for Celebrity first name.</li>
+                        <li><em><strong>UILabel</strong></em> next to the first name text field as a label.</li>
+                        <li><em><strong>UITextField</strong></em> for Celebrity last name.</li>
+                        <li><em><strong>UILabel</strong></em> next to the last name text field as a label.</li>
+                        <li><em><strong>UINavigationBar</strong></em> with a title “Add a Celebrity”.</li>
+                        <li><em><strong>UIBarButtonItem</strong></em> with a title “Done”.</li>
+                    </ol>
+                </p>
+                <p>
+                    And the Scene should look like this:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/03/Part_1_celebrity_ui.png"><img title="Part_1_celebrity_ui" src="http://fatfractal.com/beta/wp-content/uploads/2012/03/Part_1_celebrity_ui-203x300.png" alt="" width="203" height="300" /></a>
+                </p>
+                <p>
+                    Next we create the <em><strong>CelebrityViewController.h.</strong></em>
+                </p>
+<pre><code>#import
+#import "Celebrity.h"
+#import "AppDelegate.h"
+#import "FatFractal.h"
+
+@interface CelebrityViewController : UIViewController {
+    UIImagePickerController *picker;
+}
+
+@property (strong, nonatomic) Celebrity *celebrity;
+@property (nonatomic, retain) IBOutlet UITextField *firstNameField;
+@property (nonatomic, retain) IBOutlet UITextField *lastNameField;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *doneButton;
+@property (nonatomic, retain) IBOutlet UIButton *selectImageButton;
+- (IBAction) doneAction:(id)sender;
+- (IBAction) addImage;
+- (void) imagePickerController:(UIImagePickerController *) Picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void) imagePickerControllerDidCancel:(UIImagePickerController *) Picker;
+- (void) addCelebrity;
+- (void) addGender;
+@end</code></pre>
+                    <p>
+                        What this does is:
+                        <ol>
+                            <li>Import the <em><strong>Celebrity</strong></em> class, <em><strong>AppDelgate</strong></em> class and <em><strong>FatFractal</strong></em> class.</li>
+                            <li>Add a <em><strong>UIImagePickerController</strong></em> to the interface to select the image for the Celebrity.</li>
+                            <li>Add the properties for:
+                                <ol>
+                                    <li type="a">The <em><strong>Celebrity</strong></em> object that is made part of this class.</li>
+                                    <li type="a">The two <em><strong>UITextFields (firstNameField, lastNameField)</strong></em>.</li>
+                                    <li type="a">The <em><strong>UIBarButtonItem</strong></em> with <em><strong>IBOutlet</strong></em> for the “<em><strong>doneAction</strong></em>” button</li>
+                                    <li type="a">The <em><strong>UIButton</strong></em> with <em><strong>IBOutlet</strong></em> for the “<em><strong>addImage</strong></em>” button.</li>
+                                </ol>
+                            </li>
+                            <li>Add the methods for:
+                                <ol>
+                                    <li type="a"><em><strong>addImage</strong></em> (brings up the <em><strong>UIImagePickerController</strong></em>).</li>
+                                    <li type="a"><em><strong>doneAction</strong></em> (handles the click on the “<em><strong>done</strong></em>” button).</li>
+                                    <li type="a"><em><strong>addGender</strong></em> presents a <em><strong>UIAlertView</strong></em> to select the gender for the Celebrity.</li>
+                                    <li type="a"><em><strong>addCelebrity</strong></em> CRUD Creates the Celebrity (if all data is present).</li>
+                                    <li type="a"><em><strong>imagePickerControllerDidCancel</strong></em> handles <em><strong>UIImagePickerController</strong></em> cancel event.</li>
+                                    <li type="a"><em><strong>didFinishPickingMediaWithInfo</strong></em> handles <em><strong>UIImagePickerController</strong></em> image selection event.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </p>
+                    <p>
+                        Next, we modify the <em><strong>CelebrityViewController.m</strong></em> file.
+                    </p>
+                    <p>
+                        First, let’s synthesize the necessary properties.
+                    </p>
+                    <pre><code>@synthesize doneButton, selectImageButton, firstNameField, lastNameField, celebrity;</code></pre>
+                    <p>
+                        Next, we create the methods we need in <em><strong>CelebrityViewController.m</strong></em>
+                    </p>
+                    First, let’s get the image for the Celebrity. To do this, we rely on the devices image library as populated from the camera, or from the browser. In our demo, we use the browser to save an image to the device and then select it with the very nice UIImagePickerController.
+                    <p>
+                        The <em><strong>addImage</strong></em> method brings up the <strong><em>UIImagePickerController</em></strong> to select an image from the device:
+                    </p>
+<pre><code>-(IBAction) addImage {
+    picker = [[UIImagePickerController alloc] init];
+    picker.delegate = (id)self;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    } else {
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    [self presentModalViewController:picker animated:YES];
+}</code></pre>
+                    <p>
+                        The <em><strong>imagePickerController: didFinishPickingMediaWithInfo</strong></em>: method will get the image, add it to the <em><strong>UIButton selectImageButton</strong></em>, clear the title and, most importantly, add the image data to the <em><strong>Celebrity</strong></em> object.
+                    </p>
+<pre><code>- (void)imagePickerController:(UIImagePickerController *) Picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *celebrityImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if(celebrityImage != nil) {
+        [selectImageButton setBackgroundImage:celebrityImage forState:UIControlStateNormal];
+        [selectImageButton setTitle:@"" forState:UIControlStateNormal];
+        celebrity.imageData = UIImagePNGRepresentation(celebrityImage);
+    }
+    [self dismissModalViewControllerAnimated:YES];
+}</code></pre>
+                    <p>
+                        The <em><strong>imagePickerControllerDidCancel</strong></em> method just dismisses the UIImagePickerController.
+                    </p>
+                    <pre><code>- (void)imagePickerControllerDidCancel:(UIImagePickerController *) Picker {
+                        [self dismissModalViewControllerAnimated:YES];
+                    }</code></pre>
+                    <p>
+                        Next, we add in the <em><strong>addGender</strong></em> method to get the gender information for the <em><strong>Celebrity</strong></em> using a <em><strong>UIAlertView</strong></em>.
+                    </p>
+<pre><code>-(void)addGender {
+    UIAlertView *genderPicker = [[UIAlertView alloc]
+    initWithTitle:@"Gender"
+    message:@" Please select the gender for this Celebrity?"
+    delegate:self
+    cancelButtonTitle:@"Male"otherButtonTitles:@"Female",nil];
+    [genderPicker show];
+}</code></pre>
+                    <p>
+                        And now, we add the handler for the <em><strong>UIAlertView:</strong></em>
+                    </p>
+<pre><code>- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self resignFirstResponder];
+    if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Male"]) {
+        celebrity.gender = @"male";
+    }
+    else if([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Female"]) {
+        celebrity.gender = @"female";
+    } else {
+        NSLog(@"Something bad happened");
+    }
+    [self addCelebrity];
+}</code></pre>
+                    <p>
+                        We use the two <em><strong>UITextFields</strong></em> to capture <em><strong>celebrity.firstName</strong></em> and <em><strong>celebrity.lastName</strong></em> values when the <em><strong>doneButton</strong></em> is clicked. At this point, we do not bother to check for nil values as we will deal with that next when we attempt to call <em><strong>addCelebrity.</strong></em>
+                    </p>
+<pre><code>-(IBAction)doneAction:(id)sender {
+    // dismiss keyboard
+    [firstNameField resignFirstResponder];
+    [lastNameField resignFirstResponder];
+    if(firstNameField.text.length > 0) celebrity.firstName = firstNameField.text;
+    if(lastNameField.text.length > 0) celebrity.lastName = lastNameField.text;
+    [self addCelebrity];
+}</code></pre>
+                <p>
+                    Next, we add the <em><strong>addCelebrity</strong></em> method that:
+                    <ol>
+                        <li>Checks that the user is logged in, and if not, calls the asynchronous <em><strong>showLoginWithDelegate</strong></em>: action: selector: method in <em><strong>AppDelegate</strong></em>.</li>
+                        <li>Checks that all required information is complete.</li>
+                        <li>If all present, persists the <em><strong>Celebrity object</strong></em> to the API using the synchronous method <em><strong>createObj: atUrl:</strong></em> from the <em><strong>FatFractal</strong></em> class.</li>
+                        <li>If successful, clears <em><strong>celebrity</strong></em> contents and creates a new empty one.</li>
+                    </ol>
+                </p>
+<pre><code>- (void)addCelebrity {
+    // check logged in
+    if(![[FatFractal main] loggedIn]) {
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate]
+        showLoginWithDelegate:self action:@selector(addCelebrity) message:@"Please Login"];
+    }
+    else {
+        // check requisite info exists
+        if ((celebrity.firstName == nil) || (celebrity.lastName == nil)) {
+            UIAlertView *failview = [[UIAlertView alloc]
+            initWithTitle:@"Add Celebrity Failed"
+            message:@"You must provide first and last name for this celebrity"
+            delegate:nil
+            cancelButtonTitle:@"OK"
+            otherButtonTitles:nil];
+            [failview show];
+        }
+        else if (celebrity.imageData == nil) {
+            UIAlertView *failview = [[UIAlertView alloc]
+            initWithTitle:@"Add Celebrity Failed"
+            message:@"You must provide an image for this celebrity"
+            delegate:nil
+            cancelButtonTitle:@"OK"
+            otherButtonTitles:nil];
+            [failview show];
+        }
+        else if (celebrity.gender == nil) {
+            [self addGender];
+        } else {
+            NSError *error;
+            [[FatFractal main] createObj:celebrity atUrl:@"/Celebrity" error:&error];
+            if(error) {
+                NSLog(@"CelebrityViewController addCelebrity failed: %@", [error localizedDescription]);
+            } else {
+                [selectImageButton setBackgroundImage:nil forState:UIControlStateNormal];
+                [selectImageButton setTitle:@"Add Image" forState:UIControlStateNormal];
+                firstNameField.text = nil;
+                lastNameField.text = nil;
+                celebrity = nil;
+                celebrity = [[Celebrity alloc]init];
+            }
+        }
+    }
+}</code></pre>
+                <p>
+                    Lastly, make sure and connect up your <em><strong>UIComponents</strong></em> in the <em><strong>MainStoryboard.storyboard.</strong></em>
+                </p>
+                <p>
+                    <strong>firstNameField</strong>
+                    <br>
+                    Referencing Outlet to <em><strong>CelebrityViewController/firstNameField</strong></em>
+                </p>
+                <p>
+                    <strong>lastNameField</strong>
+                    <br>
+                    Referencing Outlet to <strong><em>CelebrityViewController/lastNameField</em></strong>
+                </p>
+                <p>
+                    <strong>selectImageButton</strong>
+                    <br>
+                    Referencing Outlet to <em><strong>CelebrityViewController/selectImageButton</strong></em>
+                    <br>
+                    Sent Events/ Touch Down to <em><strong>CelebrityViewController/addImage</strong></em>
+                </p>
+                <p>
+                    <strong>doneButton</strong>
+                    <br>
+                    Referencing Outlet to <em><strong>CelebrityViewController</strong></em>
+                    <br>
+                    Sent Actions to <em><strong>CelebrityViewController/doneAction</strong></em>
+                </p>
+                <p>
+                    That’s it! Now, we can select and image from the phone that was taken by the device camera or saved to the phone from the browser or other application, enter the first and last name, add the gender using the <em><strong>UIAlertView</strong></em> and the new <em><strong>Celebrity</strong></em> is stored to your API.
+                </p>
+                <p>
+                    As mentioned previously, the FatFractal API can store any type of object, not just JSON or text. In this case, we have stored a <em><strong>Celebity</strong></em> object that contains an image (<em><strong>NSData</strong></em>) with a single method and can retrieve it the same way. And that is what we will do next.
+                </p>
+                <p>
+                    Go ahead and add a few celebrities to you API as we will need them for the next section.
+                </p>
+                <p>
+                    Final result - successfully added a Celebrity:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/03/Part_1_celebrity_final.png"><img title="Part_1_celebrity_final" src="http://fatfractal.com/beta/wp-content/uploads/2012/03/Part_1_celebrity_final-200x300.png" alt="" width="200" height="300" /></a>
+                </p>
+                <p>
+                    NEXT: <a href="part_1_6.html">Add the UI Components to CelebrityViewController</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    </body>
+    </html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>HooDyooDoo HTML5/JS Tutorial</title>
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HooDyooDoo HTML5/JS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-part1" class="anchor" href="#html5-js-tutorial-part1"><span class="octicon octicon-link"></span></a>
+                    Overview
+                </h2>
+                <p>The very first thing you want to do, no two ways about it, is install the FatFractal Engine on your development machine. Installing the local runtime and Command Line Interface (CLI) tools is really simple. All you need to do is download the distribution, unzip it, copy the contents to the directory you want and the add the location to your path. It only takes a few minutes and does not invade your machine with a lot of unnecessary stuff.
+                </p>
+                <a name="local-install" class="anchor" href="#local-install"><span class="octicon octicon-link"></span></a>
+                <h3>Installing the Local Runtime and CLI tools</h3>
+                <p>
+                    The FatFractal runtime download is required to deploy apps and to run a local instance of the FatFractal engine. After downloading, getting started is a snap:
+                    <ol>
+                        <li>Download the <a href="http://system.fatfractal.com/console/ff/ext/Releases/Latest/FF_RUNTIME"><strong>ZIP File from here</strong></a> and unzip to a location of your choice on your development machine.</li>
+                        <li>Add the <strong><em>FatFractal_Runtime/bin</em></strong> directory to your path. This directory contains the <strong><em>ffef / ffef.bat</em></strong> command, which is used to scaffold and deploy apps and the <strong><em>ff-service / ff-service.bat</em></strong> command, which is used to run your local instance of the FatFractal engine.</li>
+                        <li>Start the local engine, just <code>cd</code> into <strong><em>FatFractal_Runtime</em></strong> and run the command <code>bin/ff-service cl</code>.</li>
+                        </ol>
+<pre><code>&gt; cd &lt;FatFractal_Runtime&gt;;
+&gt; bin/ff-service cl</code></pre>
+                </p>
+                <div style="margin-bottom: 20px; padding: 10px; border: 2px solid; border-radius: 25px; -mox-border-radius:25px">
+                In the FatFractal_Runtime/conf directory you will find a file called config_include.properties which tells the engine the ports on which to listen (defaults are 8080 for http and 8443 for https), and how frequently to scan for new deployments (default is every 5 seconds)
+                </div>
+                </p>
+                <p>The Hoodyoodoo Tutorial's sample app is written using the acme.fatfractal.com API on the cloud, which means that it really works when you download it. To create and use your own API, you need to follow the getting started sections below and change the baseUrl of the FatFractal instance to use yours. You can choose to deploy your API either locally or in the cloud; it really is up to you. If you feel like keeping it away from the InterWebs, you may do that as well. You will want to jump for joy, upon learning that the FatFractal Engine is identical whether on your local setup or in the cloud. It's not a simulator. It is the whole schlemiel. If you do choose to work locally and deploy to the cloud later, it will work just as you would expect.
+                </p>
+                <p>If you download the sample files, you will notice you can run the application immediately using the acme.fatfractal.com/hoodyoodoo API that we have deployed. To create your own instance of the hoodyoodoo API, you need to scaffold your application and configure the API.
+                </p>
+                <h3>Setting up your own hoodyoodoo API</h3>
+                <p>First, create a directory for your project called hoodyoodoo.</p>
+                <pre><code>&gt; cd $HOME;
+&gt; cd ffapps
+&gt; mkdir hoodyoodoo
+&gt; cd hoodyoodoo
+                </code></pre>
+                <p>Then, scaffold the application by doing the following using your subdomain:</p>
+                <pre><code>&gt; <em>&lt;install directory&gt;</em>/fatfractal/runtime/ffnsbin/ffef newapp hoodyoodoo <em>&lt;your subdomain&gt;</em></pre></code>
+                <p><em>Note: The subdomain refers to one you've registered in the <a href="https://system.fatfractal.com/console/application.html">FatFractal Console</a> or during the installation process (e.g. 'acme' in acme.fatfractal.com)</em>
+                </p>
+                <p>This will create all the information your API needs to work with your application.
+                </p>
+                <h3>Running in the Cloud</h3>
+                <p>If you haven't already, go to the <a href="https://system.fatfractal.com/console/application.html">Console</a> and add an application called hoodyoodoo to <em>&lt;your subdomain&gt;</em>.
+                </p>
+                <p>To deploy the now-scaffolded hoodyoodoo API to the FatFractal Platform via the command line, you use the command <strong>ffef deployFFFabric</strong>:
+                </p>
+                <pre><code>&gt; <em>&lt;install directory&gt;</em>/fatfractal/runtime/ffnsbin/ffef deployFFFabric</pre></code>
+                <p>In a few seconds, your application will be available at http://<em>&lt;your subdomain&gt;</em>.fatfractal.com/hoodyoodoo
+                </p>
+                <p>For more information, see <a title="Getting Started" href="index.html">Getting Started</a>.</p>
+                <h3>Running locally</h3>
+                <p>Assuming that the FatFractal Engine is running, you can deploy to your development machine via the command line using <strong>ffef deploylocal</strong>:</p>
+                <pre><code>&gt; <em>&lt;install directory&gt;</em>/fatfractal/runtime/ffnsbin/ffef deploylocal</pre></code>
+                <p>Your API will be available at http://localhost:8080/hoodyoodoo</p>
+                <p>NEXT: <a href="part_1_1.html">Create Directory Structure</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+    </html>

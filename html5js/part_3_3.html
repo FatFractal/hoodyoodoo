@@ -1,0 +1,184 @@
+<html>
+<head>
+    <title>Add the TopCelebrity Scene</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HTML5/JS Tutorial Part III
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part3.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part3/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-part-3-3" class="anchor" href="#html5-js-tutorial-part-3-3"><span class="octicon octicon-link"></span></a>
+                    Add the TopCelebrity Scene
+                </h2>
+                <p>
+                    <strong>Note:</strong> No client code is required for an event handler as it creates only API functionality and cannot be accessed by the client directly. However, the data that is created in the <strong><em>TopCeleb</em></strong> resource can be accessed by the client.
+                </p>
+                <p>
+                    Since the TopCeleb resource uses the Celebrtiy object type, there is no need to define another class in the client code, To use it in the application, we need to add a new Scene, and then populate it with data that is created for us by the event handler in <strong><em>TopCeleb</em></strong>.
+                </p>
+                <p>
+                    First, we add a new view to our HTML, and add nav buttons to the other views so we can get to it. Then, we add the supporting JavaScript to populate it.
+                </p>
+                <p>
+                    Open <strong><em>index.html</em></strong>. First, we need to modify our styles a little bit. Here is the new version of the <code>&lt;style&gt;</code> tag in the document head:
+                </p>
+<pre><code>&lt;style&gt;
+    label { color: white}
+    h1 { color: white; text-align: center; }
+    .ui-page { background: black; }
+    .ui-field-contain { text-align: center; }
+    .nav-glyphish-example .ui-btn .ui-btn-inner { padding-top: 40px !important; }
+    .nav-glyphish-example .ui-btn .ui-icon { width: 30px !important; height: 30px !important; margin-left: -15px !important; box-shadow: none !important; -moz-box-shadow: none !important; -webkit-box-shadow: none !important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
+    #wypwyt .ui-icon, #acpwyt .ui-icon, #tcpwyt .ui-icon{ background: url(Images/button_play_gray.png) 50% 50% no-repeat; background-size: 32px 32px; }
+    #wypact .ui-icon, #acpact .ui-icon, #tcpact .ui-icon { background: url(Images/button_add_gray.png) 50% 50% no-repeat; background-size: 32px 32px;  }
+    #wyptct .ui-icon, #acptct .ui-icon, #tcptct .ui-icon { background: url(Images/button_top_celebrity.png) 50% 50% no-repeat;  background-size: 32px 32px; }
+    .imgAjaxLoader{position: fixed;top: 50%;left: 50%;margin-top: -24px;margin-left: -24px;z-index: 100;display: none;}
+    .celebImage{max-width:200px;max-height:300px;}
+    #fileUploaderDropDiv{margin:0;padding:0;}
+&lt;/style&gt;</code></pre>
+                <p>
+                    Now, we will add a nav button to each of our existing pages, so we can get to the new view we are about to make. In the footer of the WouldYa page, the navbar div should now read:
+                </p>
+<pre><code>&lt;div data-role="navbar" class="nav-glyphish-example"&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="#" id="wypwyt" data-icon="custom"&gt;WouldYa&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#AddCelebrity" id = "wypact" data-icon="custom"&gt;Add Celebrity&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#TopCelebrity" id = "wyptct" onclick="HoodyoodooViewModel.getTopCelebrity()" data-icon="custom"&gt;Top Celebrity&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt; &lt;!-- /navbar --&gt;</code></pre>
+                <p>
+                    And in the footer of the AddCelebrity page, the navbar div should now be:
+                </p>
+<pre><code>&lt;div data-role="navbar" class="nav-glyphish-example"&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="#WouldYa" id="acpwyt" data-icon="custom"&gt;WouldYa&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#" id="acpact" data-icon="custom"&gt;Add Celebrity&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#TopCelebrity" onclick="HoodyoodooViewModel.getTopCelebrity()" id="acptct" data-icon="custom"&gt;Top Celebrity&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt; &lt;!-- /navbar --&gt;</code></pre>
+                <p>
+                Finally, we add the new view page. Add the following:
+                </p>
+<pre><code>&lt;div data-role="page" id="TopCelebrity"&gt;
+    &lt;div data-role="content"&gt;
+        &lt;h1&gt;Top Celebrity&lt;br&gt;&lt;br&gt;
+            &lt;img id="topCelebImage" class="celebImage" src="Images/mystery3.png" alt="Celeb Image"/&gt;
+            &lt;br&gt;
+            &lt;br&gt;
+            &lt;div id="topCelebrityInfo" style="color: white; display: hidden;"&gt;
+                &lt;span id="topCelebrityLabel" style="color: white;"&gt;Top Celeb Name&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/h1&gt;
+        &lt;h3 style="color: white; text-align: center; display: hidden;"&gt;Was selected &emsp;&emsp;&lt;span id="selectedCountLabel"&gt;0&lt;/span&gt;&lt;/h3&gt;
+        &lt;h3 style="color: white; text-align: center; display: hidden;"&gt;Was rejected &emsp;&emsp;&lt;span id="rejectedCountLabel"&gt;0&lt;/span&gt;&lt;/h3&gt;
+    &lt;/div&gt; &lt;!-- /content --&gt;
+    &lt;div data-role="footer" data-position="fixed" class="nav-glyphish-example"&gt;
+        &lt;div data-role="navbar" class="nav-glyphish-example"&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="#WouldYa" id="tcpwyt" data-icon="custom"&gt;WouldYa&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#AddCelebrity" id="tcpact" data-icon="custom"&gt;Add Celebrity&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#" onclick="HoodyoodooViewModel.getTopCelebrity()"  id="tcptct" data-icon="custom"&gt;Top Celebrity&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt; &lt;!-- /navbar --&gt;
+    &lt;/div&gt; &lt;!-- /footer --&gt;
+    &lt;div data-role="popup" data-position-to="window" id="topCelebLoginPopup" data-theme="a" class="ui-content"&gt;
+        &lt;h1&gt;Please Register/Log In&lt;/h1&gt;
+        &lt;div data-role="fieldcontain"&gt;
+            &lt;label for="topCelebUsernameField"&gt;Username&lt;/label&gt;
+            &lt;input type="text" id="topCelebUsernameField"/&gt;
+        &lt;/div&gt;
+        &lt;div data-role="fieldcontain"&gt;
+            &lt;label for="topCelebPasswordField"&gt;Password&lt;/label&gt;
+            &lt;input type="password" id="topCelebPasswordField"/&gt;
+        &lt;/div&gt;
+        &lt;a id="topCelebrityLoginButton" data-role="button" onclick="HoodyoodooViewModel.login('getTopCelebrity')"&gt;Log In&lt;/a&gt;
+    &lt;/div&gt; &lt;!-- /Login Popup for TopCelebrity --&gt;
+&lt;/div&gt; &lt;!-- /TopCelebrity --&gt;</code></pre>
+                <p>
+                We now need to modify our view model. First, we add the following instance variables to <strong><em>HoodyoodooViewModel</em></strong>:
+                </p>
+<pre><code>var m_topCelebImage = null;
+var m_topCelebrityLabel = null;
+var m_selectedCountLabel = null;
+var m_rejectedCountLabel = null;</code></pre>
+                <p>
+                Next, add the following to the view model's <strong><em>init</em></strong> method:
+                </p>
+<pre><code>m_topCelebrityLabel = document.getElementById("topCelebrityLabel");
+m_selectedCountLabel = document.getElementById("selectedCountLabel");
+m_rejectedCountLabel = document.getElementById("rejectedCountLabel");
+m_topCelebImage = document.getElementById("topCelebImage");</code></pre>
+                <p>
+                Finally, add a new method to retrieve the top celebrity:
+                </p>
+<pre><code>getTopCelebrity: function() {
+    self.showLoading(true);
+    ff.getObjFromUri("/TopCelebrity",
+            function(topCeleb) {
+                self.showLoading(false);
+                if(topCeleb) {
+                    var tc = new Celebrity(topCeleb);
+                    m_topCelebImage.setAttribute('src', tc.imageSrc);
+                    m_topCelebrityLabel.innerHTML = tc.firstName + " " + tc.lastName;
+                    if(tc.selectedCount) m_selectedCountLabel.innerHTML = tc.selectedCount;
+                    if(tc.rejectedCount) m_rejectedCountLabel.innerHTML = tc.rejectedCount;
+                } else if(G_DEBUG) console.log("getTopCelebrity() found no top celebrity");
+            }, function(statusCode, responseText){
+                self.showLoading(false);
+                console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+            }
+    );
+}</code></pre>
+                <p>
+                That’s it!
+                </p>
+                <p>
+                Now, as soon as ratings are being captured in <strong><em>WouldYa</em></strong>’s, then the <strong><em>topCeleb</em></strong> will be populated by the event handler and can be viewed in this scene.
+                </p>
+                <p>
+                Final result: We successfully created a <strong><em>TopCelebrity</em></strong> on the backend from an event handler. We have also added a scene to display the results.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/10/6E6CE7B5-7CA4-4D7B-BB8B-6AF30FE28C63.png">
+                        <img src="http://fatfractal.com/beta/wp-content/uploads/2012/10/6E6CE7B5-7CA4-4D7B-BB8B-6AF30FE28C63.png" alt="" title="Top Celeb" width="597" height="805"/>
+                    </a>
+                </p>
+                <p>
+                    NEXT: <a href="part_4_1.html">Part IV, Server Extensions</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

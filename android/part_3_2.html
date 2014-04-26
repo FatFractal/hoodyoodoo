@@ -1,0 +1,96 @@
+<html>
+<head>
+    <title>Add the Event Handler to your FFDL</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part III
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part3.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part3/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-3-2" class="anchor" href="#android-tutorial-part-3-2"><span class="octicon octicon-link"></span></a>
+                    Add the Event Handler to your FFDL
+                </h2>
+                <h3>FFDL for the Event Handler</h3>
+                <p>
+                    The Event Handler must be defined in your application.ffdl file that is in the ff-config directory that was created for you during scaffolding. See FatFractal Definition Language (<a href="http://fatfractal.com/v2/documentation/#document-noserver-ffdl-overview">here</a>) for more information.
+                </p>
+                <p>
+                    The download of the project for Tutorial Part 4 also includes the files that were generated for you by the scaffolding process so that you can see what the application.ffdl looks like at the end of the Tutorial.
+                </p>
+                <p>
+                    In the FFDL code we do two things:
+                </p>
+                <h4>Define the Event Handler:</h4>
+                <pre><code>CREATE HANDLER WouldYaCreate POST ON /WouldYa Create as javascript:var h = require ('scripts/WouldYaEventHandlers'); h.handleWouldYaCreate (FF_EVENT_DATA_JSON);</code></pre>
+                <p>
+                    This entry tells the FatFractal noserver to create an event on <strong><em>WouldYa</em></strong> Create, and execute the <strong><em>handleWouldYaCreate</em></strong> function that is in WouldYaEventHandlers.js file passing in the event data.
+                </p>
+                <h4>Add a new Collection:</h4>
+                <p>
+                    This gives us another example of the power of the FatFractal API. We are now going to create another <strong><em>COLLECTION</em></strong> called <strong><em>TopCelebrity</em></strong> which will be of <strong><em>OBJECTYPE</em></strong> Celebrity. This allows us to easily reuse our object models for other purposes. This new resource will keep track of the top rated celebrity over time.
+                </p>
+                <p>
+                    Since we have already defined the OBJECTTYPE Celebrity in Part1, we can just reuse that class here (hey - ain’t code reuse wonderful?). We add this to our application.ffdl file.
+                </p>
+                <pre><code>CREATE COLLECTION /TopCelebrity OBJECTTYPE Celebrity</code></pre>
+                <p>
+                    This entry tells the FatFractal noserver to create a new <strong><em>COLLECTION</em></strong> called <strong><em>TopCelebrity</em></strong> that will use the existing <strong><em>OBJECTTYPE</em></strong> defined earlier - the <strong><em>Celebrity.</em></strong>
+                </p>
+                <p>
+                    To make your API aware of these new items, you need to deploy again (have you noticed how little you have to fiddle around with your API so far??) by doing the following:
+                </p>
+                <h4>If you are running in the Cloud</h4>
+                <p>
+                    If you haven't already, go to the <a href="https://system.fatfractal.com/console/application.html">Console</a> and add an application called hoodyoodoo to <em>&lt;your subdomain&gt;</em>. From the hoodyoodoo application directory, deploy the modified hoodyoodoo API to the FatFractal Platform, you use the command line <strong>deployFFFabric</strong>:
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef deployFFFabric</code></pre>
+                <p>
+                    In a few seconds, your updated application will be available at http://&lt;your subdomain&gt;.fatfractal.com/hoodyoodoo
+                </p>
+                <h4>Running locally</h4>
+                <p>
+                    Assuming that the FatFractal Engine is running, you can also deploy to your development machine using the command line <strong>deploylocal</strong>:
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef deploylocal</code></pre>
+                <p>
+                    In a few seconds, your modified application will be available at http://localhost:8080/hoodyoodoo
+                </p>
+                <p>
+                    NEXT: <a href="part_3_3.html">Add the TopCelebrity Scene</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

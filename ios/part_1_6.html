@@ -1,0 +1,179 @@
+<html>
+<head>
+    <title>The WouldYaViewController</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-add-ff-app-delegate" class="anchor" href="#ios-tutorial-add-ff-app-delegate"><span class="octicon octicon-link"></span></a>
+                    The WouldYaViewController
+                </h2>
+                <p>
+                    Now, set up the Scene to play the game. Start by retrieving a random <strong><em>Celebrity</em> </strong>that was saved to the API and displaying it on the <strong><em>FirstViewController</em></strong>, which we will refactor to be the <strong><em>WouldYaViewController</em></strong>. What’s a <strong><em>WouldYa</em></strong>, you ask? You'll find out in part II of the Tutorial! But for now... For this Scene, refactor the <strong><em>FirstViewController</em></strong> to be called <strong><em>WouldYaViewController</em></strong> by renaming everything.
+                </p>
+                <p>
+                    Next, modify  <strong><em>WouldYaViewController.h</em></strong> as follows:
+                </p>
+<pre><code>#import "AppDelegate.h"
+    #import "Celebrity.h"
+    @interface WouldYaViewController : UIViewController
+    @property (strong, nonatomic) Celebrity *leftCelebrity;
+    - (void) loadCelebrities;
+    @property (strong, nonatomic) IBOutlet UILabel     *leftCelebrityLabel;
+    @property (strong, nonatomic) IBOutlet UIButton    *leftCelebrityButton;
+    @end
+</code></pre>
+                <p>
+                    These modifications accomplish the following:
+                    <ol>
+                        <li>Import the <strong><em>Celebrity</em></strong> class, <strong><em>AppDelgate</em></strong> class and <strong><em>FatFractal</em></strong> class</li>
+                        <li>Add the properties for:
+                            <ol>
+                                <li type="a">the <strong><em>leftCelebrity</em></strong> object of objecttype <strong><em>Celebrity</em></strong>,which is made part of this class</li>
+                                <li type="a">a <strong><em>UILabel</em></strong> with <strong><em>IBOutlet</em></strong> <strong><em>leftCelebrityLabel</em></strong> that will display the name of the celebrity</li>
+                                <li type="a">a <strong><em>UIButton</em></strong> with <strong><em>IBOutlet leftopCelebrityButton</em></strong> button that will display the retrieved celebrity image</li>
+                            </ol>
+                        </li>
+                        <li>Add the single method for now:
+                            <ol>
+                                <li type="a"><strong><em>loadCelebrities</em></strong> CRUD Retrieve the last stored Celebrity object</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </p>
+                <p>
+                    Then,  modify the <strong><em>WouldYaViewController.m</em></strong> as follows:
+                </p>
+                <p>
+                    First, synthesize the necessary properties.
+                </p>
+                <pre><code> @synthesize celebrityList, leftCelebrity, leftCelebrityLabel, leftCelebrityButton;</code></pre>
+                <p>
+                    Next, we want to use a single CRUD method that will retrieve all the objects needed from the API at once.
+                </p>
+                <p>
+                    This line of code returns all objects found at that API collection. We will create the <strong><em>loadCelebrities</em></strong> method to test this out.
+                </p>
+<pre><code>- (void) loadCelebrities {
+    NSError * error;
+    NSArray *celebArray = [[FatFractal main]
+    getArrayFromUrl:[NSString stringWithFormat:@"/ff/resources/Celebrity"]
+    error:&error];
+    if (error) {
+        NSLog(@"WouldYaViewController loadCelebrities celebArray failed: %@", [error localizedDescription]);
+        return;
+    }
+    if([celebArray count] == 0) {
+        [leftCelebrityButton setBackgroundImage:[UIImage imageNamed:@"genericfriendicon.png"] forState:UIControlStateNormal];
+        leftCelebrityLabel.text = @"No celebrities found";
+        return;
+    }
+    int r = arc4random() % [celebArray count];
+    leftCelebrity = [celebArray objectAtIndex:r];
+    if(leftCelebrity) {
+        leftCelebrityLabel.text = [NSString stringWithFormat:@"%@ %@", leftCelebrity.firstName, leftCelebrity.lastName];
+        [leftCelebrityButton setBackgroundImage:[[UIImage alloc] initWithData:leftCelebrity.imageData] forState:UIControlStateNormal];
+    } else {
+        NSLog(@"WouldYaViewController loadCelebrities leftCelebrity could not find any");
+    }
+}</code></pre>
+                <p>
+                    This code does the following:
+                    <ol>
+                        <li>Retrieves all of the <strong><em>Celebrity</em></strong> objects from the API anonymously and populates the results to <strong><em>celebArray</em></strong> using a synchronous method.</li>
+                        <li>Handles <strong><em>error</em></strong>.</li>
+                        <li>Checks to see if any <strong><em>Celebrity</em></strong> object is returned.</li>
+                        <li>If so, it selects a random <strong><em>Celebrity</em></strong> object from <strong><em>celebArray</em></strong> and sets it to <strong><em>leftCelebrity</em></strong> .</li>
+                        <li>If <strong><em>leftCelebrity</em></strong> is not nil, sets the <strong><em>leftCelebrityLabel.text</em></strong> to the concatenation of <strong><em>leftCelebrity.firstName</em></strong><em> </em>and <strong><em>leftCelebrity.lastName.</em></strong></li>
+                        <li>Sets the background image for <strong><em>leftCelebrityButton</em></strong> to <strong><em>leftCelebrity.imageData </em></strong>directly.</li>
+                        <li>Finally, generates a log message if no object was found.</li>
+                    </ol>
+                    (sn. getting all objects at once is a very expensive operation for your API, from both client- and network-resource perspectives. We will explore how to use queries in the Tutorial Part II, to address this important development issue.)
+                </p>
+                <h3>Adding in UI Components</h3>
+                Next, we add the necessary UI components to the <strong><em>WouldYaViewController</em></strong>.
+                <ol>
+                    <li>Add a<strong><em> UIButton</em></strong> to hold the celebrity's image.</li>
+                    <li>Add a<strong><em> UITextField</em></strong> for celebrity's name, with a UILabel to identify it.</li>
+                </ol>
+            </p>
+            <p>
+                And the Scene should look like this:
+            </p>
+            <p class="aligncenter">
+                <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_1_wouldya_ui.png"><img title="Part_1_wouldya_ui" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_1_wouldya_ui-203x300.png" alt="" width="203" height="300" /></a>
+            </p>
+            <p>
+                Lastly, make sure and connect up your <strong><em>UIComponents</em></strong> in the <strong><em>MainStoryboard.storyboard </em></strong> for the <strong><em>WouldYaViewController</em></strong> elements.
+            </p>
+            <p>
+                <strong><em>leftCelebrityLabel</em></strong>
+                <br>
+                Referencing Outlet to <strong><em>WouldYaViewController</em></strong>/<strong><em>leftCelebrityLabel</em></strong>
+            </p>
+            <p>
+                <strong><em>leftCelebrityButton</em></strong>
+                <br>
+                Referencing Outlet to <strong><em>WouldYaViewController</em></strong>/<strong><em>leftCelebrityButton</em></strong>
+            </p>
+            <p>
+                When you run the app, it loads and populates the <strong><em>WouldYaViewController</em></strong> Scene. Then, if everything is working right, it successfully retrieves a Celebrity object, randomly, and populates the UI.
+            </p>
+            <p>
+                (sn. You may notice, when this Scene loads, the end-user is not yet authenticated. Until the end-user attempts to affect data on the API, she may retrieve objects anonymously.)
+            </p>
+            <p class="aligncenter">
+                <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_1_final_female.png"><img title="Part_1_final_female" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Part_1_final_female-200x300.png" alt="" width="200" height="300" /></a>
+            </p>
+            <h3>Summary</h3>
+            <p>
+                In this tutorial, we have created our unit tests for all CRUD actions for a our very own <strong><em>Celebrity</em></strong> class we created as well as authentication without having to translate in and out of NSDictionary objects or use some other third party object models. We have used both synchronous as well as asynchronous methods within the tests to make sure they operate correctly.
+            </p>
+            <p>
+                Another key concept that we have demonstrated is the power of creating a complex object. In this case, an object with a blob (an image) that is seamlessly persisted and retrieved from the API. There is virtually no limit to the objects that you can exchange with your API. In fact, one could easily persist <strong><em>CelebrityViewController</em></strong> if one wanted to.
+            </p>
+            <p>
+                We have also built a Scene that Creates a <strong><em>Celebrity</em></strong> and a second one that Retrieves it. The <strong><em>CelebrityViewController</em></strong> Scene shows a nice pattern for authentication and the <strong><em>WouldYaViewController</em></strong> shows that you can retrieve objects from the FatFractal API anonymously which is very convenient for the developer and can greatly improve the end user experience with your application.
+            </p>
+            <p>
+                NEXT: <a href="part_2_1.html">Tutorial Part II, Using Queries</a>
+            </p>
+        </section>
+    </div>
+    <footer>
+        <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+        <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+</body>
+</html>

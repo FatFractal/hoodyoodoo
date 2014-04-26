@@ -1,0 +1,191 @@
+<html>
+<head>
+    <title>Push Notifications</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part IV
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part5.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part5/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-part-4-2" class="anchor" href="#ios-tutorial-part-4-2"><span class="octicon octicon-link"></span></a>
+                    Push Notifications
+                </h2>
+                <p>
+                    Our last Tutorial will cover how to use push notifications to send messages to your users using Apples Push Notification service. As you know, you must register your application with Apple in order to perform push notifications... It is important to note that despite the fact that this tutorial focuses on an iPhone app, the API you have created can send notifications to Android, Blackberry and WinPho devices, without any alteration.
+                </p>
+                <p>
+                    If you wish, you can download the complete Part V project file from <a href="https://github.com/FatFractal/hoodyoodoo/archive/part5.zip" title="part5.zip">Download Tutorial Part 5 Sample Files </a>and then unzip and then either run newapp again from this directory to use this application or copy the files that are enclosed to the application directory you created in the previous section <a href="index.html#local-install">Installing FatFractal</a> allowing the copy to replace all the previous files. 
+                </p>
+                <p>
+                    If you have not scaffolded your app already, it is not a problem, just run <strong>ffef newapp</strong>, using your subdomain, as before from the directory with the Part II files you have just downloaded and it will set up all the things that you need.
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef newapp hoodyoodoo <em>&lt;your subdomain&gt;</em></code></pre>
+                <p>
+                    <em>Note: The subdomain refers to the organization name you signed up with, e.g. acme in acme.fatfractal.com</em>
+                </p>
+                <p>
+                    <strong>Note:</strong> When you download the project, the client application is configured to use a API that is already deployed and populated with data. This means you can run the application on your simulator immediately. To use your API, you should edit the Hoodyoodoo.java file as before to point to the API that you have set up.
+                </p>
+                <h3>Section 1: Adding push notifications to the API</h3>
+                <p>
+                    We will now modify our event handler that we set up in Tutorial Part 3 to send out a push notification whenever a new top rated celebrity is created.
+                </p>
+                <p>
+                    There are three ways that we can do this:
+                    <ol>
+                        <li>Send the notification from the current <strong><em>handleWouldYaCreate</em></strong> event handler as it knows already when a new <strong><em>TopCelebrity</em></strong> is created.</li>
+                        <li>Add a new function to handleWouldYaCreate that is called when a new <strong><em>TopCelebrity</em></strong> is created.</li>
+                        <li>Create a new event handler that is triggered when the a new TopCelebrity is created and sends out a notification separately.</li>
+                    </ol>
+                </p>
+                <p>
+                    While #1 is simpler to implement and more efficient for the API to process than #2 or #3, in this tutorial we will implement #3 as it will better serve to illustrate the general case solution.
+                </p>
+                <p>
+                    First, we will create a new javascript file called TopCelebrityEventHandlers.js and add it to the ff-scripts directory for my application. As before, the basic structure of the file is:
+                </p>
+<pre><code>var ff = require('ffef/FatFractal');
+
+function handleTopCelebrityUpdate(json) {
+    … do some stuff
+}
+
+exports.handleTopCelebrityUpdate = handleTopCelebrityUpdate;</code></pre>
+                <p>
+                    We want to create a function that will extract the first name and last name of the Celibrity from the event, create a message and then send to all users of the application.
+                </p>
+                <p>
+                    We can do the first two in a single line:
+                </p>
+                <pre><code>var messageString = data.firstName + " " + data.lastName + " is our new Top Celebrity!"</code></pre>
+                <p>
+                    To get your user information, you can use the very cool <strong><em>getAllGuids(url)</em></strong> method:
+                </p>
+                <pre><code>var userGuids = ff.getAllGuids("/FFUser");</code></pre>
+                <p>
+                    Then, to send out the push notification, you can use the <strong><em>sendPushNotifications(guids, message)</em></strong> method:
+                </p>
+<pre><code>var ff = require('ffef/FatFractal');
+
+function handleTopCelebrityUpdate(json) {
+    data = JSON.parse(json);
+    var userGuids = ff.getAllGuids("/FFUser");
+    var messageString = data.firstName + " " + data.lastName + " is our new Top Celebrity!"
+    if (userGuids.length != 0) ff.sendPushNotifications (userGuids, messageString); 
+}
+
+exports.handleTopCelebrityUpdate = handleTopCelebrityUpdate;</code></pre>
+                <h3>Section 2: Update the Server Description</h3>
+                <p>
+                    Then we modify the application.ffdl to add the new Event Handler to the configuration. we do this by adding the following line:
+                </p>
+                [code language="html"]
+                CREATE HANDLER TopCelebUpdate ON /TopCelebrity Update as javascript:var h = require ('scripts/TopCelebrityEventHandlers'); h.handleTopCelebrityUpdate (FF_EVENT_DATA_JSON);
+                </code></pre>
+                <p>
+                    To make your API aware of these new items, you need to deploy again (have you noticed how little you have to fiddle around with your API so far??) by doing the following:
+                </p>
+                <h4>If you are running in the Cloud</h4>
+                <p>
+                    From the hoodyoodoo application directory, deploy the modified hoodyoodoo API to the FatFractal Platform, you use the command line <strong>deployFFFabric</strong>:
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef deployFFFabric</code></pre>
+                <p>
+                    In a few seconds, your updated application will be available at http://&lt;your subdomain&gt;.fatfractal.com/hoodyoodoo
+                </p>
+                <h4>Running locally</h4>
+                <p>
+                    Assuming that the FatFractal Engine is running, you can also deploy to your development machine using the command line <strong>deploylocal</strong>:
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef deploylocal</code></pre>
+                <p>    
+                    In a few seconds, your modified application will be available at http://localhost:8080/hoodyoodoo
+                </p>
+                <h3>Section 3: Modify the client and UI</h3>
+                <p>
+                    You must also configure your application to handle push notifications as follows:
+                </p>
+                <p>
+                    Edit the AppDelegate didFinishLaunchingWithOptions method needs to include this line of code:
+                </p>
+<pre><code>[[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | 
+                                                                                  UIRemoteNotificationTypeSound | 
+                                                                                  UIRemoteNotificationTypeAlert)];</code></pre>
+                <p>
+                    Next, the AppDelegate needs to implement the RemoteNotification delegate methods:
+                </p>
+<pre><code>// Delegation methods
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
+    NSLog(@"didRegisterForRemoteNotifications called");
+        [[FatFractal main] registerNotificationID:[devToken description]];
+}
+
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+        NSLog(@"Error in registration. Error: %@", err);
+}</code></pre>
+                <p>
+                    And lastly, we add the following to handle a notification when it is received.
+                </p>
+<pre><code>- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    NSLog(@"Received push notification %@", userInfo);
+    UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:@"Been outdone!"
+    message:[userInfo valueForKeyPath:@"aps.alert"]
+    delegate:nil
+    cancelButtonTitle:@"Okie Dokie"
+    otherButtonTitles:nil];
+    [prompt show];
+}</code></pre>
+                <p>
+                    That's it, the next time a TopCelebrity is created or updated, then a push notification will be sent to any application user that has authorized the application to receive them.
+                </p>
+                <p>
+                    Now for the bad news - in order to actually see a push notification, you must go through the complex procedure of signing up for a developer program, registering your application with the AppStore, getting provisioning and ssl push certificates and can only test from a phone device (not the simulator). If you want to see push notifications in action, get ahold of us and we will be happy to add your add your phone to the provisioned devices so you can test it from our API.
+                </p>
+                <p>
+                    I will be adding more on how to set up your own app for push - it is a pain, but a cool feature nonetheless.
+                </p>
+                <p>
+                    Here is the result:
+                </p>
+                <p class = "aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Individual_push.png"><img class="alignnone size-medium wp-image-2848" title="Individual_push" src="http://fatfractal.com/alpha/wp-content/uploads/2012/03/Individual_push-200x300.png" alt="" width="200" height="300" /></a>
+                </p>
+                <p>
+                    Have fun!
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

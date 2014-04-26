@@ -1,0 +1,317 @@
+<html>
+<head>
+    <title>Push Notifications</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part IV
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part4.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part4/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-4-2" class="anchor" href="#android-tutorial-part-4-2"><span class="octicon octicon-link"></span></a>
+                    Push Notifications
+                </h2>
+                <p>
+                    Our last Tutorial will cover how to use push notifications to send messages to your users using the Google Cloud Messaging (GCM) service. It is important to note that despite the fact that this tutorial focuses on an Android app, the API you have created can send notifications to iPhone, Blackberry and WinPho devices, without any alteration.
+                </p>
+                <p>
+                    If you wish, you can download the complete Part V project file from [dlprotect file="/FatFractal_Tutorial_Android_SampleFiles_Part5.zip" visibility="public"]Download Tutorial Part 5 Sample Files[/dlprotect] and then unzip and then either run newapp again from this directory to use this application or copy the files that are enclosed to the application directory you created in a previous section <a href="index.html#local-install">Installing FatFractal</a> allowing the copy to replace all the previous files.
+                </p>
+                <p>
+                    If you have not scaffolded your app already, it is not a problem, just run <strong>ffef newapp</strong>, using your subdomain, as before from the directory with the Part V files you have just downloaded and it will set up all the things that you need.
+                </p>
+                <pre><code>> $HOME/ff/ffnsbin/ffef newapp hoodyoodoo <em>&lt;your subdomain&gt;</em></code></pre>
+                <p>
+                    <em>Note: The subdomain refers to the organization name you signed up with, e.g. acme in acme.fatfractal.com</em>
+                </p>
+                <p>
+                    <strong>Note:</strong> When you download the project, the client application is configured to use a API that is already deployed and populated with data. This means you can run the application on your simulator immediately. To use your API, you should edit the Hoodyoodoo.java file as before to point to the API that you have set up.
+                </p>
+                <h3>Registering with Google</h3>
+                <p>
+                    First, we will register our application with Google:
+                    <ol>
+                        <li>Create a project for your application on the <a href="https://code.google.com/apis/console/b/0/">Google APIs Console</a>.</li>
+                        <li>Click <strong>Overview</strong> on the left, and note the <strong>Project Number</strong>.</li>
+                        <li>Enable Google Cloud Messaging by clicking <strong>Services</strong> on the left, finding <strong>Google Cloud Messaging for Android</strong> in the list, then clicking the status button so that it reads <strong>On</strong>.</li>
+                        <li>Click <strong>API Access</strong> on the left, then click <strong>Create new Server key ...</strong>, then <strong>Create</strong> in the dialog box.</li>
+                        <li>Note the <strong>API key</strong> for the key you just created.</li>
+                    </ol>
+                </p>
+                <p>
+                    We will use the <strong>Project Number</strong> and <strong>API key</strong> below.
+                </p>
+                <h3>Adding push notifications to the API</h3>
+                <p>
+                    We will now modify our event handler that we set up in Tutorial Part 3 to send out a push notification whenever a new top rated celebrity is created.
+                </p>
+                <p>
+                    There are three ways that we can do this:
+                    <ol>
+                        <li>Send the notification from the current <strong><em>handleWouldYaCreate</em></strong> event handler as it knows already when a new <strong><em>TopCelebrity</em></strong> is created.</li>
+                        <li>Add a new function to handleWouldYaCreate that is called when a new <strong><em>TopCelebrity</em></strong> is created.</li>
+                        <li>Create a new event handler that is triggered when the a new TopCelebrity is created and sends out a notification separately.</li>
+                    </ol>
+                </p>
+                <p>
+                    While #1 is simpler to implement and more efficient for the API to process than #2 or #3, in this tutorial we will implement #3 as it will better serve to illustrate the general case solution.
+                </p>
+                <p>
+                    First, we will create a new javascript file called TopCelebrityEventHandlers.js and add it to the ff-scripts directory for my application. As before, the basic structure of the file is:
+                </p>
+<pre><code>var ff = require('ffef/FatFractal');
+
+function handleTopCelebrityUpdate(json) {
+    … do some stuff
+}
+
+exports.handleTopCelebrityUpdate = handleTopCelebrityUpdate;</code></pre>
+                <p>
+                    We want to create a function that will extract the first name and last name of the Celibrity from the event, create a message and then send to all users of the application.
+                </p>
+                <p>
+                    We can do the first two in a single line:
+                </p>
+                <pre><code>var messageString = data.firstName + " " + data.lastName + " is our new Top Celebrity!";</code></pre>
+                <p>
+                    To get your user information, you can use the very cool <strong><em>getAllGuids(url)</em></strong> method:
+                </p>
+                <pre><code>var userGuids = ff.getAllGuids("/FFUser");</code></pre>
+                <p>
+                    Then, to send out the push notification, you can use the <strong><em>sendPushNotifications(guids, message)</em></strong> method:
+                </p>
+<pre><code>var ff = require('ffef/FatFractal');
+
+function handleTopCelebrityUpdate(json) {
+    data = JSON.parse(json);
+    var userGuids = ff.getAllGuids("/FFUser");
+    var messageString = data.firstName + " " + data.lastName + " is our new Top Celebrity!"
+    if (userGuids.length != 0) ff.sendPushNotifications (userGuids, messageString);
+}
+
+exports.handleTopCelebrityUpdate = handleTopCelebrityUpdate;</code></pre>
+                <h3>Update the Server Description</h3>
+                <p>
+                    Then we modify the application.ffdl to add the new Event Handler to the configuration. we do this by adding the following line:
+                </p>
+                <pre><code>CREATE HANDLER TopCelebUpdate ON /TopCelebrity Update as javascript:var h = require ('scripts/TopCelebrityEventHandlers'); h.handleTopCelebrityUpdate (FF_EVENT_DATA_JSON);</code></pre>
+                <p>
+                    We must also enable push notifications. Do so by adding the following lines:
+                </p>
+<pre><code>SET PushIsInactive false
+SET AndroidPushAuthToken your_API_key</code></pre>
+                <p>
+                    where you should replace <code>your_API_key</code> with the <strong>API key</strong> you created for your <a href="#registering-with-google">Google API project above</a>.
+                </p>
+                <p>
+                    To make your API aware of these new items, you need to deploy again (have you noticed how little you have to fiddle around with your API so far??) by doing the following:
+                </p>
+                <h4>If you are running in the Cloud</h4>
+                <p>
+                    From the hoodyoodoo application directory, deploy the modified hoodyoodoo API to the FatFractal Platform, you use the command line <strong>deployFFFabric</strong>:
+                </p>
+                <pre><code>> $HOME/ff/ffnsbin/ffef deployFFFabric</code></pre>
+                <p>
+                    In a few seconds, your updated application will be available at http://&lt;your subdomain&gt;.fatfractal.com/hoodyoodoo
+                </p>
+                <h4>Running locally</h4>
+                <p>
+                    Assuming that the FatFractal Engine is running, you can also deploy to your development machine using the command line <strong>deploylocal</strong>:
+                </p>
+                <pre><code>> $HOME/ff/ffnsbin/ffef deploylocal</code></pre>
+                <p>
+                    In a few seconds, your modified application will be available at http://localhost:8080/hoodyoodoo
+                </p>
+                <h3>Modify the client and UI</h3>
+                <p>
+                    You must also configure your application to handle push notifications as follows.
+                </p>
+                <p>
+                    First, use the Android SDK Manager to download <strong>Extras > Google Cloud Messaging for Android Library</strong>. Then, add the file <code><em>&lt;sdk install dir&gt;</em>/extras/google/gcm/gcm-client/dist/gcm.jar</code> to your project.
+                </p>
+                <p>
+                    Next, add the following lines to the beginning of your app's <em><strong>AndroidManifest.xml</strong></em> file:
+                </p>
+<pre><code>&lt;permission android:name="com.hoodyoodoo.droidapp.permission.C2D_MESSAGE" android:protectionLevel="signature" /&gt;
+&lt;uses-permission android:name="com.hoodyoodoo.droidapp.permission.C2D_MESSAGE" /&gt;
+&lt;uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" /&gt;
+&lt;uses-permission android:name="android.permission.GET_ACCOUNTS" /&gt;
+&lt;uses-permission android:name="android.permission.WAKE_LOCK" /&gt;</code></pre>
+                <p>
+                    Also add the following lines at the end of your <code>application</code> element:
+                </p>
+<pre><code>&lt;service android:name=".GCMIntentService" /&gt;
+&lt;receiver android:name="com.google.android.gcm.GCMBroadcastReceiver"
+android:permission="com.google.android.c2dm.permission.SEND"&gt;
+&lt;intent-filter&gt;
+&lt;action android:name="com.google.android.c2dm.intent.RECEIVE" /&gt;
+&lt;action android:name="com.google.android.c2dm.intent.REGISTRATION" /&gt;
+&lt;category android:name="com.hoodyoodoo.droidapp" /&gt;
+&lt;/intent-filter&gt;
+&lt;/receiver&gt;</code></pre>
+                <p>
+                    Next, we'll edit the main application file, <strong><em>Hoodyoodoo.java</em></strong>. First, we need to add some more import statements:
+                </p>
+<pre><code>import com.fatfractal.ffef.impl.FFPrefsAndroid;
+import com.google.android.gcm.GCMRegistrar;</code></pre>
+                <p>
+                    Add a constant to hold your C2DM account information:
+                </p>
+                <pre><code>public static String GCM_SENDER_ID = "your_google_project_id";</code></pre>
+                <p>
+                    Here, replace <code>your_google_project_id</code> with the <strong>Project Number</strong> of your <a href="#registering-with-google">Google API project</a>. Finally, add the following to the <strong><em>onCreate</em></strong> method:
+                </p>
+<pre><code>FFPrefsAndroid.setContext(this);
+GCMRegistrar.checkDevice(this);
+GCMRegistrar.checkManifest(this);
+String registrationId = ff.getNotificationID();
+if (registrationId == null || registrationId.equals("")) {
+    GCMRegistrar.register(this, GCM_SENDER_ID);
+}</code></pre>
+                <p>
+                    This code does a couple of things. First, it saves the application context to a place where the FatFractal Framework can access it. Next, we call the <code>getNotificationID()</code> method. This first checks the application preferences for a saved GCM registration ID; if we don't find one, we use the <code>GCMRegistrar.register</code> method to register the device with the GCM service.
+                </p>
+                <p>
+                    Next, we need to add a new class to the com.hoodyoodoo.droidapp package. The class will extend the <em><strong>GCMBaseIntentService</strong></em> class provided by the GCM library. It's purpose is to respond to messaging events, such as registering your device or receiving a push notification. Create the file <em><strong>GCMIntentService.java</strong></em> and enter the following:
+                </p>
+<pre><code>package com.hoodyoodoo.droidapp;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import com.fatfractal.ffef.FFException;
+import com.google.android.gcm.GCMBaseIntentService;
+import com.hoodyoodoo.droidapp.activity.HoodyoodooActivity;
+
+public class GCMIntentService extends GCMBaseIntentService {
+    public GCMIntentService() {
+        super(Hoodyoodoo.GCM_SENDER_ID);
+    }
+
+    @Override
+    public void onRegistered(Context context, String regId) {
+        try {
+            Hoodyoodoo.getFF().registerNotificationID(regId);
+        }
+        catch (FFException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onUnregistered(Context context, String regId) {
+        try {
+            Hoodyoodoo.getFF().unregisterNotificationID();
+        }
+        catch (FFException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onError(Context context, String errorId) {
+        Log.e(this.getClass().getName(), "GCM error : " + errorId);
+    }
+}</code></pre>
+                <p>
+                    <strong>Note:</strong> The GCMIntentService class <em>must</em> be in the same package as your main application class.
+                </p>
+                <p>
+                    Our app is almost ready to receive push notifications! The only thing left is to decide what to do when we actually receive a message. We want two things to happen: a) display a notification using the android.app.Notification class, and b) when the notification is clicked, launch Hoodyoodoo and show the TopCelebrity tab.
+                </p>
+                <p>
+                    First, prepare <em><strong>HoodyoodooActivity</strong></em> by adding the following code to the class:
+                </p>
+<pre><code>public static final String EXTRA_TAB_TAG       = "tab_tag";
+
+@Override
+protected void onStart() {
+    Bundle extras = getIntent().getExtras();
+    if (extras != null) {
+        String tabtag = extras.getString(EXTRA_TAB_TAG);
+        getTabHost().setCurrentTabByTag(tabtag);
+    }
+    super.onStart();
+}</code></pre>
+                <p>
+                    As we will see presently, we will direct the app to open the TopCelebrity tab by adding extras to the launch intent. In the code above, we examine the intent for desired tab, and select it.
+                </p>
+                <p>
+                    Finally, add the following method to the <em><strong>GCMIntentService</strong></em> class you created above:
+                </p>
+<pre><code>@Override
+protected void onMessage(Context context, Intent intent) {
+    Bundle extras = intent.getExtras();
+    if (extras != null) {
+        String payloadMsg = extras.getString("payload");
+
+        Notification.Builder notification = new Notification.Builder(context);
+        notification.setContentTitle("Been outdone!");
+        notification.setTicker("Been outdone!");
+        notification.setContentText(payloadMsg);
+        notification.setSmallIcon(R.drawable.ic_launcher);
+        notification.setAutoCancel(true);
+
+        Intent launchIntent = new Intent(this, HoodyoodooActivity.class);
+        launchIntent.putExtra(HoodyoodooActivity.EXTRA_TAB_TAG, HoodyoodooActivity.TAB_TOP_CELEB_TAG);
+        launchIntent.setAction(Intent.ACTION_VIEW); // necessary for extras to be passed on to Action
+        notification.setContentIntent(PendingIntent.getActivity(context, 0, launchIntent, 0));
+
+        NotificationManager nm = (NotificationManager)context.getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(0, notification.getNotification());
+    }
+}</code></pre>
+                <p>
+                    That's it, the next time a TopCelebrity is created or updated, then a push notification will be sent to any application user that has authorized the application to receive them.
+                </p>
+                <p>
+                    <strong>Important note for the Android emulator</strong>: The target of your AVD (Android Virtual Device) <strong>must be Google APIs</strong>. A plain Android target will not work.
+                </p>
+                <p>
+                    Here is what a notification looks like:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/07/EA8485DA-992B-454E-AFF5-D982F5852E8A.png"><img src="http://fatfractal.com/beta/wp-content/uploads/2012/07/EA8485DA-992B-454E-AFF5-D982F5852E8A-small.png" alt="" title="EA8485DA-992B-454E-AFF5-D982F5852E8A" class="aligncenter size-full wp-image-6955" /></a>
+                </p>
+                <p>
+                    Have fun!
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

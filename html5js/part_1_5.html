@@ -1,0 +1,171 @@
+<html>
+<head>
+    <title>The WouldYa View</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HTML5/JS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-add-ff-app-delegate" class="anchor" href="#html5-js-tutorial-add-ff-app-delegate"><span class="octicon octicon-link"></span></a>
+                    The WouldYa View
+                </h2>
+                <p>
+                    Now, set up the Scene to play the game. Start by retrieving a random <strong><em>Celebrity</em> </strong>that was saved to the app's backend and displaying it in a new view, which we call a <strong><em>WouldYa</em></strong> view. What’s a <strong><em>WouldYa</em></strong>, you ask? You'll find out in part II of the Tutorial! But for now...
+                </p>
+                <h3>Add the UI</h3>
+                <p>
+                    First, we need to add some HTML for the WouldYa view. Add the following div to the top level of the <code>&lt;body&gt;</code> tag in your <strong><em>index.html</em></strong>:
+                </p>
+<pre><code>&lt;div data-role="page" id="WouldYa"&gt;
+    &lt;div data-role="content"&gt;
+        &lt;h1&gt;Who'd you do?&lt;/h1&gt;
+        &lt;center&gt;
+            &lt;a style="height: 320px" data-role="button"&gt;
+                &lt;img id="leftCelebrityButton" class="celebImage" onclick="HoodyoodooViewModel.celebrityWasPicked(this)" src="Images/mystery2.png" alt="Celeb Image"/&gt;
+            &lt;/a&gt;
+            &lt;span id="leftCelebrityLabel" style="color: white;"&gt;Celeb Name&lt;/span&gt;
+        &lt;/center&gt;
+    &lt;/div&gt; &lt;!-- /content --&gt;
+    &lt;div data-role="footer" data-position="fixed" class="nav-glyphish-example"&gt;
+        &lt;div data-role="navbar" class="nav-glyphish-example"&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;a href="#" id="wypwyt" data-icon="custom"&gt;WouldYa&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href="#AddCelebrity" id = "wypact" data-icon="custom"&gt;Add Celebrity&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt; &lt;!-- /navbar --&gt;
+    &lt;/div&gt; &lt;!-- /footer --&gt;
+    &lt;div data-role="popup" data-position-to="window" id="wouldYaLoginPopup" data-theme="a" class="ui-content"&gt;
+        &lt;h1&gt;Please Register/Log In&lt;/h1&gt;
+        &lt;div data-role="fieldcontain"&gt;
+            &lt;label for="wouldYaUsernameField"&gt;Username&lt;/label&gt;
+            &lt;input type="text" id="wouldYaUsernameField"/&gt;
+        &lt;/div&gt;
+        &lt;div data-role="fieldcontain"&gt;
+            &lt;label for="wouldYaPasswordField"&gt;Password&lt;/label&gt;
+            &lt;input type="password" id="wouldYaPasswordField"/&gt;
+        &lt;/div&gt;
+        &lt;a id="wouldYaLoginButton" data-role="button" onclick="HoodyoodooViewModel.login('persistWouldYa')"&gt;Log In&lt;/a&gt;
+    &lt;/div&gt; &lt;!-- /Login Popup for WouldYa --&gt;
+&lt;/div&gt; &lt;!-- /WouldYa --&gt;</code></pre>
+                <h3>JavaScript</h3>
+                <p>
+                    Next, we'll modify the <code>init</code> method of our <strong><em>HoodyoodooViewModel</em></strong> yet again. Add the following highlighted lines:
+                </p>
+<pre><code>init: function() {
+    ff.setDebug(G_DEBUG);
+    m_leftCelebrityButton = document.getElementById("leftCelebrityButton");
+    m_leftCelebrityLabel = document.getElementById("leftCelebrityLabel");
+    m_doneButton = document.getElementById("doneButton");
+    m_firstNameField = document.getElementById("firstNameField");
+    m_lastNameField = document.getElementById("lastNameField");
+    m_addCelebImage = document.getElementById("addCelebImage");
+    m_loadingImageElement = document.getElementById("imgAjaxLoader");
+    m_celebrity = new Celebrity();
+    loader = new FileUploader();
+    loader.init();
+    this.loadCelebrities();
+}</code></pre>
+                <p>
+                    The naming of the members anticipates the addition of another celebrity, which we do in Section II.
+                </p>
+                <p>
+                    Next, we create the methods we need. We want to use a single CRUD method that will retrieve all the objects needed from the app's backend at once. The <code>getArrayFromUri</code> FatFractal method returns all objects found at a specified URI (called a "<a href="../../../../../docs/hierarchy/#collection">collection</a>"). We will create the <strong><em>loadCelebrities</em></strong> method to test this out. Add the following member to your <strong><em>HoodyoodooViewModel</em></strong>:
+                </p>
+<pre><code>loadCelebrities: function() {
+    self.showLoading(true);
+    ff.getArrayFromUri("/ff/resources/Celebrity",
+    function(celebArray) {
+        var leftCelebrity = celebArray[Math.floor(Math.random() * celebArray.length)];
+        self.showLoading(false);
+        if(leftCelebrity) {
+            m_leftCelebrity = new Celebrity(leftCelebrity);
+            m_leftCelebrityButton.setAttribute('src', m_leftCelebrity.imageSrc);
+            m_leftCelebrityLabel.innerHTML = leftCelebrity.firstName + " " + leftCelebrity.lastName;
+        }
+    }, function(statusCode, responseText){
+        self.showLoading(false);
+        console.error("Error "+ statusCode + ": " + JSON.parse(responseText).statusMessage);
+    }
+    );
+}</code></pre>
+                <p>
+                    This code does the following:
+                    <ol>
+                        <li>Retrieves all of the <strong><em>Celebrity</em></strong> objects from the app's backend anonymously and receives the results in <strong><em>celebArray</em></strong>.</li>
+                        <li>Selects a random <strong><em>Celebrity</em></strong> object from <strong><em>celebArray</em></strong> and sets it to <strong><em>m_leftCelebrity</em></strong>.</li>
+                        <li>Sets the text of<strong><em>m_leftCelebrityLabel</em></strong> to the concatenation of the celebrity's first and last names.</li>
+                        <li>Sets the background image for <strong><em>m_leftCelebrityButton</em></strong> to the image data from <strong><em>m_leftCelebrity</em></strong>.</li>
+                    </ol>
+                </p>
+                <p>
+                    <em>Side note:</em> Getting all objects at once is a very expensive operation for your app's backend, from both client- and network-resource perspectives. We will explore how to use queries in the Tutorial Part II, to address this important development issue.
+                </p>
+                <p>
+                    We also need to define a <code>celebrityWasPicked</code> method, which is called when a celebrity button is clicked:
+                </p>
+<pre><code>celebrityWasPicked: function(sender) {
+    self.loadCelebrities();
+}</code></pre>
+                <p>
+                    For now, the method simple reloads the celebrities.
+                </p>
+                <p>
+                    When you run the app, it loads and populates the <strong><em>WouldYaViewController</em></strong> Scene. Then, if everything is working right, it successfully retrieves a Celebrity object, randomly, and populates the UI.
+                </p>
+                <p>
+                    <em>Side note:</em> You may notice, when this Scene loads, the end-user is not yet authenticated. Until the end-user attempts to affect data on the app's backend, they may retrieve objects anonymously.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/10/64BB5638-EC2A-4CD7-A1D7-FF4D40538AA7.png"><img src="http://fatfractal.com/beta/wp-content/uploads/2012/10/64BB5638-EC2A-4CD7-A1D7-FF4D40538AA7.png" alt="" title="Lily Allen 2" width="597" height="705" class="aligncenter size-full wp-image-8777" /></a>
+                </p>
+                <h3>Summary</h3>
+                <p>
+                    In this tutorial, we have stored our very own <strong><em>Celebrity</em></strong> class we created as well as authentication without having to translate in and out of NSDictionary objects or use some other third party object models. We have used both synchronous as well as asynchronous methods within the tests to make sure they operate correctly.
+                </p>
+                <p>
+                    Another key concept that we have demonstrated is the power of creating a complex object. In this case, an object with a blob (an image) that is seamlessly persisted and retrieved from the API. There is virtually no limit to the objects that you can exchange with your API. In fact, one could easily persist <strong><em>HoodyoodooViewModel</em></strong> if one wanted to.
+                </p>
+                <p>
+                    We have also built a view that Creates a <strong><em>Celebrity</em></strong> and a second one that Retrieves it. The <strong><em>Celebrity</em></strong> view shows a nice pattern for authentication and the <strong><em>WouldYa</em></strong> view shows that you can retrieve objects from the FatFractal API anonymously, which is very convenient for the developer and can greatly improve the end user experience with your application.
+                </p>
+                <p>
+                    NEXT: <a href="part_2_1.html">Tutorial Part II, Using Queries</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    </body>
+    </html>

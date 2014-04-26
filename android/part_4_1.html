@@ -1,0 +1,166 @@
+<html>
+<head>
+    <title>Server Extensions</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part IV
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part4.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part4/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-4-1" class="anchor" href="#android-tutorial-part-4-1"><span class="octicon octicon-link"></span></a>
+                    Server Extensions
+                </h2>
+                <p>
+                    The next activity we need to do is collect some key metrics that we want to show in the game. We could define a StatsObject resource to be persisted on the API, write four Event Handlers that would update these statistics every time any of their respective events occur to keep it up to date. Instead, we will create an ephemeral object with a Server Extension that assembles the statistics on the fly and returns the data to the client.
+                </p>
+                <p>
+                    If you wish, you can download the complete Part IV project file from <a href="https://github.com/FatFractal/hoodyoodoo/archive/part4.zip" title="part4.zip">Download Tutorial Part 4 Sample Files</a> and then unzip and then either run newapp again from this directory to use this application or copy the files that are enclosed to the application directory you created in the previous section <a href="index.html#local-install">Installing FatFractal</a> allowing the copy to replace all the previous files.
+                </p>
+                <p>
+                    If you have not scaffolded your app already, it is not a problem, just run <strong>ffef newapp</strong>, using your subdomain, as before from the directory with the Part IV files you have just downloaded and it will set up all the things that you need.
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef newapp hoodyoodoo <em>&lt;your subdomain&gt;</em></code></pre>
+                <p>
+                    <em>Note: The subdomain refers to the organization name you signed up with, e.g. acme in acme.fatfractal.com</em>
+                </p>
+                <p>
+                    <strong>Note:</strong> When you download the project, the client application is configured to use an API that is already deployed and populated with data. This means you can run the application on your simulator immediately. To use your API, you should edit the Hoodyoodoo.java file as before to point to the API that you have set up.
+                </p>
+                <h3>Adding server extensions (Custom endpoints) to your API</h3>
+                <p>
+                    Our open platform lets you extend the API as easily as we allow you to create instant models on the API. For example, to make your app interesting, you might want to create server extension such as an algorithm you want to run in the Cloud, etc. In fact, we have designed our engine so that you can extend the FatFractal platform itself--more on that later.
+                </p>
+                <p>
+                    In this tutorial we will show you a simple-yet-powerful method to extend the server with an algorithm you wouldn’t want running on the client-side.
+                </p>
+                <p>
+                    Another very useful capability is the ability to create Server Extensions. These are additional actions that can be called from your client that perform whatever functions that you wish on the server. This can be a tremendous benefit to your client in terms of performance as it can reduce the network traffic to your application as well as reduce the complexity and resource demands for your client application.
+                </p>
+                <p>
+                    For example, here is a simple server extension that collects some interesting statistics.
+                </p>
+                <h4>Server Description for the Server Extension</h4>
+                <p>
+                    The Server Extension must be defined in your application.fddl file that is in the ff-config directory that was created for you during scaffolding. See <a href="http://fatfractal.com/v2/documentation/#document-noserver-ffdl-overview">FatFractal Definition Language</a> for more information.
+                </p>
+                <p>
+                    The FDDL looks like:
+                </p>
+                <pre><code>CREATE EXTENSION /Stats AS javascript:var f = require ('scripts/AggregateStats'); f.aggregateStats(FF_EXTENSION_REQUEST_DATA_JSON);</code></pre>
+                <p>
+                    This entry tells the FatFractal noserver to create a server-side extension with the URL
+                </p>
+                <pre><code>http://<em>&lt;base URL&gt;</em>/ff/ext/AggregateStats</code></pre>
+                <p>
+                    that can be accessed via all HTTP methods, in our case, we will use a Get and are expecting a single object to be returned.
+                </p>
+                <h4>A JavaScript API Extension for you API</h4>
+                <p>
+                    We will now create a Server Extension JavaScript file that defines an additional object model called StatsObject as well as several Queries that will aggregate the desired information and return the data to the client.
+                </p>
+                <p>
+                    To create this Server Extension, we will create a javascript file called "AggregateStats.js" in the /ff-scripts directory. The basic structure of the file is:
+                </p>
+<pre><code>var ff = require('ffef/FatFractal');
+
+function aggregateStats() {
+    // some code...
+}
+exports.aggregateStats = aggregateStats;</code></pre>
+                <p>
+                    FatFractal.js is the server-side encapsulation of the NoServer API that is available to the EventHandler functions. For more information, see the <a href="http://www.fatfractal.com/prod/linked_files/FF-Javascript-Server-Side-Docs/global.html">HTML5/JS SDK Reference</a>.
+                </p>
+                <p>
+                    We next create a new object called StatsObject that we will populate using this server extension. Note that this object is not persisted, it is populated and returned on the fly by this extension. Of yourse, you could easily persist the object if you wish, but in this case is not required.
+                </p>
+<pre><code>function StatsObject() {
+    this.totalUsers = null;
+    this.totalRatings = null;
+    this.totalCelebrities = null;
+    this.yourRatings = null;
+    return this;
+}</code></pre>
+                <p>
+                    Next we get the data from the HTTP request:
+                </p>
+                <pre><code>var data = JSON.parse(json);</code></pre>
+                <p>
+                    Instantiate a new StatsObject and populate it using three queries and, in this case calculating the lengths of the returned Arrays. Note: in this case, we are getting only the guids of the respective resources which is more efficient than retrieving the entire object data. This can be quite a useful method for efficient queries where all you need to get is the set of guids.
+                </p>
+<pre><code>statsObject = new StatsObject();
+statsObject.totalUsers = ff.getAllGuids("/FFUser").length;
+statsObject.totalRatings = ff.getAllGuids("/WouldYa").length;
+statsObject.totalCelebrities = ff.getAllGuids("/Celebrity").length;
+
+var createdBy = data.httpCookies['userGuid'];
+statsObject.yourRatings = ff.getArrayFromUrl("/WouldYa/(createdBy eq '" + createdBy + "')").length;</code></pre>
+                <p>
+                    Now, we construct the response a return it. Note, it is not required that you set all the response codes, as default values will be returned, but you are free to set them if you wish.
+                </p>
+<pre><code>r = ff.response();
+r.responseCode = "200";
+r.statusMessage = "Getting the stuff you want in one round trip";
+r.mimeType = "application/json";
+r.result = JSON.stringify(såtatsObject);
+return r;</code></pre>
+                <p>
+                    To make your API aware of these new items, you need to deploy again (have you noticed how little you have to fiddle around with your API so far??) by doing the following:
+                </p>
+                <h4>If you are running in the Cloud</h4>
+                <p>
+                    If you haven't already, go to the <a href="https://system.fatfractal.com/console/application.html">Console</a> and add an application called hoodyoodoo to <em>&lt;your subdomain&gt;</em>.
+                </p>
+                <p>
+                    From the hoodyoodoo application directory, deploy the modified hoodyoodoo API to the FatFractal Platform, you use the command line <strong>deployFFFabric</strong>:
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef deployFFFabric</code></pre>
+                <p>
+                    In a few seconds, your updated application will be available at http://&lt;your subdomain&gt;.fatfractal.com/hoodyoodoo
+                </p>
+                <h4>Running locally</h4>
+                <p>
+                    Assuming that the FatFractal Engine is running, you can also deploy to your development machine using the command line <strong>deploylocal</strong>:
+                </p>
+                <pre><code>&gt; $HOME/ff/ffnsbin/ffef deploylocal</code></pre>
+                <p>
+                    In a few seconds, your modified application will be available at http://localhost:8080/hoodyoodoo
+                </p>
+                <p>
+                    NEXT: <a href="part_4_2.html">Update the Client App Code</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

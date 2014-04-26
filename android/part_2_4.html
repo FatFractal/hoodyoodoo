@@ -1,0 +1,210 @@
+<html>
+    <head>
+        <title>Adding the UI</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+        <link rel="stylesheet" href="../stylesheets/styles.css">
+        <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+        <script src="../javascripts/scale.fix.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part II
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part2/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-2-4" class="anchor" href="#android-tutorial-part-2-4"><span class="octicon octicon-link"></span></a>
+                    Adding the UI
+                </h2>
+                <p>
+                    Next, we add the necessary UI components to <em><strong>wouldya_activity.xml</strong></em>. We will add the following elements:
+                    <ol>
+                        <li>Add an<strong><em> ImageView</em></strong> to hold the second Celebrity’s image.</li>
+                        <li>Add a<strong><em> TextView</em></strong> for the second Celebrity’s name.</li>
+                        <li>Add an <strong><em>ImageButton</em></strong> to play the game.</li>
+                        <li>Add an <strong><em>ImageButton</em></strong> that is used to select the gender preference for the user.</li>
+                    </ol>
+                </p>
+                <p>
+                    The complete code of the file is given here. You entered much of it in the Part I of the tutorial, but we repeat it here for context and reference:
+                </p>
+<pre><code>
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/wouldYaView"&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"&gt;
+        &lt;LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"&gt;
+            &lt;ImageView
+                android:id="@+id/leftCelebImageView"
+                android:layout_width="100dip"
+                android:layout_height="150dip"
+                android:background="@drawable/mystery2" 
+                android:layout_marginBottom="10dip" 
+                android:layout_marginRight="10dip"
+                android:onClick="celebrityWasPicked"
+            /&gt;
+            &lt;TextView
+                android:id="@+id/leftCelebTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" 
+                android:hint="Celebrity 1"
+            /&gt;
+        &lt;/LinearLayout&gt;
+        &lt;LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"&gt;
+            &lt;ImageView
+                android:id="@+id/rightCelebImageView"
+                android:layout_width="100dip"
+                android:layout_height="150dip"
+                android:background="@drawable/mystery3" 
+                android:layout_marginBottom="10dip" 
+                android:layout_marginLeft="10dip"
+                android:onClick="celebrityWasPicked"
+            /&gt;
+            &lt;TextView
+                android:id="@+id/rightCelebTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" 
+                android:hint="Celebrity 2"
+            /&gt;
+        &lt;/LinearLayout&gt;
+    &lt;/LinearLayout&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-50dip"
+        android:gravity="center_horizontal"&gt;
+        &lt;ImageButton
+            android:id="@+id/playAgainImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:src="@drawable/button_go" 
+            android:onClick="playAgain"
+        /&gt;
+    &lt;/LinearLayout&gt;
+    &lt;TextView
+        android:id="@+id/pickOneTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Pick One!"
+        android:textAppearance="?android:attr/textAppearanceLarge" 
+    /&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginTop="0dip"&gt;
+    &lt;ImageButton
+        android:id="@+id/toggleGenderImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button_gender_both" 
+        android:layout_marginLeft="30dip"
+        android:onClick="toggleGender"
+    /&gt;
+    &lt;/LinearLayout&gt;
+&lt;/LinearLayout&gt;
+</code></pre>
+                <p>
+                    The Scene should now look like this:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/06/F2B5113E-D305-4093-A51E-0065F38F84D2.png"><img title="Android_Tutorial_Part_II_WouldYa" src="http://fatfractal.com/alpha/wp-content/uploads/2012/06/F2B5113E-D305-4093-A51E-0065F38F84D2-224x300.png" alt="" width="224" height="300" /></a>
+                </p>
+                <p>
+                    Lastly, make sure and connect up your UI components in the <strong><em>onCreate</em></strong> method of the <strong><em>WouldYaActivity</em></strong> class. <strong>Note:</strong> Some of these were set in Tutorial Part I, but we will include them here again for convenience.
+                </p>
+<pre><code>public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.wouldya_layout);
+    m_leftCelebImageView      = (ImageView)   findViewById(R.id.leftCelebImageView);
+    m_rightCelebImageView     = (ImageView)   findViewById(R.id.rightCelebImageView);
+    m_leftCelebNameTextView   = (TextView)    findViewById(R.id.leftCelebTextView);
+    m_rightCelebNameTextView  = (TextView)    findViewById(R.id.rightCelebTextView);
+    m_playAgainImageButton    = (ImageButton) findViewById(R.id.playAgainImageButton);
+    m_toggleGenderImageButton = (ImageButton) findViewById(R.id.toggleGenderImageButton);
+    m_playAgainImageButton.setVisibility(View.INVISIBLE);
+    loadCelebrities();
+}</code></pre>
+                <p>
+                    Now, when you run the application, it will first load and populate the <strong><em>WouldYaActivity</em></strong> view.
+                </p>
+                <p>
+                    Final result: successfully retrieved a random Celebrity, a second random and unique Celebrity and populated the UI:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/06/24B77092-994D-435D-BE39-0DABDD2DDAA3.png"><img title="Android_Tutorial_Part_II_Ready" src="http://fatfractal.com/alpha/wp-content/uploads/2012/06/24B77092-994D-435D-BE39-0DABDD2DDAA3-181x300.png" alt="Anne Hathaway and Katy Perry" width="181" height="300" /></a>
+                </p>
+                <p>
+                    <strong>Note</strong>: when this Scene loaded, we are not authenticated which shows that you are able to retrieve objects anonymously.
+                </p>
+                <p>
+                    When you click on a Celebrity button with image (either the <strong><em>topCelebrityButton</em></strong> or <strong><em>bottomCelebrityButton)</em></strong>, then a <strong><em>WouldYa</em></strong> is created and persisted to your app's API. If successful, the <strong><em>bottomResponseLabel</em></strong> and <strong><em>bottomResponseLabel</em></strong> labels appear as well as the <strong><em>playAgainButton</em></strong> which will <strong><em>loadCelebrities</em></strong> again when clicked.
+                <p>
+                </p>
+                    Final result - you can run the application without making any changes to your API and the FatFractal Framework will adapt to you new code. You have now successfully created a <strong><em>WouldYa</em></strong>, and populated the UI for replaying the game:
+                </p>
+                <p class = "aligncenter">
+                    <a href="http://fatfractal.com/alpha/wp-content/uploads/2012/06/132E5801-FD31-4EA7-B189-442B36F96923.png"><img title="Android_Tutorial_Part_II_PlayAgain" src="http://fatfractal.com/alpha/wp-content/uploads/2012/06/132E5801-FD31-4EA7-B189-442B36F96923-180x300.png" alt="" width="180" height="300" /></a>
+                </p>
+                <h2>Summary</h2>
+                <p>
+                    In this part of the tutorial, we have explored how to create simple and more complex queries that will greatly enhance the performance and reliability of our application by reducing the amount of data handling the client is required to do by using simple language queries to filter result sets down to the information that the client needs.
+                </p>
+                <p>
+                    Next, we will begin using events to extend the application further in Tutorial Part III.
+                </p>
+                <p>
+                    NEXT: <a href="part_3_1.html">Part III, Event Handlers</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

@@ -1,0 +1,66 @@
+<html>
+<head>
+    <title>Modify WouldYaViewController</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="HTML5/JS Tutorial"
+                        src="../images/icon@2x.png">
+                        HTML5/JS Tutorial Part II
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part2.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part2/HTML5/JS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="html5-js-tutorial-part-2-2" class="anchor" href="#html5-js-tutorial-part-2-2"><span class="octicon octicon-link"></span></a>
+                    Modify WouldYaViewController
+                </h2>
+                <p>
+                    Now, with the two Celebrity objects retrieved, we need to add the logic to create and persist the players <strong><em>WouldYa </em></strong>results to the API. This involves creating a new object, that we will call a WouldYa.
+                </p>
+<pre><code>function WouldYa(data) {
+    if (data) {
+        this.clazz = data.clazz;
+        this.selectedGuid = data.selectedGuid;
+        this.rejectedGuid = data.rejectedGuid;
+    } else {
+        this.clazz = "WouldYa";
+        this.selectedGuid = null;
+        this.rejectedGuid = null;
+    }
+    return this;
+}</code></pre>
+                <p>
+                    NEXT: <a href="part_2_3.html">Modify WouldYa View</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

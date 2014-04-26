@@ -1,0 +1,120 @@
+<html>
+<head>
+    <title>Add the Celebrity Model</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-add-framework" class="anchor" href="#android-tutorial-add-framework"><span class="octicon octicon-link"></span></a>
+                    Add the Celebrity Model
+                </h2>
+                <p>In this section, we will create the native Java object class that the app will use. At this point, we will create a Celebrity object using standard Java patterns. This is <em>your</em> object definition, the FatFractal Platform does not create dependencies in your code by requiring you to use our own proprietary object classes.
+                </p>
+                <h3>Creating the Celebrity Class</h3>
+                <p>We will create a Celebrity data model that contains the following members:</p>
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Celebrity</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>firstName</td>
+                            <td>the celebrity’s first name</td>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>lastName</td>
+                            <td>the celebrity’s last name</td>
+                        </tr>
+                        <tr>
+                            <td>{byte[]}</td>
+                            <td>imageData</td>
+                            <td> the celebrity’s profile image</td>
+                        </tr>
+                        <tr>
+                            <td>{string}</td>
+                            <td>gender</td>
+                            <td>the gender of the celebrity</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>You may notice that we are anticipating a byte array datatype for the image data as a native member of this class–stay tuned to see how that works.
+                </p>
+                <p>
+                    In order to create the Celebrity class for your project in Eclipse, select the package to which you want to add it to (we used com.hoodyoodoo.droidapp.model), right click and select New &gt; Class to bring up the Template Chooser for the new class file. We will use the standard Java class template. Enter "Celebrity" as the class name.
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/05/create-celebrity-class.png"><img title="create-celebrity-class" src="http://fatfractal.com/beta/wp-content/uploads/2012/05/create-celebrity-class-249x300.png" alt="" width="249" height="300" />
+                    </a>
+                </p>
+                <p>
+                    Click Finish to create a Celebrity.java class file.
+                </p>
+                <p>
+                    We now edit the class to include the getters and setters for the members described above.
+                </p>
+<pre><code>public class Celebrity {
+	private String m_firstName = null;
+	private String m_lastName = null;
+	private byte[] m_imageData = null;
+	private String m_gender = null;
+
+	public	Celebrity() {}
+
+	public String getFirstName()      {return m_firstName;}
+	public String getLastName()       {return m_lastName;}
+	public byte[] getImageData()      {return m_imageData;}
+	public String getGender()         {return m_gender;}
+
+	public void setFirstName(String param)      {m_firstName = param;}
+	public void setLastName(String param)       {m_lastName = param;}
+	public void setImageData(byte[] param)      {m_imageData = param;}
+	public void setGender(String param)         {m_gender= param;}
+}</code></pre>
+                <p>The Celebrity object is now ready to interact with your API.
+                </p>
+                <p>
+                    NEXT: <a href="part_1_4.html">Add in the Class</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

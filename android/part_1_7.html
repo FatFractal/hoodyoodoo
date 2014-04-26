@@ -1,0 +1,327 @@
+<html>
+<head>
+    <title>Storing a Celebrity Object</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="Android Tutorial"
+                        src="../images/icon@2x.png">
+                        Android Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/android">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="android-tutorial-part-1-7" class="anchor" href="#android-tutorial-part-1-7"><span class="octicon octicon-link"></span></a>
+                    Storing a Celebrity Object
+                </h2>
+                <h3>Create the UI</h3>
+                <p>
+                    First, we want to create a UI so the user can create a <em><strong>Celebrity</strong></em> object that is stored to the API.
+                </p>
+                <p>
+                    We will create a layout file called <em><strong>celebrity_layout.xml.</strong></em> and add the necessary UI components:
+                    <ol>
+                        <li><em><strong>ImageButton</strong></em> to hold the Celebrity image.</li>
+                        <li><em><strong>EditText</strong></em> for Celebrity first name, using a hint for the label.</li>
+                        <li><em><strong>EditText</strong></em> for Celebrity last name, using a hint for the label.</li>
+                        <li><em><strong>Button</strong></em> that will attempt to add the Celebrity to the API</li>
+                    </ol>
+                </p>
+                <p>
+                    The code to accomplish this is:
+                </p>
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"&gt;
+    &lt;EditText
+        android:id="@+id/firstNameEditText"
+        android:hint="First Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" 
+        android:layout_marginLeft="25dip" 
+        android:layout_marginRight="25dip"&gt;
+        &lt;requestFocus /&gt;
+    &lt;/EditText&gt;
+    &lt;EditText
+        android:id="@+id/lastNameEditText"
+        android:hint="Last Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" 
+        android:layout_marginLeft="25dip" 
+        android:layout_marginRight="25dip" 
+        android:layout_marginTop="5dip"
+    /&gt;
+    &lt;ImageButton
+        android:id="@+id/addCelebImageButton"
+        android:layout_width="150dip"
+        android:layout_height="225dip"
+        android:text="Add Celebrity"
+        android:src="@drawable/addphoto" 
+        android:layout_marginTop="10dip"
+        android:onClick="selectImage"
+    /&gt;
+    &lt;Button
+        android:id="@+id/addCelebButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Celebrity" 
+        android:layout_marginTop="10dip"
+        android:onClick="doneAction"
+    /&gt;
+&lt;/LinearLayout&gt;</code></pre>
+                <p>
+                    And the Activity should look like this:
+                </p>
+                <p class = "aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/05/Android_Tutorial_Part_1_celebrity_layout.png"><img class="aligncenter size-medium wp-image-3808" title="Android_Tutorial_Part_1_celebrity_layout" src="http://fatfractal.com/beta/wp-content/uploads/2012/05/Android_Tutorial_Part_1_celebrity_layout-194x300.png" alt="" width="194" height="300" /></a>
+                </p>
+                <p>
+                    We also have to add some resources for the tab appearance, to the appropriate <strong><em>res/drawable</em></strong> directories. Add the file <strong><em>icon_celebrity_tab.xml</em></strong>:
+                </p>
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;selector xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+    &lt;item android:drawable="@drawable/button_add_gr"
+    android:state_selected="true" /&gt;
+    &lt;item android:drawable="@drawable/button_add_gray" /&gt;
+&lt;/selector&gt;</code></pre>
+                <h3>Create CelebrityActivity</h3>
+                <p>
+                    Next we create the <em><strong>CelebrityActivity</strong></em>. First, let's define the private data members:
+                </p>
+<pre><code>private EditText    m_firstNameEditText;
+private EditText    m_lastNameEditText;
+private ImageButton m_addCelebImageButton;
+private Celebrity   m_celebrity;
+private Uri         m_imageCaptureUri;
+private FatFractal ff = Hoodyoodoo.getFF();
+private static final int PICK_FROM_CAMERA = 1;
+private static final int PICK_FROM_FILE = 2;</code></pre>
+                <p>
+                    Next, we create the methods we need in <em><strong>CelebrityActivity</strong></em>
+                </p>
+                <p>
+                    In order to get the image for the Celebrity, we rely on the devices image library as populated from the camera, or from the browser. In our demo, we use the browser to save an image to the device and then select it with the very nice UIImagePickerController.
+                </p>
+                <p>
+                    The <em><strong>selectImage</strong></em> method brings up the <strong><em>AlertDialog</em></strong> to select getting an image from the device using an Intent from either an Action of ACTION_GET_CONTENT or ACTION_IMAGE_CAPTURE depending upon if the user selects to capture from the device's camera or file system (if an image is stored, say from the browser to the device).:
+                </p>
+<pre><code>public void selectImage(View v) {
+    final String [] items = new String [] {"From Camera", "From SD Card"};
+    ArrayAdapter adapter = new ArrayAdapter (this, android.R.layout.select_dialog_item,items);
+    AlertDialog.Builder builder	= new AlertDialog.Builder(this);
+    builder.setTitle("Select Image");
+    builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+        public void onClick( DialogInterface dialog, int item ) {
+            if (item == 0) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = new File(Environment.getExternalStorageDirectory(), "tmp_avatar_" + String.valueOf(System.currentTimeMillis()) + ".jpg");
+                m_imageCaptureUri = Uri.fromFile(file);
+                try {
+                    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, m_imageCaptureUri);
+                    intent.putExtra("return-data", true);
+                    startActivityForResult(intent, PICK_FROM_CAMERA);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                dialog.cancel();
+            } else {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
+            }
+        }
+    });
+    final AlertDialog dialog = builder.create();
+    dialog.show();
+}</code></pre>
+                <p>
+                    The <em><strong>onActivityResult</strong></em>: method will get the image, add it to the <em><strong>UIButton selectImageButton</strong></em>, clear the title and, most importantly, add the image data to the <em><strong>Celebrity</strong></em> object.
+                </p>
+<pre><code>@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultCode != RESULT_OK) return;
+    Bitmap bitmap = null;
+    String path = "";
+    if (requestCode == PICK_FROM_FILE) {
+        m_imageCaptureUri = data.getData();
+        String [] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(m_imageCaptureUri, proj, null, null, null);
+        if (cursor != null) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            path = cursor.getString(column_index);
+            if (path == null)
+            path = m_imageCaptureUri.getPath();
+            if (path != null)
+            bitmap = BitmapFactory.decodeFile(path);
+        }
+    } else {
+        path = m_imageCaptureUri.getPath();
+        bitmap= BitmapFactory.decodeFile(path);
+    }
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    bitmap.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+    byte[] bitmapdata = bos.toByteArray();
+    m_celebrity.setImageData(bitmapdata);
+    m_addCelebImageButton.setImageBitmap(bitmap);
+}</code></pre>
+                <p>
+                    Next, we add in the <em><strong>addGender</strong></em> method to get the gender information for the <em><strong>Celebrity</strong></em> using an <em><strong>AlertDialog</strong></em> and set the value for the Celebrity using the m_celebrity.setGender() method.
+                </p>
+<pre><code>private void addGender() {
+    if(m_celebrity == null) m_celebrity = new Celebrity();
+    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    alert.setPositiveButton("Male", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int whichButton) {
+            m_celebrity.setGender("male");
+            addCelebrity();
+        }
+    });
+    alert.setNegativeButton("Female", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int whichButton) {
+            m_celebrity.setGender("female");
+            addCelebrity();
+        }
+    });
+    alert.show();
+}</code></pre>
+                <p>
+                    We use the <em><strong>doneAction</strong></em> method to check that the two <em><strong>EditText</strong></em> elements are not empty and then to set the Celebrity <em><strong>firstName</strong></em> and <em><strong>lastName</strong></em> values when the <em><strong>doneButton</strong></em> is clicked and then attempts to call <em><strong>addCelebrity.</strong></em>
+                </p>
+<pre><code>public void doneAction(View view) {
+    if(m_celebrity == null) m_celebrity = new Celebrity();
+    if((m_firstNameEditText.getText().toString().length() >0) && (m_lastNameEditText.getText().toString().length() >0)) {
+        m_celebrity.setLastName(m_lastNameEditText.getText().toString());
+        m_celebrity.setFirstName(m_firstNameEditText.getText().toString());
+        addCelebrity();
+    }
+}</code></pre>
+                <p>
+                    Next, we add the <em><strong>addCelebrity</strong></em> method that:
+                    <ol>
+                        <li>Checks that the user is logged in, and if not, calls the asynchronous <em><strong>showLoginWithDelegate</strong></em>: action: selector: method in <em><strong>AppDelegate</strong></em>.</li>
+                        <li>Checks that all required information is complete.</li>
+                        <li>If all present, persists the <em><strong>Celebrity object</strong></em> to the API using the synchronous method <em><strong>createObj: atUrl:</strong></em> from the <em><strong>FatFractal</strong></em> class.</li>
+                        <li>If successful, clears <em><strong>celebrity</strong></em> contents and creates a new empty one.</li>
+                    </ol>
+                </p>
+<pre><code>public void addCelebrity() {
+    if(!ff.isLoggedIn()) {
+        Hoodyoodoo hoodyoodoo = new Hoodyoodoo();
+        AlertDialog alert = hoodyoodoo.loginDialog(this, "You must be logged in to save a new Celebrity.");
+        alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if(ff.isLoggedIn()) addCelebrity();
+            }
+        });
+        alert.show();
+    } else {
+        if((m_celebrity.getFirstName() == null) || (m_celebrity.getLastName() == null)) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Additional Information needed");
+            alert.setMessage("Please include a first and last name for the Celebrity");
+            alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // Canceled.
+                }
+            });
+            alert.show();
+        }
+        else if(m_celebrity.getImageData() == null) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Additional Information needed");
+            alert.setMessage("Please include an image for the Celebrity");
+            alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                }
+            });
+            alert.show();
+        }
+        else if(m_celebrity.getGender() == null) {
+            addGender();
+        }
+        else {
+            try {
+                ff.createObjAtUri(m_celebrity, "/Celebrity");
+                m_celebrity = new Celebrity();
+                m_addCelebImageButton.setImageResource(R.drawable.addphoto);
+                m_firstNameEditText.setText(null);
+                m_lastNameEditText.setText(null);
+            } catch (FFException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}</code></pre>
+                <p>
+                    Now, make sure and connect up your <em><strong>UIComponents</strong></em> in the <em><strong>/res/layout/celebrity_layout.xml</strong></em>. To do this, we add the following to the <em><strong>onCreate</strong></em> method.
+                </p>
+<pre><code>public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.celebrity_layout);
+    m_firstNameEditText   = (EditText)    findViewById(R.id.firstNameEditText);
+    m_lastNameEditText    = (EditText)    findViewById(R.id.lastNameEditText);
+    m_addCelebImageButton = (ImageButton) findViewById(R.id.addCelebImageButton);
+    m_celebrity = new Celebrity();
+}</code></pre>
+                <p>
+                    Finally, we need to declare our new Activity in <strong><em>AndroidManifest.xml</em></strong>. Add the following line to the <code>application</code> element:
+                </p>
+                <pre><code>&lt;activity android:name="com.hoodyoodoo.droidapp.activity.CelebrityActivity" /&gt;</code></pre>
+                <p>
+                    That’s it! Now, we can select and image from the phone that was taken by the device camera or saved to the phone from the browser or other application, enter the first and last name, add the gender using the <em><strong>AlertDialog</strong></em> and the new <em><strong>Celebrity</strong></em> is stored to your API.
+                </p>
+                <p>
+                    As mentioned previously, the FatFractal API can store any type of object, not just JSON or text. In this case, we have stored a <em><strong>Celebrity</strong></em> object that contains an image (<em><strong>byte[]</strong></em>) with a single method and can retrieve it the same way. And that is what we will do next.
+                </p>
+                <p>
+                    Go ahead and add a few celebrities to you API as we will need them for the next section.
+                </p>
+                <p>
+                    Final result - successfully added a Celebrity:
+                </p>
+                <p class="aligncenter">
+                    <a href="http://fatfractal.com/beta/wp-content/uploads/2012/06/7E0FCEFC-E222-4590-BF2B-D6E8E4E4EBB2.png"><img class="alignnone size-medium wp-image-3917 aligncenter" title="Android_Tutorial_Part_I_Celebrity" src="http://fatfractal.com/beta/wp-content/uploads/2012/06/7E0FCEFC-E222-4590-BF2B-D6E8E4E4EBB2-181x300.png" alt="George Clooney" width="181" height="300" /></a>
+                </p>
+                <p>
+                    NEXT: <a href="part_1_8.html">Add WouldYaActivity</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+</html>

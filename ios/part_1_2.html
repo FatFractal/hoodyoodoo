@@ -1,0 +1,71 @@
+<html>
+<head>
+    <title>Add the iOS SDK</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->    
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-add-framework" class="anchor" href="#ios-tutorial-add-framework"><span class="octicon octicon-link"></span></a>
+                    Add the iOS SDK
+                </h2>
+                <p>
+                    If you downloaded the Part I project files, the framework is already included in the download. If you are creating from scratch, you need to add the framework to your project. You can download the <a href="http://system.fatfractal.com/console/ff/ext/Releases/Latest/FF_IOS_SDK">FatFractal iOS SDK</a>.
+                </p>
+                <p>
+                    After you download this, you will find a FFEF.framework file that you can add to your applications. You should move this file to a directory that you keep your Xcode frameworks in.
+                </p>
+                <p>
+                    Then, In Xcode, we use do the following to add the iOS SDK to the hoodyoodoo app.
+                    <ol>
+                        <li>In the Project Navigator, select your project</li>
+                        <li>Select your target</li>
+                        <li>Select the Build Phases tab</li>
+                        <li>Open Link Binaries With Libraries expander</li>
+                        <li>Click the '+' button</li>
+                        <li>Select the FFEF.framework from the place you stored it above.
+                            <br>
+                            (optional) Drag and drop the added Framework to the 'Frameworks' group
+                        </li>
+                    </ol>
+                </p>
+                <p>When prompted, you can choose to copy the framework to the application source if you wish or refer to it from the application code which can make it easier to upgrade your applications from that common store.</p>
+                <p>NEXT: <a href="part_1_3.html">Add the "Celebrity" Object Model to Your Application</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    </body>
+    </html>

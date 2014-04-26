@@ -1,0 +1,124 @@
+<html>
+    <head>
+        <title>Add the FatFractal Class to Your AppDelegate</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">    
+        <link rel="stylesheet" href="../stylesheets/styles.css">
+        <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+        <script src="../javascripts/scale.fix.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <header class="without-description">
+                <h1>
+                    <a href="../index.html">
+                        <img title="Home" style="width: 80px; height: 80px;"
+                        alt="iOS Tutorial"
+                        src="../images/icon@2x.png">
+                        iOS Tutorial Part I
+                    </a>
+                </h1>
+                <p></p>
+                <p class="view">
+                    <a href="https://github.com/FatFractal/hoodyoodoo">View the Project on GitHub <small>FatFractal/hoodyoodoo</small>
+                    </a>
+                </p>
+                <ul>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/archive/part1.zip">Download <strong>ZIP File</strong></a></li>
+                    <li><a href="https://github.com/FatFractal/hoodyoodoo/tree/part1/iOS">View On <strong>GitHub</strong></a></li>
+                </ul>
+            </header>
+            <section>
+                <h2>
+                    <a name="ios-tutorial-add-ff-app-delegate" class="anchor" href="#ios-tutorial-add-ff-app-delegate"><span class="octicon octicon-link"></span></a>
+                    Add the FatFractal Class to Your AppDelegate
+                </h2>
+                <p>
+                    For the purposes of the Tutorial, we will instantiate the <em><strong>FatFractal</strong></em> class as a singleton to the AppDelegate class. To your <em><strong>AppDelegate.h</strong></em> file, add:
+                </p>
+<pre><code>#import &lt;FFEF/FatFractal.h&gt;</code></pre>
+                <p>
+                    add the methods:
+                </p>
+<pre><code>+ (FatFractal *) ff;</code></pre>
+                <p>
+                    Then, in your <strong><em>AppDelegate.m</em></strong> file, add:
+                </p>
+<pre><code>static FatFractal *_ff;</code></pre>
+                <p>
+                    and the implementation:
+                </p>
+<pre><code>+ (FatFractal *) ff {
+    return _ff;
+}</code></pre>
+                <p>
+                    Also add the following code to your app delegate's <code>applicationDidFinishLaunching:withOptions:</code> method:
+                </p>
+<pre><code>_ff = [[FatFractal alloc] initWithBaseUrl:@"http://acme.fatfractal.com/hoodyoodoo"
+sslUrl:@"https://acme.fatfractal.com/hoodyoodoo"];
+_ff.debug = YES;</code></pre>
+                <h4>Login Method</h4>
+                <p>
+                    We also need to put in some code for logging in to the FatFractal API. We'll create a utility method for showing a login alert. Add the following instance variables and declaration to <strong><em>AppDelegate.h</em></strong>:
+                </p>
+<pre><code>@interface AppDelegate : UIResponder <UIApplicationDelegate> {
+    id _sender;
+    SEL _action;
+}
+- (void)showLoginWithDelegate:(id)sender action:(SEL)action message:(NSString *)message;</code></pre>
+                <p>
+                    And the following to <strong><em>AppDelegate.m</em></strong>:
+                </p>
+<pre><code>- (void)showLoginWithDelegate:(id)sender action:(SEL)action message:(NSString *)message {
+    UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:@"Login/ Register"
+    message:message
+    delegate:self
+    cancelButtonTitle:@"Cancel"
+    otherButtonTitles:@"Enter", nil];
+    [prompt setAlertViewStyle:UIAlertViewStyleLoginAndPasswordInput];
+    _action = action;
+    _sender = sender;
+    [prompt show];
+}
+
+- (void)alertView:(UIAlertView *)prompt clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self resignFirstResponder];
+    if(buttonIndex == 0) {
+        return;
+    } else {
+        NSError *error;
+        [_ff loginWithUserName:[[prompt textFieldAtIndex:0] text] 
+                   andPassword:[[prompt textFieldAtIndex:1] text] 
+                         error:&error];
+        NSLog(@"AppDelegate alertView clickedButtonAtIndex: username: %@", 
+            [prompt textFieldAtIndex:0]);
+        NSLog(@"AppDelegate alertView clickedButtonAtIndex: password: %@", 
+            [prompt textFieldAtIndex:1]);
+        if (error) {
+            [self showLoginWithDelegate:_sender action:_action
+            message:@"Please Login"];
+        } else {
+            if([_sender respondsToSelector:_action]) {
+                [_sender performSelector:_action];
+            } else
+            NSLog(@"Callback function cannot be found");
+        }
+    }
+}</code></pre>
+                <p>
+                    NEXT: <a href="part_1_5.html">Add the Celebrity UI</a>
+                </p>
+            </section>
+        </div>
+        <footer>
+            <p>Project maintained by <a href="https://github.com/FatFractal">FatFractal</a></p>
+            <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+        </footer>
+        <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    </body>
+</html>
